@@ -615,13 +615,10 @@ Pero no todas recuerdan quién la escribió."
 
 
 
-
-
-
 <script>
 
-
 function toggleMenu(){
+
 
 document
 .getElementById("sidebar")
@@ -632,26 +629,61 @@ document
 .getElementById("overlay")
 .classList.toggle("activo");
 
+
 }
 
 
 
 let secretClicks=0;
 
+
 const secretButton=
-document.getElementById("secretButton");
+document.getElementById(
+"secretButton"
+);
+
 
 
 secretButton.onclick=()=>{
 
+
 secretClicks++;
 
 
-if(secretClicks>=23){
+if(secretClicks===5)
+
+secretButton.innerText=
+"🔒 Acceso denegado";
+
+
+else if(secretClicks===10)
+
+secretButton.innerText=
+"🔒 Intento registrado";
+
+
+else if(secretClicks===18)
+
+secretButton.innerText=
+"🔒 ¿Por qué insistes...?";
+
+
+else if(secretClicks>=23){
+
+
+secretButton.innerText=
+"🔓 ACCESO AUTORIZADO";
+
+
+setTimeout(()=>{
 
 
 window.location.href=
-"../23quesoultra/";
+"../../23quesoultra/";
+
+
+},1200);
+
 
 }
 
