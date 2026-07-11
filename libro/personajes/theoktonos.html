@@ -93,6 +93,179 @@ font-family:'JetBrains Mono',monospace;
 
 }
 
+html,body{
+overflow-x:hidden;
+}
+
+
+body::before{
+
+content:"";
+
+position:fixed;
+
+inset:0;
+
+background:
+repeating-linear-gradient(
+90deg,
+transparent,
+transparent 120px,
+rgba(255,255,255,.03) 121px
+);
+
+pointer-events:none;
+
+}
+
+
+/* MENÚ */
+
+.menuBtn{
+
+position:fixed;
+
+top:20px;
+left:20px;
+
+font-size:2rem;
+
+padding:10px 16px;
+
+border-radius:15px;
+
+cursor:pointer;
+
+background:rgba(20,0,35,.7);
+
+border:1px solid #b44cff;
+
+box-shadow:
+0 0 20px #7d00ff;
+
+z-index:1001;
+
+transition:.3s;
+
+}
+
+
+.menuBtn:hover{
+
+transform:scale(1.1);
+
+box-shadow:
+0 0 30px #b44cff;
+
+}
+
+
+
+.sidebar{
+
+position:fixed;
+
+top:0;
+
+left:-320px;
+
+width:280px;
+
+height:100vh;
+
+padding-top:90px;
+
+background:rgba(5,0,15,.95);
+
+backdrop-filter:blur(15px);
+
+border-right:1px solid #b44cff;
+
+transition:.5s;
+
+z-index:1000;
+
+}
+
+
+
+.sidebar.abierto{
+
+left:0;
+
+}
+
+
+
+.sidebar h2{
+
+text-align:center;
+
+margin-bottom:35px;
+
+font-family:'Cinzel',serif;
+
+}
+
+
+
+.sidebar a,
+.sidebar div{
+
+display:block;
+
+padding:18px 30px;
+
+color:white;
+
+text-decoration:none;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+
+
+.sidebar a:hover,
+.sidebar div:hover{
+
+background:rgba(180,0,255,.15);
+
+padding-left:40px;
+
+}
+
+
+
+.overlay{
+
+position:fixed;
+
+inset:0;
+
+background:rgba(0,0,0,.5);
+
+opacity:0;
+
+pointer-events:none;
+
+transition:.4s;
+
+z-index:999;
+
+}
+
+
+
+.overlay.activo{
+
+opacity:1;
+
+pointer-events:auto;
+
+}
 
 .contenedor{
 
@@ -241,6 +414,52 @@ box-shadow:0 0 25px #c95cff;
 
 
 <body>
+
+<div class="menuBtn"
+onclick="toggleMenu()">
+
+☰
+
+</div>
+
+
+<div class="overlay"
+id="overlay"
+onclick="toggleMenu()">
+
+</div>
+
+
+<div class="sidebar"
+id="sidebar">
+
+
+<h2>🌌 MENÚ</h2>
+
+
+<a href="../../">🏠 Inicio</a>
+
+
+<a href="../../libro/">📖 Libro</a>
+
+
+<a href="../../lore/">🌌 Lore</a>
+
+
+<a href="../../fanarts/">🎨 Fanarts</a>
+
+
+<a href="../../comunidad/">💬 Comunidad</a>
+
+
+<div id="secretButton">
+
+🔒 Archivo desconocido
+
+</div>
+
+
+</div>
 
 
 <div class="contenedor">
@@ -598,7 +817,83 @@ class="volver">
 
 </div>
 
+<script>
 
+function toggleMenu(){
+
+
+document
+.getElementById("sidebar")
+.classList.toggle("abierto");
+
+
+document
+.getElementById("overlay")
+.classList.toggle("activo");
+
+
+}
+
+
+
+let secretClicks=0;
+
+
+const secretButton=
+document.getElementById(
+"secretButton"
+);
+
+
+
+secretButton.onclick=()=>{
+
+
+secretClicks++;
+
+
+if(secretClicks===5)
+
+secretButton.innerText=
+"🔒 Acceso denegado";
+
+
+else if(secretClicks===10)
+
+secretButton.innerText=
+"🔒 Intento registrado";
+
+
+else if(secretClicks===18)
+
+secretButton.innerText=
+"🔒 ¿Por qué insistes...?";
+
+
+else if(secretClicks>=23){
+
+
+secretButton.innerText=
+"🔓 ACCESO AUTORIZADO";
+
+
+setTimeout(()=>{
+
+
+window.location.href=
+"../../23quesoultra/";
+
+
+},1200);
+
+
+}
+
+
+};
+
+</script>
+  
 </body>
 
 </html>
