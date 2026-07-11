@@ -1,185 +1,420 @@
-
 <!DOCTYPE html>
+
 <html lang="es">
+
+
 
 <head>
 
+
+
 <meta charset="UTF-8">
+
 <meta name="viewport"
+
 content="width=device-width, initial-scale=1.0">
+
+
 
 <title>Homo Transfigurator — Archivo CSGI</title>
 
+
+
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=JetBrains+Mono&display=swap"
+
 rel="stylesheet">
+
+
 
 <style>
 
-.menuBtn{
+
+
+*{
+
+box-sizing:border-box;
+
+}
+
+
+
+html,body{
+
+overflow-x:hidden;
+
+}
+
+
+
+body{
+
+
+
+margin:0;
+
+
+
+min-height:100vh;
+
+
+
+padding:30px 20px;
+
+
+
+background:
+
+radial-gradient(circle at center,
+
+#003d14,
+
+#001008,
+
+#000);
+
+
+
+color:white;
+
+
+
+font-family:'JetBrains Mono',monospace;
+
+
+
+overflow-x:hidden;
+
+
+
+}
+
+
+
+body::before{
+
+
+
+content:"";
+
+
 
 position:fixed;
 
+
+
+inset:0;
+
+
+
+background:
+
+repeating-linear-gradient(
+
+90deg,
+
+transparent,
+
+transparent 120px,
+
+rgba(255,255,255,.03) 121px
+
+);
+
+
+
+pointer-events:none;
+
+
+
+}
+
+
+
+/* MENÚ */
+
+
+
+.menuBtn{
+
+
+
+position:fixed;
+
+
+
 top:20px;
+
 left:20px;
+
+
 
 font-size:2rem;
 
+
+
 padding:10px 16px;
+
+
 
 border-radius:15px;
 
+
+
 cursor:pointer;
+
+
 
 background:rgba(20,0,35,.7);
 
+
+
 border:1px solid #b44cff;
 
-box-shadow:0 0 20px #7d00ff;
+
+
+box-shadow:
+
+0 0 20px #7d00ff;
+
+
 
 z-index:1001;
 
+
+
 transition:.3s;
 
+
+
 }
+
+
 
 .menuBtn:hover{
 
+
+
 transform:scale(1.1);
 
+
+
 box-shadow:
+
 0 0 30px #b44cff;
 
+
+
 }
+
+
 
 .sidebar{
 
+
+
 position:fixed;
 
+
+
 top:0;
+
 left:-320px;
 
+
+
 width:280px;
+
 height:100vh;
+
+
 
 padding-top:90px;
 
+
+
 background:rgba(5,0,15,.95);
+
+
 
 backdrop-filter:blur(15px);
 
+
+
 border-right:1px solid #b44cff;
+
+
 
 transition:.5s;
 
+
+
 z-index:1000;
 
+
+
 }
+
+
 
 .sidebar.abierto{
 
-.sidebar h2{
-
-text-align:center;
-
-margin-bottom:35px;
-
-}
-
-  
 left:0;
 
 }
 
+
+
+.sidebar h2{
+
+
+
+text-align:center;
+
+
+
+margin-bottom:35px;
+
+
+
+font-family:'Cinzel',serif;
+
+
+
+}
+
+
+
 .sidebar a,
+
 .sidebar div{
+
+
 
 display:block;
 
+
+
 padding:18px 30px;
 
+
+
 color:white;
+
+
 
 text-decoration:none;
 
+
+
 cursor:pointer;
+
+
 
 transition:.3s;
 
+
+
 }
 
+
+
 .sidebar a:hover,
+
 .sidebar div:hover{
+
+
 
 background:rgba(180,0,255,.15);
 
+
+
 padding-left:40px;
 
+
+
 }
+
+
 
 .overlay{
 
+
+
 position:fixed;
+
+
 
 inset:0;
 
+
+
 background:rgba(0,0,0,.5);
+
+
 
 opacity:0;
 
+
+
 pointer-events:none;
+
+
 
 transition:.4s;
 
+
+
 z-index:999;
 
+
+
 }
+
+
 
 .overlay.activo{
 
+
+
 opacity:1;
+
+
 
 pointer-events:auto;
 
+
+
 }
 
 
-*{
-box-sizing:border-box;
-}
 
-html,body{
-overflow-x:hidden;
-}
+/* CONTENIDO */
 
-body{
 
-margin:0;
-
-min-height:100vh;
-
-padding:30px 20px;
-
-background:
-radial-gradient(circle at center,
-#003d14,
-#001008,
-#000);
-
-color:white;
-
-font-family:'JetBrains Mono',monospace;
-
-}
 
 .contenedor{
 
-max-width:900px;
 
-width:100%;
+
+width:min(92%,900px);
+
+
 
 margin:auto;
 
+
+
 text-align:center;
+
+
+
+position:relative;
+
+
+
+z-index:2;
+
+
 
 }
 
@@ -187,17 +422,31 @@ text-align:center;
 
 .personaje{
 
+
+
 width:min(90%,350px);
+
+
 
 border-radius:30px;
 
+
+
 border:3px solid #44ff77;
 
+
+
 box-shadow:
+
 0 0 30px #44ff77,
+
 0 0 80px rgba(0,255,120,.45);
 
+
+
 margin-top:20px;
+
+
 
 }
 
@@ -205,13 +454,23 @@ margin-top:20px;
 
 .titulo{
 
+
+
 font-family:'Cinzel',serif;
+
+
 
 font-size:3rem;
 
+
+
 text-shadow:
+
 0 0 15px #88ffaa,
+
 0 0 40px #00ff66;
+
+
 
 }
 
@@ -219,21 +478,39 @@ text-shadow:
 
 .archivo{
 
+
+
 margin-top:35px;
+
+
 
 padding:25px;
 
+
+
 border-radius:25px;
 
+
+
 background:
+
 rgba(255,255,255,.04);
+
+
 
 border:1px solid #44ff77;
 
+
+
 text-align:left;
 
+
+
 box-shadow:
+
 0 0 25px rgba(0,255,120,.20);
+
+
 
 }
 
@@ -241,29 +518,47 @@ box-shadow:
 
 .archivo h2{
 
+
+
 text-align:center;
+
+
 
 font-family:'Cinzel',serif;
 
+
+
 color:#b8ffca;
+
+
 
 }
 
 
 
-/* BARRAS */
-
 .barra{
+
+
 
 height:18px;
 
+
+
 background:#001a0a;
+
+
 
 border-radius:20px;
 
+
+
 overflow:hidden;
 
+
+
 margin:10px 0 20px;
+
+
 
 }
 
@@ -271,37 +566,63 @@ margin:10px 0 20px;
 
 .progreso{
 
+
+
 height:100%;
+
+
 
 background:#44ff77;
 
+
+
 border-radius:20px;
 
+
+
 box-shadow:
+
 0 0 15px #44ff77;
+
+
 
 }
 
 
 
-/* DESPLEGABLES */
-
 details{
+
+
 
 margin-top:15px;
 
+
+
 background:
+
 rgba(0,255,120,.08);
+
+
 
 border:1px solid #44ff77;
 
+
+
 border-radius:18px;
+
+
 
 padding:15px;
 
+
+
 cursor:pointer;
 
+
+
 transition:.3s;
+
+
 
 }
 
@@ -309,8 +630,13 @@ transition:.3s;
 
 details:hover{
 
+
+
 box-shadow:
+
 0 0 20px rgba(0,255,120,.25);
+
+
 
 }
 
@@ -318,11 +644,19 @@ box-shadow:
 
 details[open]{
 
+
+
 box-shadow:
+
 0 0 30px rgba(0,255,120,.45);
 
+
+
 background:
+
 rgba(0,255,120,.12);
+
+
 
 }
 
@@ -330,13 +664,23 @@ rgba(0,255,120,.12);
 
 summary{
 
+
+
 font-family:'Cinzel',serif;
+
+
 
 color:#b8ffca;
 
+
+
 font-size:1.1rem;
 
+
+
 cursor:pointer;
+
+
 
 }
 
@@ -344,37 +688,63 @@ cursor:pointer;
 
 details p{
 
+
+
 line-height:1.6;
+
+
 
 opacity:.9;
 
+
+
 color:#d9ffe6;
+
+
 
 }
 
 
 
-/* BOTÓN */
-
 .volver{
+
+
 
 display:inline-block;
 
+
+
 margin-top:40px;
+
+
 
 padding:15px 25px;
 
+
+
 background:#002912;
+
+
 
 border:1px solid #44ff77;
 
+
+
 border-radius:20px;
+
+
 
 color:white;
 
+
+
 text-decoration:none;
 
+
+
 transition:.3s;
+
+
 
 }
 
@@ -382,435 +752,393 @@ transition:.3s;
 
 .volver:hover{
 
+
+
 box-shadow:
+
 0 0 25px #44ff77;
+
+
 
 }
 
+
+
+#secretButton{
+
+transition:.4s;
+
+}
+
+
+
 </style>
+
+
 
 </head>
 
+
+
 <body>
 
+
+
 <div class="menuBtn"
+
 onclick="toggleMenu()">
+
+
 
 ☰
 
+
+
 </div>
 
 
+
 <div class="overlay"
+
 id="overlay"
+
 onclick="toggleMenu()">
 
 </div>
 
 
+
 <div class="sidebar"
+
 id="sidebar">
 
-<h2>REGISTRO</h2>
 
-<a href="../../">
-🏠 Inicio
-</a>
 
-<a href="../../libro/">
-📖 Libro
-</a>
+<h2>🌌 MENÚ</h2>
 
-<a href="../../lore/">
-🌌 Lore
-</a>
 
-<a href="../../fanarts/">
-🎨 Fanarts
-</a>
 
-<a href="../../comunidad/">
-💬 Comunidad
-</a>
+<a href="../../">🏠 Inicio</a>
+
+
+
+<a href="../../libro/">📖 Libro</a>
+
+
+
+<a href="../../lore/">🌌 Lore</a>
+
+
+
+<a href="../../fanarts/">🎨 Fanarts</a>
+
+
+
+<a href="../../comunidad/">💬 Comunidad</a>
+
+
 
 <div id="secretButton">
 
+
+
 🔒 Archivo desconocido
 
-</div>
+
 
 </div>
+
+
+
+</div>
+
+
 
 <div class="contenedor">
 
+
+
 <h1 class="titulo">
 
-🧬 
+
+
+🧬
+
+
 
 </h1>
-  
-<h1 class="titulo">
-  
+
+
+
+<h1 class=”titulo”>
+
+
+
 HOMO T.
 
+
+
 </h1>
+
+
+
+
 
 <p>
 
+
+
 CSGI DATABASE
+
+
 
 <br>
 
+
+
 ARCHIVO #HT-003
+
+
 
 </p>
 
 
+
 <img src="../../img/plantilla.png"
+
 class="personaje">
 
 
 
-<div class="archivo">
+</p>
+
+
+
+<div class=”barra”>
+
+<div class=”progreso”
+
+Style=”width:50%”>
+
+</div>
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class=”archivo”>
+
+
 
 <h2>
-Estado
-</h2>
 
-<p>
-
-🟢 ACTIVO
-
-<br><br>
-
-Clasificación:
-<b>GRAN ALFA MEGA</b>
-
-<br><br>
-
-Afiliación:
-<b>Redwood Sprout</b>
-
-</p>
-
-</div>
-
-
-
-<div class="archivo">
-
-<h2>
-Información general
-</h2>
-
-<p>
-
-<b>Nombre:</b>
-Homo Transfigurator
-
-<br><br>
-
-<b>Nombre clave:</b>
-Verde
-
-<br><br>
-
-<b>Sexo:</b>
-Masculino
-
-<br><br>
-
-<b>Edad:</b>
-38 años
-
-<br><br>
-
-<b>Especie:</b>
-Maurin
-
-<br><br>
-
-<b>Residencia conocida:</b>
-Kletecia (presunta)
-
-<br><br>
-
-<b>Zona de descubrimiento:</b>
-
-Cordillera de los Andes,
-territorio correspondiente a Paraguay
-
-</p>
-
-</div>
-
-
-
-<div class="archivo">
-
-<h2>
-📊 Parámetros de entidad
-</h2>
-
-
-<p>
-🧠 Inteligencia — 12/20
-</p>
-
-<div class="barra">
-<div class="progreso"
-style="width:60%">
-</div>
-</div>
-
-
-
-<p>
-♟ Táctica — 12/20
-</p>
-
-<div class="barra">
-<div class="progreso"
-style="width:60%">
-</div>
-</div>
-
-
-
-<p>
-💪 Fuerza — 12/20
-</p>
-
-<div class="barra">
-<div class="progreso"
-style="width:60%">
-</div>
-</div>
-
-
-
-<p>
-⚡ Velocidad — 7/20
-</p>
-
-<div class="barra">
-<div class="progreso"
-style="width:35%">
-</div>
-</div>
-
-
-
-<p>
-📚 Cultura — 10/20
-</p>
-
-<div class="barra">
-<div class="progreso"
-style="width:50%">
-</div>
-</div>
-
-</div>
-
-
-
-<div class="archivo">
-
-<h2>
 🧬 Capacidades registradas
+
 </h2>
+
+
+
 
 
 <details>
 
+
+
 <summary>
+
 🧬 Alteración corporal
+
 </summary>
 
+
+
 <p>
+
+
 
 Capacidad de alterar su forma corporal
-a voluntad, modificando su estructura
-física, tamaño y configuración anatómica.
+
+A voluntad, modificando su estructura
+
+Física, tamaño y configuración anatómica.
+
+
 
 </p>
+
+
 
 </details>
 
 
 
+
+
+
+
 <details>
 
+
+
 <summary>
+
 ♻ Regeneración avanzada
+
 </summary>
 
+
+
 <p>
+
+
 
 Puede regenerar partes de su cuerpo
-mediante concentración prolongada,
-acelerando su curación a niveles
-excepcionales.
+
+Mediante concentración prolongada,
+
+Acelerando su curación a niveles
+
+Excepcionales.
+
+
 
 </p>
+
+
 
 </details>
 
 
 
+
+
+
+
 <details>
 
+
+
 <summary>
+
 🌱 Alteración de textura
+
 </summary>
 
+
+
 <p>
+
+
 
 Puede volver su cuerpo rígido,
-líquido, gelatinoso o fibroso
-según el entorno o la necesidad táctica.
+
+Líquido, gelatinoso o fibroso
+
+Según el entorno o la necesidad táctica.
+
+
 
 </p>
 
+
+
 </details>
+
+
+
+
 
 
 
 <details>
 
+
+
 <summary>
+
 🦠 Adaptación biológica
+
 </summary>
+
+
 
 <p>
 
+
+
 Su organismo presenta una enorme
-capacidad de adaptación, permitiéndole
-afrontar situaciones muy diversas.
+
+Capacidad de adaptación, permitiéndole
+
+Afrontar situaciones muy diversas.
+
+
 
 </p>
+
+
 
 </details>
 
-</div>
 
-
-
-<div class="archivo">
-
-<h2>
-Descripción
-</h2>
-
-<p>
-
-Homo Transfigurator representa uno de los
-casos más extremos de plasticidad biológica
-registrados por la CSGI.
-
-Su capacidad de modificar su estructura
-corporal y regenerarse lo convierte en una
-entidad extremadamente difícil de neutralizar.
-
-Se presume que habitó en Kletecia antes del
-evento de cambio de realidad, aunque gran
-parte de su pasado permanece desconocido.
-
-</p>
 
 </div>
 
 
 
-<div class="archivo">
 
-<h2>
-Lazos familiares registrados
-</h2>
-
-<p>
-
-🟡 Amarillo
-
-<br><br>
-
-🟣 Morado
-
-<br><br>
-
-🔴 Rojo
-
-<br><br>
-
-🔵 Azul
-
-<br><br>
-
-🟤 Café
-
-<br><br>
-
-🌸 Rosa Pálido
-
-</p>
-
-</div>
-
-
-
-<div class="archivo">
-
-<h2>
-Archivos relacionados
-</h2>
-
-<p>
-
-🌱 Redwood Sprout
-
-<br><br>
-
-🏢 Kletecia
-
-<br><br>
-
-🧬 Alteraciones biológicas
-
-<br><br>
-
-🌌 Segundo Cambio de Realidad
-
-<br><br>
-
-🔒 Información restringida
-
-</p>
-
-</div>
 
 
 
 <a href="../"
+
 class="volver">
+
+
 
 ← Volver al libro
 
+
+
 </a>
+
+
 
 </div>
 
+
+
 <script>
+
+
 
 function toggleMenu(){
 
-document
-.getElementById("sidebar")
-.classList.toggle("abierto");
+
 
 document
+
+.getElementById("sidebar")
+
+.classList.toggle("abierto");
+
+
+
+document
+
 .getElementById("overlay")
+
 .classList.toggle("activo");
+
+
 
 }
 
@@ -818,46 +1146,89 @@ document
 
 let secretClicks=0;
 
+
+
 const secretButton=
+
 document.getElementById(
+
 "secretButton"
+
 );
+
 
 
 secretButton.onclick=()=>{
 
+
+
 secretClicks++;
 
-if(secretClicks==5)
+
+
+if(secretClicks===5)
+
 secretButton.innerText=
+
 "🔒 Acceso denegado";
 
-if(secretClicks==10)
+
+
+else if(secretClicks===10)
+
 secretButton.innerText=
+
 "🔒 Intento registrado";
 
-if(secretClicks==18)
+
+
+else if(secretClicks===18)
+
 secretButton.innerText=
+
 "🔒 ¿Por qué insistes...?";
 
-if(secretClicks>=23){
+
+
+else if(secretClicks>=23){
+
+
 
 secretButton.innerText=
-"🔓 Acceso autorizado";
+
+"🔓 ACCESO AUTORIZADO";
+
+
 
 setTimeout(()=>{
 
+
+
 window.location.href=
+
 "../../23quesoultra/";
 
-},1000);
+
+
+},1200);
+
+
 
 }
 
+
+
 };
 
+
+
 </script>
+
+
 
 </body>
 
 </html>
+
+
+
