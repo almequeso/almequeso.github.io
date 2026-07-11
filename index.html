@@ -482,8 +482,7 @@ Pulsa aquí para leerla.
 
 <script>
 
-const nombres=[
-
+const nombres = [
 "Queso",
 "Almequeso",
 "Queso de chaqueta cool",
@@ -491,53 +490,52 @@ const nombres=[
 "Negas",
 "Broly",
 "Kasumi"
-
 ];
 
-let i=0;
+let i = 0;
 
-document.getElementById("nombre").onclick=()=>{
+document.getElementById("nombre").onclick = () => {
 
-i++;
+    i++;
 
-if(i>=nombres.length)
-i=0;
+    if(i >= nombres.length)
+        i = 0;
 
-document.getElementById("nombre").innerText=nombres[i];
+    document.getElementById("nombre").innerText =
+    nombres[i];
 
 };
 
 function abrirRedes(){
 
-const r=document.getElementById("redes");
+    const r =
+    document.getElementById("redes");
 
-if(r.style.display==="flex")
-r.style.display="none";
-else
-r.style.display="flex";
+    if(r.style.display === "flex")
+        r.style.display = "none";
+    else
+        r.style.display = "flex";
 
 }
-
 
 function toggleMenu(){
 
-document
-.getElementById("sidebar")
-.classList.toggle("abierto");
+    document
+    .getElementById("sidebar")
+    .classList.toggle("abierto");
 
-document
-.getElementById("overlay")
-.classList.toggle("activo");
+    document
+    .getElementById("overlay")
+    .classList.toggle("activo");
 
 }
 
-
-    let secretClicks = 0;
+let secretClicks = 0;
 
 const secretButton =
 document.getElementById("secretButton");
 
-secretButton.onclick = ()=>{
+secretButton.onclick = () => {
 
     secretClicks++;
 
@@ -549,15 +547,17 @@ secretButton.onclick = ()=>{
         secretButton.innerText =
         "🔓 Acceso autorizado";
 
-        setTimeout(()=>{
+        setTimeout(() => {
 
             window.location.href =
             "./23quesoultra/";
 
         },1000);
+
     }
-}:
-    
+
+};
+
 </script>
 
 </body>
