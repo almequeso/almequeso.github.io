@@ -791,6 +791,64 @@ class="volver">
 
 </div>
 
+<script>
+
+function toggleMenu(){
+
+document
+.getElementById("sidebar")
+.classList.toggle("abierto");
+
+document
+.getElementById("overlay")
+.classList.toggle("activo");
+
+}
+
+
+
+let secretClicks=0;
+
+const secretButton=
+document.getElementById(
+"secretButton"
+);
+
+
+secretButton.onclick=()=>{
+
+secretClicks++;
+
+if(secretClicks==5)
+secretButton.innerText=
+"🔒 Acceso denegado";
+
+if(secretClicks==10)
+secretButton.innerText=
+"🔒 Intento registrado";
+
+if(secretClicks==18)
+secretButton.innerText=
+"🔒 ¿Por qué insistes...?";
+
+if(secretClicks>=23){
+
+secretButton.innerText=
+"🔓 Acceso autorizado";
+
+setTimeout(()=>{
+
+window.location.href=
+"../../23quesoultra/";
+
+},1000);
+
+}
+
+};
+
+</script>
+
 </body>
 
 </html>
