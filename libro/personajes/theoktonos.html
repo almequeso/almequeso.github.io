@@ -6,10 +6,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Theoktónos — Archivo</title>
+<title>Theoktónos — Archivo CSGI</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=JetBrains+Mono&display=swap" rel="stylesheet">
-
 
 <style>
 
@@ -22,7 +21,7 @@ min-height:100vh;
 padding:30px 20px;
 
 background:
-radial-gradient(circle,
+radial-gradient(circle at center,
 #3d005c,
 #09000f,
 #000);
@@ -36,7 +35,7 @@ font-family:'JetBrains Mono',monospace;
 
 .contenedor{
 
-max-width:850px;
+max-width:900px;
 
 margin:auto;
 
@@ -45,75 +44,121 @@ text-align:center;
 }
 
 
+/* IMAGEN */
 
-h1{
+.personaje{
+
+width:min(90%,350px);
+
+border-radius:30px;
+
+border:3px solid #c95cff;
+
+box-shadow:
+
+0 0 30px #c95cff,
+0 0 80px rgba(150,0,255,.5);
+
+margin-top:20px;
+
+}
+
+
+/* TITULO */
+
+.titulo{
 
 font-family:'Cinzel',serif;
 
 font-size:3rem;
 
 text-shadow:
+
 0 0 15px #d67dff,
-0 0 40px #9d00ff;
+0 0 40px #a000ff;
 
 }
 
 
+/* ARCHIVOS */
 
 .archivo{
 
-margin-top:40px;
+margin-top:35px;
 
 padding:25px;
 
 border-radius:25px;
 
-background:rgba(255,255,255,.04);
+background:
+rgba(255,255,255,.04);
 
 border:1px solid #b44cff;
 
 text-align:left;
 
 box-shadow:
-0 0 25px rgba(180,0,255,.3);
+
+0 0 25px rgba(180,0,255,.25);
 
 }
-
 
 
 .archivo h2{
 
-font-family:'Cinzel',serif;
-
-color:#dca0ff;
-
 text-align:center;
 
-}
+font-family:'Cinzel',serif;
 
-
-
-.dato{
-
-margin:12px 0;
+color:#e0a0ff;
 
 }
 
 
+/* BARRAS */
+
+.barra{
+
+height:18px;
+
+background:#21002f;
+
+border-radius:20px;
+
+overflow:hidden;
+
+margin:10px 0 20px;
+
+}
+
+
+.progreso{
+
+height:100%;
+
+background:#b44cff;
+
+border-radius:20px;
+
+}
+
+
+
+/* BOTON */
 
 .volver{
 
 display:inline-block;
 
-margin-top:30px;
+margin-top:40px;
 
 padding:15px 25px;
-
-border-radius:20px;
 
 background:#250034;
 
 border:1px solid #c95cff;
+
+border-radius:20px;
 
 color:white;
 
@@ -122,13 +167,11 @@ text-decoration:none;
 }
 
 
-
 .volver:hover{
 
 box-shadow:0 0 25px #c95cff;
 
 }
-
 
 
 </style>
@@ -142,7 +185,7 @@ box-shadow:0 0 25px #c95cff;
 <div class="contenedor">
 
 
-<h1>
+<h1 class="titulo">
 
 🌌 THEOKTÓNOS
 
@@ -151,72 +194,47 @@ box-shadow:0 0 25px #c95cff;
 
 <p>
 
-ARCHIVO DE ENTIDAD #TH-001
+CSGI DATABASE
+
+<br>
+
+ARCHIVO #TH-001
 
 </p>
 
 
 
+<img src="../../img/plantilla.png"
+class="personaje">
+
+
+
+
+
 <div class="archivo">
 
-
 <h2>
-
-Información general
-
+Estado
 </h2>
 
+<p>
 
-<div class="dato">
+🟢 ACTIVO
 
-<b>Nombre:</b>
-Theoktónos
+<br><br>
 
-</div>
+Clasificación:
+<b>ALFA MEGA</b>
 
+<br><br>
 
-<div class="dato">
+Afiliación:
+<b>Redwood Sprout</b>
 
-<b>Especie:</b>
-Maurin
-
-</dic>
-
-
-<div class="dato">
-
-<b>Nacionalidad:</b>
-Nerondino
+</p>
 
 </div>
 
-
-<div class="dato">
-
-<b>Clasificación:</b>
-Alfa Mega
-
-</div>
-
-
-<div class="dato">
-
-<b>Edad:</b>
-37 años
-
-</div>
-
-
-<div class="dato">
-
-<b>Afiliación:</b>
-Redwood Sprout
-
-</div>
-
-
-
-</div>
 
 
 
@@ -224,29 +242,30 @@ Redwood Sprout
 
 <div class="archivo">
 
-
 <h2>
-
-Habilidades
-
+Información general
 </h2>
 
 
 <p>
 
-• Creación de materia
+<b>Nombre:</b>
+Theoktónos
 
 <br><br>
 
-• Comunicación en cualquier idioma
+<b>Especie:</b>
+Nerondino
 
 <br><br>
 
-• Emisión de luminiscencia púrpura
+<b>Edad:</b>
+37 años
 
 <br><br>
 
-• Capacidades físicas superiores
+<b>Origen:</b>
+Sur de Alaska
 
 </p>
 
@@ -257,61 +276,120 @@ Habilidades
 
 
 
+
+
 <div class="archivo">
 
+<h2>
+Capacidades
+</h2>
+
+
+<p>
+
+Creación de materia
+
+</p>
+
+
+<div class="barra">
+<div class="progreso"
+style="width:95%">
+</div>
+</div>
+
+
+
+<p>
+
+Comunicación universal
+
+</p>
+
+
+<div class="barra">
+<div class="progreso"
+style="width:100%">
+</div>
+</div>
+
+
+
+<p>
+
+Control energético
+
+</p>
+
+
+<div class="barra">
+<div class="progreso"
+style="width:85%">
+</div>
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+<div class="archivo">
 
 <h2>
-
 Descripción
-
 </h2>
 
 
 <p>
 
 Theoktónos es una entidad Nerondina
-capaz de alterar la materia existente.
+capaz de modificar la materia existente.
 
 Como líder de Redwood Sprout,
 representa una de las fuerzas más
 importantes dentro de las realidades
 conocidas.
 
-Su existencia está relacionada con
-eventos que cambiaron el equilibrio
-entre diferentes mundos.
+Su presencia está relacionada con
+eventos que alteraron el equilibrio
+entre múltiples mundos.
 
 </p>
 
 
 </div>
+
+
 
 
 
 
 <div class="archivo">
 
-
 <h2>
-
-Datos curiosos
-
+Archivos relacionados
 </h2>
 
 
 <p>
 
-• Descubierto en el sur de Alaska.
+🌱 Redwood Sprout
 
 <br><br>
 
-• Su energía produce una luminiscencia
-de color púrpura.
+🏢 CSGI
 
 <br><br>
 
-• Es considerado una figura clave
-en la convergencia de realidades.
+🧬 Nerondinos
+
+<br><br>
+
+🌌 Convergence Reality
 
 </p>
 
@@ -321,8 +399,9 @@ en la convergencia de realidades.
 
 
 
-<a class="volver"
-href="../">
+
+<a href="../"
+class="volver">
 
 ← Volver al libro
 
