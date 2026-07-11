@@ -539,20 +539,51 @@ secretButton.onclick = () => {
 
     secretClicks++;
 
-    secretButton.innerText =
-    "Clicks: " + secretClicks;
-
-    if(secretClicks >= 23){
+    if(secretClicks === 5){
 
         secretButton.innerText =
-        "🔓 Acceso autorizado";
+        "🔒 Acceso denegado";
+
+    }
+
+    else if(secretClicks === 10){
+
+        secretButton.innerText =
+        "🔒 Intento registrado";
+
+    }
+
+    else if(secretClicks === 18){
+
+        secretButton.innerText =
+        "🔒 ¿Por qué insistes...?";
+
+    }
+
+    else if(secretClicks === 22){
+
+        secretButton.innerText =
+        "⚠ Nivel de autorización detectado";
+
+    }
+
+    else if(secretClicks >= 23){
+
+        secretButton.innerText =
+        "🔓 ACCESO AUTORIZADO";
+
+        document.body.style.transition =
+        "1s";
+
+        document.body.style.filter =
+        "brightness(2)";
 
         setTimeout(() => {
 
             window.location.href =
             "./23quesoultra/";
 
-        },1000);
+        },1200);
 
     }
 
