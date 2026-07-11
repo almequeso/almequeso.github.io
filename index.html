@@ -396,7 +396,17 @@ filter:brightness(1);
 }
 
 }
-    
+
+@keyframes temblar{
+
+0%{transform:translateX(0);}
+25%{transform:translateX(-5px);}
+50%{transform:translateX(5px);}
+75%{transform:translateX(-5px);}
+100%{transform:translateX(0);}
+
+}
+
 </style>
 </head>
 
@@ -597,9 +607,9 @@ secretButton.onclick = () => {
         document.body.style.transition =
         "1s";
 
-        document.body.style.filter =
-        "brightness(2)";
-
+        document.body.style.animation = 
+        "acceso 1s";
+        
         setTimeout(() => {
 
             window.location.href =
