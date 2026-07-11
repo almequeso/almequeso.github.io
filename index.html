@@ -536,6 +536,9 @@ secretButton.onclick=()=>{
 
 secretClicks++;
 
+secretButton.innerText =
+"Clicks: " + secretClicks;
+    
 if(secretClicks==5)
 secretButton.innerText=
 "🔒 Acceso denegado";
