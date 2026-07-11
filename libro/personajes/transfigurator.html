@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -9,9 +10,18 @@ content="width=device-width, initial-scale=1.0">
 
 <title>Homo Transfigurator — Archivo CSGI</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=JetBrains+Mono&display=swap"
+rel="stylesheet">
 
 <style>
+
+*{
+box-sizing:border-box;
+}
+
+html,body{
+overflow-x:hidden;
+}
 
 body{
 
@@ -37,11 +47,15 @@ font-family:'JetBrains Mono',monospace;
 
 max-width:900px;
 
+width:100%;
+
 margin:auto;
 
 text-align:center;
 
 }
+
+
 
 .personaje{
 
@@ -59,6 +73,8 @@ margin-top:20px;
 
 }
 
+
+
 .titulo{
 
 font-family:'Cinzel',serif;
@@ -70,6 +86,8 @@ text-shadow:
 0 0 40px #00ff66;
 
 }
+
+
 
 .archivo{
 
@@ -91,6 +109,8 @@ box-shadow:
 
 }
 
+
+
 .archivo h2{
 
 text-align:center;
@@ -100,6 +120,43 @@ font-family:'Cinzel',serif;
 color:#b8ffca;
 
 }
+
+
+
+/* BARRAS */
+
+.barra{
+
+height:18px;
+
+background:#001a0a;
+
+border-radius:20px;
+
+overflow:hidden;
+
+margin:10px 0 20px;
+
+}
+
+
+
+.progreso{
+
+height:100%;
+
+background:#44ff77;
+
+border-radius:20px;
+
+box-shadow:
+0 0 15px #44ff77;
+
+}
+
+
+
+/* DESPLEGABLES */
 
 details{
 
@@ -120,12 +177,16 @@ transition:.3s;
 
 }
 
+
+
 details:hover{
 
 box-shadow:
 0 0 20px rgba(0,255,120,.25);
 
 }
+
+
 
 details[open]{
 
@@ -136,6 +197,8 @@ background:
 rgba(0,255,120,.12);
 
 }
+
+
 
 summary{
 
@@ -149,13 +212,21 @@ cursor:pointer;
 
 }
 
+
+
 details p{
 
 line-height:1.6;
 
 opacity:.9;
 
+color:#d9ffe6;
+
 }
+
+
+
+/* BOTÓN */
 
 .volver{
 
@@ -175,7 +246,11 @@ color:white;
 
 text-decoration:none;
 
+transition:.3s;
+
 }
+
+
 
 .volver:hover{
 
@@ -273,11 +348,6 @@ Maurin
 
 <br><br>
 
-<b>Origen:</b>
-Desconocido
-
-<br><br>
-
 <b>Residencia conocida:</b>
 Kletecia (presunta)
 
@@ -297,6 +367,75 @@ territorio correspondiente a Paraguay
 <div class="archivo">
 
 <h2>
+📊 Parámetros de entidad
+</h2>
+
+
+<p>
+🧠 Inteligencia — 12/20
+</p>
+
+<div class="barra">
+<div class="progreso"
+style="width:60%">
+</div>
+</div>
+
+
+
+<p>
+♟ Táctica — 12/20
+</p>
+
+<div class="barra">
+<div class="progreso"
+style="width:60%">
+</div>
+</div>
+
+
+
+<p>
+💪 Fuerza — 12/20
+</p>
+
+<div class="barra">
+<div class="progreso"
+style="width:60%">
+</div>
+</div>
+
+
+
+<p>
+⚡ Velocidad — 7/20
+</p>
+
+<div class="barra">
+<div class="progreso"
+style="width:35%">
+</div>
+</div>
+
+
+
+<p>
+📚 Cultura — 10/20
+</p>
+
+<div class="barra">
+<div class="progreso"
+style="width:50%">
+</div>
+</div>
+
+</div>
+
+
+
+<div class="archivo">
+
+<h2>
 🧬 Capacidades registradas
 </h2>
 
@@ -304,12 +443,14 @@ territorio correspondiente a Paraguay
 <details>
 
 <summary>
-🧬 Alteración corporal</summary>
+🧬 Alteración corporal
+</summary>
 
 <p>
 
-Capacidad de modificar su forma física,
-estructura anatómica y tamaño a voluntad.
+Capacidad de alterar su forma corporal
+a voluntad, modificando su estructura
+física, tamaño y configuración anatómica.
 
 </p>
 
@@ -320,14 +461,15 @@ estructura anatómica y tamaño a voluntad.
 <details>
 
 <summary>
-♻ Regeneración avanzada</summary>
+♻ Regeneración avanzada
+</summary>
 
 <p>
 
 Puede regenerar partes de su cuerpo
 mediante concentración prolongada,
-alcanzando velocidades de recuperación
-extremadamente superiores a las normales.
+acelerando su curación a niveles
+excepcionales.
 
 </p>
 
@@ -338,13 +480,14 @@ extremadamente superiores a las normales.
 <details>
 
 <summary>
-🌱 Alteración de textura</summary>
+🌱 Alteración de textura
+</summary>
 
 <p>
 
-Puede modificar las propiedades de su
-cuerpo, volviéndolo rígido, líquido,
-gelatinoso o fibroso según la situación.
+Puede volver su cuerpo rígido,
+líquido, gelatinoso o fibroso
+según el entorno o la necesidad táctica.
 
 </p>
 
@@ -355,13 +498,14 @@ gelatinoso o fibroso según la situación.
 <details>
 
 <summary>
-🦠 Adaptación táctica</summary>
+🦠 Adaptación biológica
+</summary>
 
 <p>
 
-Su capacidad de transformación le permite
-ajustar su organismo a diferentes entornos
-y amenazas.
+Su organismo presenta una enorme
+capacidad de adaptación, permitiéndole
+afrontar situaciones muy diversas.
 
 </p>
 
@@ -383,13 +527,13 @@ Homo Transfigurator representa uno de los
 casos más extremos de plasticidad biológica
 registrados por la CSGI.
 
-Su organismo posee capacidades de
-transformación y regeneración muy superiores
-a las observadas en entidades convencionales.
+Su capacidad de modificar su estructura
+corporal y regenerarse lo convierte en una
+entidad extremadamente difícil de neutralizar.
 
-Debido a la naturaleza adaptable de su
-cuerpo, es considerado una entidad de alto
-riesgo en escenarios impredecibles.
+Se presume que habitó en Kletecia antes del
+evento de cambio de realidad, aunque gran
+parte de su pasado permanece desconocido.
 
 </p>
 
@@ -475,4 +619,5 @@ class="volver">
 </div>
 
 </body>
+
 </html>
