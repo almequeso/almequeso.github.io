@@ -532,26 +532,29 @@ document
 }
 
 
-secretButton.onclick=()=>{
+    let secretClicks = 0;
 
-secretClicks++;
+const secretButton =
+document.getElementById("secretButton");
 
-secretButton.innerText =
-"Clicks: " + secretClicks;
+secretButton.onclick = ()=>{
 
-}:
+    secretClicks++;
 
-setTimeout(()=>{
+    secretButton.innerText =
+    "Clicks: " + secretClicks;
 
-window.location.href=
-"./23quesoultra/";
+    if(secretClicks >= 23){
 
-},1000);
+        secretButton.innerText =
+        "🔓 Acceso autorizado";
 
-}
+        setTimeout(()=>{
 
-};
+            window.location.href =
+            "./23quesoultra/";
 
+        },1000);
 
 </script>
 
