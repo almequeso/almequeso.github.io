@@ -443,6 +443,53 @@ box-shadow:
 <body>
 
 
+<div class="menuBtn"
+onclick="toggleMenu()">
+
+☰
+
+</div>
+
+
+<div class="overlay"
+id="overlay"
+onclick="toggleMenu()">
+</div>
+
+
+<div class="sidebar"
+id="sidebar">
+
+
+<h2>🌌 MENÚ</h2>
+
+
+<a href="../../">🏠 Inicio</a>
+
+
+<a href="../../libro/">📖 Libro</a>
+
+
+<a href="../../lore/">🌌 Lore</a>
+
+
+<a href="../../fanarts/">🎨 Fanarts</a>
+
+
+<a href="../../comunidad/">💬 Comunidad</a>
+
+
+<div id="secretButton">
+
+🔒 Archivo desconocido
+
+</div>
+
+
+</div>
+
+
+
 <div class="contenedor">
 
 
@@ -848,8 +895,86 @@ class="volver">
 </a>
 
 
-
 </div>
+
+
+
+<script>
+
+function toggleMenu(){
+
+document
+.getElementById("sidebar")
+.classList.toggle("abierto");
+
+
+document
+.getElementById("overlay")
+.classList.toggle("activo");
+
+}
+
+
+
+let secretClicks=0;
+
+
+const secretButton=
+document.getElementById(
+"secretButton"
+);
+
+
+
+secretButton.onclick=()=>{
+
+
+secretClicks++;
+
+
+if(secretClicks===5)
+
+secretButton.innerText=
+"🔒 Acceso denegado";
+
+
+else if(secretClicks===10)
+
+secretButton.innerText=
+"🔒 Intento registrado";
+
+
+else if(secretClicks===18)
+
+secretButton.innerText=
+"🔒 ¿Por qué insistes...?";
+
+
+else if(secretClicks>=23){
+
+
+secretButton.innerText=
+"🔓 ACCESO AUTORIZADO";
+
+
+setTimeout(()=>{
+
+
+window.location.href=
+"../../23quesoultra/";
+
+
+},1200);
+
+
+}
+
+
+};
+
+
+</script>
+
 
 
 </body>
