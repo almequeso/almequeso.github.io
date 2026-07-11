@@ -143,6 +143,94 @@ border-radius:20px;
 
 
 
+
+.especial{
+
+position:relative;
+
+height:18px;
+
+background:#330000;
+
+border-radius:20px;
+
+overflow:hidden;
+
+}
+
+
+
+.velocidadBase{
+
+position:absolute;
+
+height:100%;
+
+width:35%;
+
+background:#ff3030;
+
+}
+
+
+
+.velocidadFuego{
+
+position:absolute;
+
+height:100%;
+
+width:70%;
+
+background:#8b0000;
+
+opacity:.9;
+
+}
+
+
+
+details{
+
+margin-top:15px;
+
+background:
+rgba(255,0,0,.08);
+
+border:1px solid #ff3030;
+
+border-radius:18px;
+
+padding:15px;
+
+cursor:pointer;
+
+}
+
+
+
+summary{
+
+font-family:'Cinzel',serif;
+
+color:#ffaaaa;
+
+font-size:1.1rem;
+
+}
+
+
+
+details p{
+
+line-height:1.6;
+
+opacity:.85;
+
+}
+
+
+
 .volver{
 
 display:inline-block;
@@ -167,7 +255,9 @@ text-decoration:none;
 
 .volver:hover{
 
-box-shadow:0 0 25px #ff3030;
+box-shadow:
+
+0 0 25px #ff3030;
 
 }
 
@@ -202,8 +292,9 @@ ARCHIVO #AQ-002
 
 
 
-<img src="../../img/plantilla.png"
+<img src="../../img/aquanox.png"
 class="personaje">
+
 
 
 
@@ -260,7 +351,12 @@ Maurin
 <br><br>
 
 <b>Nacionalidad:</b>
-Mexicano (Nuevo Mexico)
+Mexicano (Realidad alternativa)
+
+<br><br>
+
+<b>Territorio de origen:</b>
+Región equivalente a Nuevo México
 
 <br><br>
 
@@ -282,11 +378,92 @@ Rojo
 
 
 
+
+<div class="archivo">
+
+<h2>
+📊 Parámetros de entidad
+</h2>
+
+
+
+<p>
+🧠 Inteligencia — 10/20
+</p>
+
+<div class="barra">
+<div class="progreso"
+style="width:50%">
+</div>
+</div>
+
+
+
+<p>
+♟ Táctica — 10/20
+</p>
+
+<div class="barra">
+<div class="progreso"
+style="width:50%">
+</div>
+</div>
+
+
+
+<p>
+💪 Fuerza — 10/20
+</p>
+
+<div class="barra">
+<div class="progreso"
+style="width:50%">
+</div>
+</div>
+
+
+
+
+<p>
+⚡ Velocidad — 7/~14
+</p>
+
+<div class="barra especial">
+
+<div class="velocidadBase"></div>
+
+<div class="velocidadFuego"></div>
+
+</div>
+
+
+
+
+<p>
+📚 Cultura — 4/20
+</p>
+
+<div class="barra">
+<div class="progreso"
+style="width:20%">
+</div>
+</div>
+
+
+</div>
+
+
+
+
+
+
+
 <div class="archivo">
 
 <h2>
 🔥 Capacidades registradas
 </h2>
+
 
 
 <details>
@@ -296,12 +473,12 @@ Rojo
 </summary>
 
 <p>
-Aquanox puede alterar la temperatura de los
-cuerpos y del entorno, aumentando o reduciendo
-el calor a voluntad.
 
-Esta habilidad constituye la base de la mayoría
-de sus técnicas.
+Aquanox puede modificar la temperatura de
+su entorno y de diferentes materiales,
+permitiéndole generar cambios extremos
+de calor.
+
 </p>
 
 </details>
@@ -315,12 +492,30 @@ de sus técnicas.
 </summary>
 
 <p>
-Puede generar, controlar y modificar llamas,
-utilizándolas tanto ofensivamente como para
-defensa o movilidad.
 
-Su dominio del fuego supera las capacidades
-normales de un Maurin.
+Puede crear, controlar y utilizar fuego como
+herramienta ofensiva, defensiva y de
+movilidad.
+
+</p>
+
+</details>
+
+
+
+<details>
+
+<summary>
+🚀 Propulsión ígnea
+</summary>
+
+<p>
+
+Utilizando fuego como impulso, Aquanox puede
+aumentar considerablemente su velocidad,
+alcanzando niveles superiores a su capacidad
+física normal.
+
 </p>
 
 </details>
@@ -334,37 +529,19 @@ normales de un Maurin.
 </summary>
 
 <p>
-Aquanox puede modificar condiciones
-atmosféricas mediante cambios extremos de
-temperatura.
 
-Puede influir en fenómenos como calor
-ambiental, corrientes térmicas y cambios
-climáticos locales.
+Su control térmico puede afectar condiciones
+ambientales, generando cambios de clima
+localizados.
+
 </p>
 
 </details>
 
-
-
-<details>
-
-<summary>
-☀ Sobrecarga energética
-</summary>
-
-<p>
-Puede acumular grandes cantidades de energía
-térmica para liberar ataques de mayor escala.
-
-El uso prolongado de esta capacidad aumenta
-considerablemente su temperatura corporal.
-</p>
-
-</details>
 
 
 </div>
+
 
 
 
@@ -382,19 +559,67 @@ Descripción
 <p>
 
 Aquanox Ardentius es un Maurin originario
-de México, dentro de una realidad donde la
-geografía terrestre mantiene nombres 
-similares a la conocida. 
-  
-Nacido en la región correspondiente a 
-Nuevo México, desarrolló capacidades 
-relacionadas con el control térmico 
-y energético.
+de México dentro de una realidad alternativa
+donde ciertos nombres geográficos se han
+mantenido similares.
+
+<br><br>
+
+Nacido en la región equivalente a Nuevo
+México, quedó huérfano durante su infancia,
+lo que provocó una ausencia de educación
+formal.
+
+<br><br>
+
+A pesar de sus limitaciones académicas,
+desarrolló una gran capacidad de adaptación
+y combate, convirtiéndose en una entidad
+Omega gracias a su dominio térmico y
+energético.
 
 </p>
 
 
 </div>
+
+
+
+
+
+
+
+
+<div class="archivo">
+
+<h2>
+📄 Evaluación CSGI
+</h2>
+
+
+<p>
+
+Aquanox no destaca por inteligencia,
+velocidad o conocimientos superiores.
+
+<br><br>
+
+Su peligro reside en su resistencia,
+capacidad ofensiva y experiencia directa
+en combate.
+
+<br><br>
+
+Su estilo de lucha impredecible combina
+instinto, fuerza y control del fuego,
+convirtiéndolo en un adversario difícil
+de analizar.
+
+</p>
+
+
+</div>
+
 
 
 
@@ -414,24 +639,29 @@ Archivos relacionados
 
 <br><br>
 
-🌡 Energía térmica
+🧬 Maurin
 
 <br><br>
 
-⚔ Convergence Reality
+🔥 Energía térmica
 
 <br><br>
 
-🔥 Entidades Omega
+⚔ Entidades Omega
 
-<br><br> 
+<br><br>
 
-🔒 Desconocido
+🌎 México (Realidad alternativa)
+
+<br><br>
+
+🔒 Información restringida
 
 </p>
 
 
 </div>
+
 
 
 
