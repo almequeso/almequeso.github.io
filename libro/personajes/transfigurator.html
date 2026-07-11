@@ -15,6 +15,125 @@ rel="stylesheet">
 
 <style>
 
+.menuBtn{
+
+position:fixed;
+
+top:20px;
+left:20px;
+
+font-size:2rem;
+
+padding:10px 16px;
+
+border-radius:15px;
+
+cursor:pointer;
+
+background:rgba(20,0,35,.7);
+
+border:1px solid #b44cff;
+
+box-shadow:0 0 20px #7d00ff;
+
+z-index:1001;
+
+transition:.3s;
+
+}
+
+.menuBtn:hover{
+
+transform:scale(1.1);
+
+box-shadow:
+0 0 30px #b44cff;
+
+}
+
+.sidebar{
+
+position:fixed;
+
+top:0;
+left:-320px;
+
+width:280px;
+height:100vh;
+
+padding-top:90px;
+
+background:rgba(5,0,15,.95);
+
+backdrop-filter:blur(15px);
+
+border-right:1px solid #b44cff;
+
+transition:.5s;
+
+z-index:1000;
+
+}
+
+.sidebar.abierto{
+
+left:0;
+
+}
+
+.sidebar a,
+.sidebar div{
+
+display:block;
+
+padding:18px 30px;
+
+color:white;
+
+text-decoration:none;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.sidebar a:hover,
+.sidebar div:hover{
+
+background:rgba(180,0,255,.15);
+
+padding-left:40px;
+
+}
+
+.overlay{
+
+position:fixed;
+
+inset:0;
+
+background:rgba(0,0,0,.5);
+
+opacity:0;
+
+pointer-events:none;
+
+transition:.4s;
+
+z-index:999;
+
+}
+
+.overlay.activo{
+
+opacity:1;
+
+pointer-events:auto;
+
+}
+
+
 *{
 box-sizing:border-box;
 }
@@ -264,6 +383,54 @@ box-shadow:
 </head>
 
 <body>
+
+<div class="menuBtn"
+onclick="toggleMenu()">
+
+☰
+
+</div>
+
+
+<div class="overlay"
+id="overlay"
+onclick="toggleMenu()">
+
+</div>
+
+
+<div class="sidebar"
+id="sidebar">
+
+<h2>🌌 MENÚ</h2>
+
+<a href="../../">
+🏠 Inicio
+</a>
+
+<a href="../../libro/">
+📖 Libro
+</a>
+
+<a href="../../lore/">
+🌌 Lore
+</a>
+
+<a href="../../fanarts/">
+🎨 Fanarts
+</a>
+
+<a href="../../comunidad/">
+💬 Comunidad
+</a>
+
+<div id="secretButton">
+
+🔒 Archivo desconocido
+
+</div>
+
+</div>
 
 <div class="contenedor">
 
