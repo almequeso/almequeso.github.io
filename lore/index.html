@@ -377,6 +377,57 @@ box-shadow:
 
 }
 
+.restringido{
+
+filter:blur(4px);
+
+opacity:.85;
+
+transition:1s;
+
+}
+
+.restringido:hover{
+
+filter:none;
+
+opacity:1;
+
+}
+
+.restringido .frente{
+
+position:relative;
+
+}
+
+.restringido .frente::after{
+
+content:" ??? ";
+
+position:absolute;
+
+top:15px;
+right:15px;
+
+font-size:1.3rem;
+
+animation:parpadeo 2s infinite;
+
+}
+
+@keyframes parpadeo{
+
+0%,100%{
+opacity:.3;
+}
+
+50%{
+opacity:1;
+}
+
+}
+
 </style>
 
 </head>
