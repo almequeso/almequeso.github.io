@@ -771,7 +771,32 @@ transition:.4s;
 }
 
 
+@keyframes acceso{
 
+0%{
+filter:brightness(1);
+}
+
+50%{
+filter:brightness(2.5);
+}
+
+100%{
+filter:brightness(1);
+}
+
+}
+
+@keyframes temblar{
+
+0%{transform:translateX(0);}
+25%{transform:translateX(-5px);}
+50%{transform:translateX(5px);}
+75%{transform:translateX(-5px);}
+100%{transform:translateX(0);}
+
+}
+  
 </style>
 
 
@@ -1261,28 +1286,40 @@ secretButton.innerText=
 
 
 
-else if(secretClicks>=23){
-
-
+else if(secretClicks===22){
 
 secretButton.innerText=
+"⚠ Nivel de autorización detectado";
 
+secretButton.style.animation=
+"temblar .5s infinite";
+
+secretButton.style.color=
+"#ff4dff";
+
+secretButton.style.textShadow=
+"0 0 20px #ff4dff";
+
+}
+
+
+else if(secretClicks>=23){
+
+secretButton.innerText=
 "🔓 ACCESO AUTORIZADO";
 
+document.body.style.transition=
+"1s";
 
+document.body.style.animation=
+"acceso 1s";
 
 setTimeout(()=>{
 
-
-
 window.location.href=
-
 "../../23quesoultra/";
 
-
-
 },1200);
-
 
 
 }
