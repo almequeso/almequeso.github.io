@@ -1,1 +1,620 @@
+<!DOCTYPE html>
+<html lang="es">
 
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Lore — Archivo CSGI</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=JetBrains+Mono&display=swap"
+rel="stylesheet">
+
+<style>
+
+*{
+box-sizing:border-box;
+}
+
+body{
+
+margin:0;
+
+min-height:100vh;
+
+padding:40px 20px;
+
+background:
+radial-gradient(
+circle at center,
+#4a3200,
+#120b00,
+#000
+);
+
+color:white;
+
+font-family:'JetBrains Mono',monospace;
+
+overflow-x:hidden;
+
+}
+
+
+body::before{
+
+content:"";
+
+position:fixed;
+
+inset:0;
+
+background:
+repeating-linear-gradient(
+90deg,
+transparent,
+transparent 120px,
+rgba(255,220,120,.04) 121px
+);
+
+pointer-events:none;
+
+}
+
+
+/* MENÚ */
+
+.menuBtn{
+
+position:fixed;
+
+top:20px;
+left:20px;
+
+font-size:2rem;
+
+padding:10px 16px;
+
+border-radius:15px;
+
+cursor:pointer;
+
+background:rgba(45,25,0,.8);
+
+border:1px solid #ffd700;
+
+box-shadow:
+0 0 20px #ffd700;
+
+z-index:1001;
+
+transition:.3s;
+
+}
+
+
+.menuBtn:hover{
+
+transform:scale(1.1);
+
+box-shadow:
+0 0 35px #ffe680;
+
+}
+
+
+.sidebar{
+
+position:fixed;
+
+top:0;
+left:-320px;
+
+width:280px;
+height:100vh;
+
+padding-top:90px;
+
+background:rgba(20,10,0,.95);
+
+backdrop-filter:blur(15px);
+
+border-right:1px solid #ffd700;
+
+transition:.5s;
+
+z-index:1000;
+
+}
+
+
+.sidebar.abierto{
+
+left:0;
+
+}
+
+
+.sidebar h2{
+
+text-align:center;
+
+font-family:'Cinzel',serif;
+
+color:#ffe38c;
+
+text-shadow:
+0 0 15px #ffd700;
+
+}
+
+
+.sidebar a,
+.sidebar div{
+
+display:block;
+
+padding:18px 30px;
+
+color:white;
+
+text-decoration:none;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+
+.sidebar a:hover,
+.sidebar div:hover{
+
+background:
+rgba(255,215,0,.12);
+
+padding-left:40px;
+
+}
+
+
+.overlay{
+
+position:fixed;
+
+inset:0;
+
+background:rgba(0,0,0,.5);
+
+opacity:0;
+
+pointer-events:none;
+
+transition:.4s;
+
+z-index:999;
+
+}
+
+
+.overlay.activo{
+
+opacity:1;
+
+pointer-events:auto;
+
+}
+
+
+/* CONTENIDO */
+
+.titulo{
+
+text-align:center;
+
+font-family:'Cinzel',serif;
+
+font-size:3rem;
+
+color:#ffe38c;
+
+text-shadow:
+
+0 0 15px #ffd700,
+0 0 40px rgba(255,215,0,.6);
+
+}
+
+
+.sub{
+
+text-align:center;
+
+opacity:.8;
+
+margin-top:15px;
+
+line-height:1.7;
+
+}
+
+
+.tarjetas{
+
+display:flex;
+
+flex-wrap:wrap;
+
+justify-content:center;
+
+gap:35px;
+
+margin-top:60px;
+
+}
+
+
+/* TARJETAS */
+
+.flipCard{
+
+width:260px;
+height:340px;
+
+perspective:1200px;
+
+}
+
+
+.flipInner{
+
+width:100%;
+height:100%;
+
+position:relative;
+
+transform-style:preserve-3d;
+
+transition:1s;
+
+}
+
+
+.flipCard:hover .flipInner{
+
+transform:rotateY(180deg);
+
+}
+
+
+.frente,
+.atras{
+
+position:absolute;
+
+width:100%;
+height:100%;
+
+border-radius:30px;
+
+padding:25px;
+
+backface-visibility:hidden;
+
+}
+
+
+.frente{
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+text-align:center;
+
+font-family:'Cinzel',serif;
+
+font-size:1.4rem;
+
+background:
+
+linear-gradient(
+145deg,
+rgba(255,220,120,.18),
+rgba(100,60,0,.25)
+);
+
+border:1px solid #ffd700;
+
+box-shadow:
+
+0 0 25px rgba(255,215,0,.35);
+
+animation:brillo 4s infinite;
+
+}
+
+
+.atras{
+
+transform:rotateY(180deg);
+
+background:
+rgba(15,10,0,.95);
+
+border:1px solid #ffd700;
+
+overflow:auto;
+
+line-height:1.6;
+
+box-shadow:
+
+0 0 35px rgba(255,215,0,.35);
+
+}
+
+
+@keyframes brillo{
+
+0%,100%{
+
+box-shadow:
+0 0 20px rgba(255,215,0,.3);
+
+}
+
+50%{
+
+box-shadow:
+0 0 45px rgba(255,215,0,.8);
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+
+<div class="menuBtn"
+onclick="toggleMenu()">
+
+☰
+
+</div>
+
+
+<div class="overlay"
+id="overlay"
+onclick="toggleMenu()">
+
+</div>
+
+
+<div class="sidebar"
+id="sidebar">
+
+<h2>🌌 MENÚ</h2>
+
+<a href="../">🏠 Inicio</a>
+
+<a href="../libro/">📖 Libro</a>
+
+<a href="./">🌌 Lore</a>
+
+<a href="../fanarts/">🎨 Fanarts</a>
+
+<a href="../comunidad/">💬 Comunidad</a>
+
+</div>
+
+
+
+<h1 class="titulo">
+
+✨ ARCHIVOS DE LORE ✨
+
+</h1>
+
+
+<div class="sub">
+
+Compendio de información relacionada
+con las realidades, especies,
+organizaciones y eventos registrados
+por la CSGI.
+
+</div>
+
+
+
+<div class="tarjetas">
+
+
+<div class="flipCard">
+
+<div class="flipInner">
+
+<div class="frente">
+
+🌌 CREACIÓN DEL TODO
+
+</div>
+
+<div class="atras">
+
+<h3>Fecha desconocida</h3>
+
+<p>
+
+Información aún no liberada.
+
+La existencia del Todo precede
+a todos los registros conocidos.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="flipCard">
+
+<div class="flipInner">
+
+<div class="frente">
+
+🧬 APARICIÓN DE LOS MAURINES
+
+</div>
+
+<div class="atras">
+
+<h3>Registro parcial</h3>
+
+<p>
+
+Las primeras entidades Maurin
+aparecieron en circunstancias
+todavía poco comprendidas.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="flipCard">
+
+<div class="flipInner">
+
+<div class="frente">
+
+🏢 FUNDACIÓN DE LA CSGI
+
+</div>
+
+<div class="atras">
+
+<h3>Información clasificada</h3>
+
+<p>
+
+La organización fue creada para
+estudiar fenómenos y entidades
+anómalas.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="flipCard">
+
+<div class="flipInner">
+
+<div class="frente">
+
+🌌 SEGUNDO CAMBIO DE REALIDAD
+
+</div>
+
+<div class="atras">
+
+<h3>06/11/2021</h3>
+
+<p>
+
+Uno de los acontecimientos más
+importantes de la historia reciente.
+
+Gran parte de la información sigue
+sin publicarse.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="flipCard">
+
+<div class="flipInner">
+
+<div class="frente">
+
+⚔ CONVERGENCE REALITY
+
+</div>
+
+<div class="atras">
+
+<h3>Evento actual</h3>
+
+<p>
+
+Múltiples realidades comienzan
+a entrar en conflicto.
+
+Estado actual:
+
+██████████
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+function toggleMenu(){
+
+document
+.getElementById("sidebar")
+.classList.toggle("abierto");
+
+document
+.getElementById("overlay")
+.classList.toggle("activo");
+
+}
+
+</script>
+
+</body>
+
+  </html>
