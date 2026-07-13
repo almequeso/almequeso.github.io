@@ -385,13 +385,29 @@ box-shadow:
 
 }
 
-.restringido .frente{
+.restringido .frente::before{
 
-filter:blur(4px);
+content:"";
 
-opacity:.85;
+position:absolute;
 
-transition:1s;
+inset:0;
+
+backdrop-filter:blur(4px);
+
+background:rgba(0,0,0,.15);
+
+border-radius:30px;
+
+pointer-events:none;
+
+}
+
+.frente{
+
+overflow:hidden;
+
+position:relative;
 
 }
 
