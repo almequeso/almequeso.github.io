@@ -385,29 +385,13 @@ box-shadow:
 
 }
 
-.restringido .frente::before{
+.restringido .frente{
 
-content:"";
+filter:blur(4px);
 
-position:absolute;
+opacity:.85;
 
-inset:0;
-
-backdrop-filter:blur(4px);
-
-background:rgba(0,0,0,.15);
-
-border-radius:30px;
-
-pointer-events:none;
-
-}
-
-.frente{
-
-overflow:hidden;
-
-position:relative;
+transition:1s;
 
 }
 
@@ -921,4 +905,4 @@ document
 
 </body>
 
-  </html>
+</html>
