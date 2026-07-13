@@ -265,6 +265,8 @@ height:340px;
 
 perspective:1200px;
 
+position:relative;
+
 }
 
 
@@ -276,6 +278,7 @@ height:100%;
 position:relative;
 
 transform-style:preserve-3d;
+-webkit-transform-style:preserve-3d;
 
 transition:1s;
 
@@ -302,6 +305,7 @@ border-radius:30px;
 padding:25px;
 
 backface-visibility:hidden;
+-webkit-backface-visibility:hidden;
 
 }
 
@@ -336,12 +340,16 @@ box-shadow:
 
 animation:brillo 4s infinite;
 
+transform:translateZ(1px);
+
 }
 
 
 .atras{
 
-transform:rotateY(180deg);
+transform:
+rotateY(180deg)
+translateZ(1px);
 
 background:
 rgba(15,10,0,.95);
@@ -377,7 +385,7 @@ box-shadow:
 
 }
 
-.restringido{
+.restringido .frente{
 
 filter:blur(4px);
 
@@ -387,7 +395,7 @@ transition:1s;
 
 }
 
-.restringido:hover{
+.restringido:hover .frente{
 
 filter:none;
 
