@@ -285,7 +285,7 @@ transition:1s;
 }
 
 
-.flipCard:hover .flipInner{
+.flipCard.girada .flipInner{
 
 transform:rotateY(180deg);
 
@@ -900,6 +900,19 @@ document
 .classList.toggle("activo");
 
 }
+
+<script>
+document.querySelectorAll(".flipCard")
+.forEach(card=>{
+
+card.onclick=()=>{
+
+card.classList.toggle("girada");
+
+};
+
+});
+</script>
 
 </script>
 
