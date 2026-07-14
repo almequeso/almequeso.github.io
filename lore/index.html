@@ -280,8 +280,15 @@ position:relative;
 transform-style:preserve-3d;
 -webkit-transform-style:preserve-3d;
 
-transition:1s;
+transition:transform 1s;
 
+}
+
+.flipCard{
+
+overflow:visible;
+
+isolation:isolate;
 }
 
 
@@ -297,8 +304,7 @@ transform:rotateY(180deg);
 
 position:absolute;
 
-width:100%;
-height:100%;
+inset:0;
 
 border-radius:30px;
 
@@ -306,6 +312,8 @@ padding:25px;
 
 backface-visibility:hidden;
 -webkit-backface-visibility:hidden;
+
+transform-style:preserve-3d;
 
 }
 
@@ -340,17 +348,12 @@ box-shadow:
 
 animation:brillo 4s infinite;
 
-transform:translateZ(1px);
-
 }
 
 
 .atras{
 
-transform:
-rotateY(180deg)
-translateZ(1px);
-
+transform:rotateY(180deg);
 background:
 rgba(15,10,0,.95);
 
