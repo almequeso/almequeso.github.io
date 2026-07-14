@@ -2,6 +2,7 @@
 <html lang="es">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
@@ -15,23 +16,27 @@ rel="stylesheet">
 
 *{
 box-sizing:border-box;
+margin:0;
+padding:0;
 }
 
 body{
 
-margin:0;
 min-height:100vh;
+
 padding:50px 20px;
 
+font-family:'JetBrains Mono',monospace;
+
 background:
-radial-gradient(circle at center,
-#4a3200 0%,
-#120b00 45%,
-#000 100%);
+radial-gradient(
+circle at center,
+#4a3200,
+#120b00,
+#000
+);
 
 color:white;
-
-font-family:'JetBrains Mono',monospace;
 
 overflow-x:hidden;
 
@@ -42,14 +47,16 @@ body::before{
 content:"";
 
 position:fixed;
+
 inset:0;
 
 background:
 repeating-linear-gradient(
 90deg,
 transparent,
-transparent 140px,
-rgba(255,220,120,.04) 141px
+transparent 120px,
+rgba(255,220,120,.04)
+121px
 );
 
 pointer-events:none;
@@ -62,13 +69,14 @@ pointer-events:none;
 
 text-align:center;
 
-font-family:'Cinzel',serif;
-
 font-size:3rem;
+
+font-family:'Cinzel',serif;
 
 color:#ffe38c;
 
 text-shadow:
+
 0 0 15px #ffd700,
 0 0 45px rgba(255,215,0,.6);
 
@@ -78,42 +86,45 @@ text-shadow:
 
 text-align:center;
 
-opacity:.8;
-
 margin-top:15px;
+
+opacity:.8;
 
 line-height:1.7;
 
 }
 
-/* LIBRERO */
+/* ESTANTERÍA */
 
 .estanteria{
 
-width:min(1100px,95%);
+width:min(1200px,95%);
+
 margin:auto;
 
-margin-top:60px;
+margin-top:70px;
 
 display:flex;
 flex-direction:column;
+
 gap:60px;
 
 }
 
-/* TABLAS DE MADERA */
+/* REPISAS */
 
 .repisa{
 
+display:flex;
+
+justify-content:center;
+flex-wrap:wrap;
+
+gap:35px;
+
 position:relative;
 
-padding-top:10px;
-
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-
-gap:25px;
+padding-bottom:45px;
 
 }
 
@@ -123,164 +134,227 @@ content:"";
 
 position:absolute;
 
-bottom:-25px;
+bottom:0;
 left:0;
 
 width:100%;
-height:18px;
+height:20px;
 
-border-radius:10px;
+border-radius:15px;
 
 background:
+
 linear-gradient(
 to bottom,
-#6e4b1f,
-#3a230b
+#6b4519,
+#2c1707
 );
 
 box-shadow:
-0 15px 30px rgba(0,0,0,.6);
+
+0 12px 25px rgba(0,0,0,.6);
 
 }
 
-/* EXPEDIENTES */
+/* BINDERS */
 
-.folder{
-
-width:250px;
-height:120px;
+.binder{
 
 position:relative;
 
+width:430px;
+
+display:block;
+
 text-decoration:none;
 
-display:flex;
-align-items:center;
+transition:.45s;
 
-padding-left:35px;
+}
 
-border-radius:12px;
+.binder img{
 
-background:
+width:100%;
 
-linear-gradient(
-145deg,
-rgba(255,230,150,.25),
-rgba(120,80,20,.35)
+display:block;
+
+filter:
+
+drop-shadow(
+0 0 20px rgba(255,215,0,.25)
 );
 
-border:1px solid #ffd700;
-
-box-shadow:
-
-0 0 20px rgba(255,215,0,.25);
-
-transition:.4s;
-
-overflow:hidden;
-
 }
 
-/* pestaña superior */
-
-.folder::before{
-
-content:"";
-
-position:absolute;
-
-top:-15px;
-left:25px;
-
-width:90px;
-height:30px;
-
-border-radius:10px 10px 0 0;
-
-background:
-
-linear-gradient(
-145deg,
-#a87b1b,
-#e8c84f
-);
-
-border:
-
-1px solid #ffd700;
-
-}
-
-/* anillos metálicos */
-
-.folder::after{
-
-content:"◉ ◉ ◉";
-
-position:absolute;
-
-left:12px;
-
-font-size:1.2rem;
-
-color:#d7d7d7;
-
-text-shadow:
-0 0 5px white;
-
-}
-
-.folder:hover{
+.binder:hover{
 
 transform:
 
-translateY(-8px)
-scale(1.03);
-
-box-shadow:
-
-0 0 35px rgba(255,215,0,.65);
+translateY(-10px)
+scale(1.04);
 
 }
 
-.nombre{
+/* LED */
 
-margin-left:25px;
+.luz{
 
-font-size:1.2rem;
+position:absolute;
+
+left:56px;
+top:50%;
+
+transform:
+translateY(-50%);
+
+width:30px;
+height:30px;
+
+border-radius:50%;
+
+animation:
+parpadeo 2s infinite;
+
+}
+
+/* TEXTO */
+
+.texto{
+
+position:absolute;
+
+left:145px;
+top:50%;
+
+transform:
+translateY(-50%);
 
 font-family:'Cinzel',serif;
 
-color:#fff4be;
+font-size:1.4rem;
+
+letter-spacing:3px;
+
+color:#fff5c8;
 
 text-shadow:
-0 0 12px #ffd700;
+
+0 0 12px #ffd700,
+0 0 35px #ffd700;
 
 }
 
-/* brillo */
+/* COLORES */
 
-.folder:hover .nombre{
+.cronologia .luz{
 
-animation:brillo 2s infinite;
+background:#ffd700;
+
+box-shadow:
+
+0 0 20px #ffd700,
+0 0 60px #ffd700;
 
 }
 
-@keyframes brillo{
+.conceptos .luz{
+
+background:#00d5ff;
+
+box-shadow:
+
+0 0 20px #00d5ff,
+0 0 60px #00d5ff;
+
+}
+
+.especies .luz{
+
+background:#44ff77;
+
+box-shadow:
+
+0 0 20px #44ff77,
+0 0 60px #44ff77;
+
+}
+
+.facciones .luz{
+
+background:#ff9b30;
+
+box-shadow:
+
+0 0 20px #ff9b30,
+0 0 60px #ff9b30;
+
+}
+
+.lugares .luz{
+
+background:#b44cff;
+
+box-shadow:
+
+0 0 20px #b44cff,
+0 0 60px #b44cff;
+
+}
+
+.teorias .luz{
+
+background:white;
+
+box-shadow:
+
+0 0 20px white,
+0 0 60px white;
+
+}
+
+.archivos .luz{
+
+background:#ff4444;
+
+box-shadow:
+
+0 0 20px #ff4444,
+0 0 70px #ff0000;
+
+animation:
+rojo 1.2s infinite;
+
+}
+
+/* ANIMACIONES */
+
+@keyframes parpadeo{
 
 0%,100%{
 
-text-shadow:
-0 0 10px #ffd700;
+opacity:.65;
 
 }
 
 50%{
 
-text-shadow:
+opacity:1;
 
-0 0 25px #fff3a1,
-0 0 45px #ffd700;
+}
+
+}
+
+@keyframes rojo{
+
+0%,100%{
+
+opacity:.35;
+
+}
+
+50%{
+
+opacity:1;
 
 }
 
@@ -288,9 +362,9 @@ text-shadow:
 
 .frase{
 
-text-align:center;
+margin-top:80px;
 
-margin-top:70px;
+text-align:center;
 
 opacity:.55;
 
@@ -298,112 +372,169 @@ font-style:italic;
 
 }
 
+@media(max-width:900px){
+
+.binder{
+
+width:95%;
+
+}
+
+.texto{
+
+left:33%;
+
+font-size:1.1rem;
+
+}
+
+}
+
 </style>
+
 </head>
 
 <body>
 
 <h1 class="titulo">
 
-🌌 ARCHIVO DE LORE
+🌌 ARCHIVOS DE LORE
 
 </h1>
 
 <div class="sub">
 
-Base de datos histórica y conceptual
-de la CSGI.
-
-Seleccione un expediente.
+Seleccione un expediente para acceder
+a los registros de la CSGI.
 
 </div>
 
 <div class="estanteria">
 
+
 <div class="repisa">
 
 <a href="./cronologia/"
-class="folder">
+class="binder cronologia">
 
-<div class="nombre">
+<img src="/img/blinder.png">
 
-📜 Cronología
+<div class="luz"></div>
+
+<div class="texto">
+
+📜 CRONOLOGÍA
 
 </div>
 
 </a>
+
 
 <a href="./conceptos/"
-class="folder">
+class="binder conceptos">
 
-<div class="nombre">
+<img src="/img/blinder.png">
 
-🧬 Conceptos
+<div class="luz"></div>
 
-</div>
+<div class="texto">
 
-</a>
-
-<a href="./especies/"
-class="folder">
-
-<div class="nombre">
-
-👁 Especies
+🧬 CONCEPTOS
 
 </div>
 
 </a>
 
 </div>
+
 
 
 <div class="repisa">
 
-<a href="./facciones/"
-class="folder">
+<a href="./especies/"
+class="binder especies">
 
-<div class="nombre">
+<img src="/img/blinder.png">
 
-🏢 Facciones
+<div class="luz"></div>
+
+<div class="texto">
+
+👁 ESPECIES
 
 </div>
 
 </a>
+
+
+<a href="./facciones/"
+class="binder facciones">
+
+<img src="/img/blinder.png">
+
+<div class="luz"></div>
+
+<div class="texto">
+
+🏢 FACCIONES
+
+</div>
+
+</a>
+
+</div>
+
+
+
+<div class="repisa">
 
 <a href="./lugares/"
-class="folder">
+class="binder lugares">
 
-<div class="nombre">
+<img src="/img/blinder.png">
 
-🌍 Lugares
+<div class="luz"></div>
+
+<div class="texto">
+
+🌍 LUGARES
 
 </div>
 
 </a>
+
 
 <a href="./teorias/"
-class="folder">
+class="binder teorias">
 
-<div class="nombre">
+<img src="/img/blinder.png">
 
-❓ Teorías
+<div class="luz"></div>
+
+<div class="texto">
+
+❓ TEORÍAS
 
 </div>
 
 </a>
 
 </div>
+
 
 
 <div class="repisa">
 
 <a href="./archivosespeciales/"
-class="folder">
+class="binder archivos">
 
-<div class="nombre">
+<img src="/img/blinder.png">
 
-🔒 Archivos Especiales
+<div class="luz"></div>
+
+<div class="texto">
+
+🔒 ARCHIVOS ESPECIALES
 
 </div>
 
@@ -413,9 +544,10 @@ class="folder">
 
 </div>
 
+
 <div class="frase">
 
-"Algunos expedientes permanecen sellados por orden superior."
+"Algunos registros permanecen sellados por orden superior."
 
 </div>
 
