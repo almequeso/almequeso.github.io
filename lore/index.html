@@ -42,7 +42,6 @@ overflow-x:hidden;
 
 }
 
-
 body::before{
 
 content:"";
@@ -62,7 +61,6 @@ rgba(255,220,120,.04) 121px
 pointer-events:none;
 
 }
-
 
 /* MENÚ */
 
@@ -94,7 +92,6 @@ transition:.3s;
 
 }
 
-
 .menuBtn:hover{
 
 transform:scale(1.1);
@@ -103,7 +100,6 @@ box-shadow:
 0 0 35px #ffe680;
 
 }
-
 
 .sidebar{
 
@@ -129,13 +125,11 @@ z-index:1000;
 
 }
 
-
 .sidebar.abierto{
 
 left:0;
 
 }
-
 
 .sidebar h2{
 
@@ -150,9 +144,7 @@ text-shadow:
 
 }
 
-
-.sidebar a,
-.sidebar div{
+.sidebar a{
 
 display:block;
 
@@ -162,15 +154,11 @@ color:white;
 
 text-decoration:none;
 
-cursor:pointer;
-
 transition:.3s;
 
 }
 
-
-.sidebar a:hover,
-.sidebar div:hover{
+.sidebar a:hover{
 
 background:
 rgba(255,215,0,.12);
@@ -178,7 +166,6 @@ rgba(255,215,0,.12);
 padding-left:40px;
 
 }
-
 
 .overlay{
 
@@ -198,7 +185,6 @@ z-index:999;
 
 }
 
-
 .overlay.activo{
 
 opacity:1;
@@ -207,12 +193,19 @@ pointer-events:auto;
 
 }
 
-
 /* CONTENIDO */
 
-.titulo{
+.contenedor{
+
+max-width:1100px;
+
+margin:auto;
 
 text-align:center;
+
+}
+
+.titulo{
 
 font-family:'Cinzel',serif;
 
@@ -223,218 +216,136 @@ color:#ffe38c;
 text-shadow:
 
 0 0 15px #ffd700,
-0 0 40px rgba(255,215,0,.6);
+0 0 45px rgba(255,215,0,.6);
 
 }
-
 
 .sub{
 
-text-align:center;
-
 opacity:.8;
-
-margin-top:15px;
 
 line-height:1.7;
 
+margin-top:20px;
+
 }
 
-
-.tarjetas{
+.estanteria{
 
 display:flex;
 
-flex-wrap:wrap;
+flex-direction:column;
 
-justify-content:center;
-
-gap:35px;
+gap:25px;
 
 margin-top:60px;
 
 }
 
-
-/* TARJETAS */
-
-.flipCard{
-
-width:260px;
-height:340px;
-
-perspective:1200px;
-
-position:relative;
-
-}
-
-
-.flipInner{
-
-width:100%;
-height:100%;
-
-position:relative;
-
-transform-style:preserve-3d;
--webkit-transform-style:preserve-3d;
-
-transition:transform 1s;
-
-}
-
-.flipCard{
-
-overflow:visible;
-
-isolation:isolate;
-}
-
-
-.flipCard.girada .flipInner{
-
-transform:rotateY(180deg);
-
-}
-
-
-.frente,
-.atras{
-
-position:absolute;
-
-inset:0;
-
-border-radius:30px;
-
-padding:25px;
-
-backface-visibility:hidden;
--webkit-backface-visibility:hidden;
-
-transform-style:preserve-3d;
-
-}
-
-
-.frente{
+.carpeta{
 
 display:flex;
 
-justify-content:center;
-
 align-items:center;
 
-text-align:center;
+gap:25px;
 
-font-family:'Cinzel',serif;
+padding:25px;
 
-font-size:1.4rem;
+text-decoration:none;
+
+color:white;
+
+border-radius:30px;
 
 background:
 
 linear-gradient(
 145deg,
-rgba(255,220,120,.18),
-rgba(100,60,0,.25)
+rgba(255,220,120,.15),
+rgba(70,45,0,.20)
 );
 
 border:1px solid #ffd700;
 
 box-shadow:
 
-0 0 25px rgba(255,215,0,.35);
+0 0 20px
+rgba(255,215,0,.20);
+
+transition:.4s;
+
+}
+
+.carpeta:hover{
+
+transform:
+
+translateY(-8px)
+scale(1.02);
+
+box-shadow:
+
+0 0 45px
+rgba(255,215,0,.6);
+
+}
+
+.icono{
+
+font-size:4rem;
+
+filter:
+drop-shadow(
+0 0 15px #ffd700
+);
+
+}
+
+.info{
+
+text-align:left;
+
+}
+
+.info h2{
+
+margin:0;
+
+font-family:'Cinzel',serif;
+
+color:#ffe38c;
+
+}
+
+.info p{
+
+margin-top:10px;
+
+opacity:.8;
+
+}
+
+.especial{
 
 animation:brillo 4s infinite;
 
 }
-
-
-.atras{
-
-transform:rotateY(180deg);
-background:
-rgba(15,10,0,.95);
-
-border:1px solid #ffd700;
-
-overflow:auto;
-
-line-height:1.6;
-
-box-shadow:
-
-0 0 35px rgba(255,215,0,.35);
-
-}
-
 
 @keyframes brillo{
 
 0%,100%{
 
 box-shadow:
-0 0 20px rgba(255,215,0,.3);
+0 0 20px rgba(255,215,0,.25);
 
 }
 
 50%{
 
 box-shadow:
-0 0 45px rgba(255,215,0,.8);
+0 0 60px rgba(255,215,0,.7);
 
-}
-
-}
-
-.restringido .frente{
-
-filter:blur(4px);
-
-opacity:.85;
-
-transition:1s;
-
-}
-
-.restringido:hover .frente{
-
-filter:none;
-
-opacity:1;
-
-}
-
-.restringido .frente{
-
-position:relative;
-
-}
-
-.restringido .frente::after{
-
-content:" ??? ";
-
-position:absolute;
-
-top:15px;
-right:15px;
-
-font-size:1.3rem;
-
-animation:parpadeo 2s infinite;
-
-}
-
-@keyframes parpadeo{
-
-0%,100%{
-opacity:.3;
-}
-
-50%{
-opacity:1;
 }
 
 }
@@ -445,8 +356,6 @@ opacity:1;
 
 <body>
 
-
-
 <div class="menuBtn"
 onclick="toggleMenu()">
 
@@ -454,13 +363,11 @@ onclick="toggleMenu()">
 
 </div>
 
-
 <div class="overlay"
 id="overlay"
 onclick="toggleMenu()">
 
 </div>
-
 
 <div class="sidebar"
 id="sidebar">
@@ -479,416 +386,174 @@ id="sidebar">
 
 </div>
 
-
+<div class="contenedor">
 
 <h1 class="titulo">
 
-✨ ARCHIVOS DE LORE ✨
+📚 BASE DE DATOS CSGI
 
 </h1>
 
+<p class="sub">
 
-<div class="sub">
+Seleccione un expediente para acceder
+a la información registrada por la CSGI.
 
-Compendio de información relacionada
-con las realidades, especies,
-organizaciones y eventos registrados
-por la CSGI.
+</p>
 
+<div class="estanteria">
+
+<a href="./cronologia/"
+class="carpeta">
+
+<div class="icono">
+📜
 </div>
 
+<div class="info">
 
-
-<div class="tarjetas">
-
-
-<div class="flipCard">
-
-<div class="flipInner">
-
-<div class="frente">
-
-🌌 CREACIÓN DEL TODO
-
-</div>
-
-<div class="atras">
-
-<h3>Fecha desconocida</h3>
+<h2>CRONOLOGÍA</h2>
 
 <p>
 
-Información aún no liberada.
-
-La existencia del Todo precede
-a todos los registros conocidos.
+Eventos históricos y registros
+temporales.
 
 </p>
 
 </div>
 
+</a>
+
+<a href="./conceptos/"
+class="carpeta">
+
+<div class="icono">
+🧬
 </div>
 
-</div>
+<div class="info">
 
-
-
-<div class="flipCard">
-
-<div class="flipInner">
-
-<div class="frente">
-
-🧬 APARICIÓN DE LOS MAURINES
-
-</div>
-
-<div class="atras">
-
-<h3>Registro parcial</h3>
+<h2>CONCEPTOS</h2>
 
 <p>
 
-Las primeras entidades Maurin
-aparecieron en circunstancias
-todavía poco comprendidas.
+Fenómenos, energías y definiciones.
 
 </p>
 
 </div>
 
+</a>
+
+<a href="./especies/"
+class="carpeta">
+
+<div class="icono">
+🌱
 </div>
 
-</div>
+<div class="info">
 
-
-
-<div class="flipCard">
-
-<div class="flipInner">
-
-<div class="frente">
-
-🏢 FUNDACIÓN DE LA CSGI
-
-</div>
-
-<div class="atras">
-
-<h3>Información clasificada</h3>
+<h2>ESPECIES</h2>
 
 <p>
 
-La organización fue creada para
-estudiar fenómenos y entidades
-anómalas.
+Clasificaciones biológicas conocidas.
 
 </p>
 
 </div>
 
+</a>
+
+<a href="./facciones/"
+class="carpeta">
+
+<div class="icono">
+🏢
 </div>
 
-</div>
+<div class="info">
 
-
-
-<div class="flipCard">
-
-<div class="flipInner">
-
-<div class="frente">
-
-🌌 SEGUNDO CAMBIO DE REALIDAD
-
-</div>
-
-<div class="atras">
-
-<h3>06/11/2021</h3>
+<h2>FACCIONES</h2>
 
 <p>
 
-Uno de los acontecimientos más
-importantes de la historia reciente.
-
-Gran parte de la información sigue
-sin publicarse.
+Organizaciones y grupos registrados.
 
 </p>
 
 </div>
 
+</a>
+
+<a href="./lugares/"
+class="carpeta">
+
+<div class="icono">
+🌍
 </div>
 
-</div>
+<div class="info">
 
+<h2>LUGARES</h2>
 
+<p>
 
-<!-- ENERGÍA KLATZO -->
+Ubicaciones y territorios conocidos.
 
-<div class="flipCard">
-<div class="flipInner">
-
-<div class="frente">
-⚡ ENERGÍA KLATZO
-</div>
-
-<div class="atras">
-
-<h3>Clasificación:</h3>
-
-Fuente energética anómala.
-
-<br><br>
-
-Capaz de alimentar maquinaria,
-seres biológicos y tecnologías
-de dimensiones desconocidas.
-
-<br><br>
-
-Su naturaleza parece estar
-relacionada con la conciencia,
-el espíritu o el alma.
+</p>
 
 </div>
 
-</div>
-</div>
+</a>
 
+<a href="./teorias/"
+class="carpeta">
 
-
-<!-- IMPERIO DE KANZU -->
-
-<div class="flipCard">
-<div class="flipInner">
-
-<div class="frente">
-👑 IMPERIO DE KANZU
+<div class="icono">
+🧩
 </div>
 
-<div class="atras">
+<div class="info">
 
-Kanzu estableció un régimen
-tecnológico utilizando energía
-Klatzo y armamento de enorme
-escala.
+<h2>TEORÍAS</h2>
 
-<br><br>
+<p>
 
-Su expansión provocó la creación
-de nuevas organizaciones de defensa.
+Hipótesis y registros no confirmados.
+
+</p>
 
 </div>
 
-</div>
-</div>
+</a>
 
+<a href="./archivosespeciales/"
+class="carpeta especial">
 
-
-<!-- POLICÍA MUNDIAL -->
-
-<div class="flipCard">
-<div class="flipInner">
-
-<div class="frente">
-🏢 POLICÍA MUNDIAL
+<div class="icono">
+🔒
 </div>
 
-<div class="atras">
+<div class="info">
 
-Organización fundada tras
-la crisis generada por Kanzu.
+<h2>ARCHIVOS ESPECIALES</h2>
 
-<br><br>
+<p>
 
-Su propósito principal era
-coordinar la resistencia mundial.
+Información parcialmente restringida.
+
+</p>
+
+</div>
+
+</a>
 
 </div>
 
 </div>
-</div>
-
-
-
-<!-- HURRI-CAIN -->
-
-<div class="flipCard">
-<div class="flipInner">
-
-<div class="frente">
-🌪 HURRI-CAIN
-</div>
-
-<div class="atras">
-
-Mecha de guerra desarrollado
-por Kanzu.
-
-<br><br>
-
-Posee capacidades climáticas
-capaces de generar huracanes
-y ciclones de gran magnitud.
-
-</div>
-
-</div>
-</div>
-
-
-
-<!-- TORN-ABEL -->
-
-<div class="flipCard">
-<div class="flipInner">
-
-<div class="frente">
-🤖 TORN-ABEL
-</div>
-
-<div class="atras">
-
-Unidad mecánica equipada con
-tecnología derivada de
-The Beast.
-
-<br><br>
-
-Clasificación de amenaza:
-
-EXTREMA.
-
-</div>
-
-</div>
-</div>
-
-
-
-<!-- TELETRANSPORTACIÓN -->
-
-<div class="flipCard">
-<div class="flipInner">
-
-<div class="frente">
-🌀 TELETRANSPORTACIÓN
-</div>
-
-<div class="atras">
-
-Tecnología desarrollada por
-Kanzu.
-
-<br><br>
-
-Permite desplazamientos
-instantáneos a corta distancia
-durante combate.
-
-</div>
-
-</div>
-</div>
-
-
-
-<!-- DESORIENTACIÓN -->
-
-<div class="flipCard">
-<div class="flipInner">
-
-<div class="frente">
-🔊 TECNOLOGÍA DE
-DESORIENTACIÓN
-</div>
-
-<div class="atras">
-
-Sistema basado en frecuencias
-de audio capaz de alterar la
-percepción de entidades Maurin.
-
-<br><br>
-
-Incluso fue utilizada como
-método de tortura.
-
-</div>
-
-</div>
-</div>
-
-
-
-<!-- THE DOOR -->
-
-<div class="flipCard restringido">
-<div class="flipInner">
-
-<div class="frente">
-🚪 THE DOOR
-</div>
-
-<div class="atras">
-
-REGISTRO INCOMPLETO.
-
-<br><br>
-
-Posible entidad relacionada
-con el deterioro físico de Kanzu.
-
-<br><br>
-
-███████████████
-
-</div>
-
-</div>
-</div>
-
-
-
-<!-- ARCHIVO PERDIDO -->
-
-<div class="flipCard restringido">
-<div class="flipInner">
-
-<div class="frente">
-🔒 ARCHIVO NO
-IDENTIFICADO
-</div>
-
-<div class="atras">
-
-ERROR.
-
-El archivo solicitado no
-existe en la base de datos.
-
-<br><br>
-
-Código:
-
-D-000
-
-<br><br>
-
-¿O quizá fue eliminado?
-
-</div>
-
-</div>
-
-</div>
-
-
-</div>
-
-
 
 <script>
 
@@ -903,34 +568,8 @@ document
 .classList.toggle("activo");
 
 }
-  
-const tarjetas =
-document.querySelectorAll(".flipCard");
 
-tarjetas.forEach(card=>{
-
-card.onclick=()=>{
-
-const estabaAbierta =
-card.classList.contains("girada");
-
-tarjetas.forEach(c=>{
-
-c.classList.remove("girada");
-
-});
-
-if(!estabaAbierta){
-
-card.classList.add("girada");
-
-}
-
-};
-
-});
 </script>
 
 </body>
-
 </html>
