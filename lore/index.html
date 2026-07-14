@@ -904,12 +904,27 @@ document
 
 }
   
-document.querySelectorAll(".flipCard")
-.forEach(card=>{
+const tarjetas =
+document.querySelectorAll(".flipCard");
+
+tarjetas.forEach(card=>{
 
 card.onclick=()=>{
 
-card.classList.toggle("girada");
+const estabaAbierta =
+card.classList.contains("girada");
+
+tarjetas.forEach(c=>{
+
+c.classList.remove("girada");
+
+});
+
+if(!estabaAbierta){
+
+card.classList.add("girada");
+
+}
 
 };
 
