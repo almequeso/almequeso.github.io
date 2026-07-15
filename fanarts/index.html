@@ -172,16 +172,32 @@
       box-sizing: border-box;
     }
 
-    /* CARA FRONTAL (Plantilla limpia) */
+    /* CARA FRONTAL (Capas encimadas) */
     .front {
       background: #141414;
       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      position: relative;
     }
 
-    .front img {
+    /* La plantilla va al fondo */
+    .front .fanart-bg {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
+      z-index: 1;
+    }
+
+    /* El marco de cebollas va encima cubriendo todo */
+    .front .marco-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      z-index: 2;
+      pointer-events: none;
     }
 
     .holo-glow {
@@ -195,6 +211,7 @@
       );
       background-size: 200% 200%;
       mix-blend-mode: overlay;
+      z-index: 3;
       pointer-events: none;
       transition: background-position 0.4s ease;
     }
@@ -280,7 +297,11 @@
         
         <!-- CARA FRONTAL -->
         <div class="face front">
-          <img src="../img/plantilla.png" alt="Fanart">
+          <!-- Imagen de fondo (El dibujo) -->
+          <img src="../img/plantilla.png" class="fanart-bg" alt="Fanart Base">
+          <!-- Marco transparente superpuesto encima -->
+          <img src="../img/marcofanarts.png" class="marco-overlay" alt="Marco Oficial">
+          <!-- Brillo holográfico -->
           <div class="holo-glow"></div>
         </div>
         
@@ -309,11 +330,6 @@
     function toggleMenu() {
       document.getElementById("sidebar").classList.toggle("abierto");
       document.getElementById("overlay").classList.toggle("activo");
-    }
-
-    function abrirRedes() {
-      const r = document.getElementById("redes");
-      r.style.display = (r.style.display === "flex") ? "none" : "flex";
     }
 
     function voltearCarta(elemento) {
