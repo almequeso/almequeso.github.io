@@ -7,12 +7,9 @@
 
   <title>Almequeso - Fanarts</title>
 
-  <!-- Mantenemos las fuentes originales de la página principal -->
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=JetBrains+Mono&display=swap" rel="stylesheet">
 
   <style>
-    /* --- ESTILOS ADAPTADOS A GRISES Y AMARILLOS DESDE EL CORAZÓN DE LA PRINCIPAL --- */
-
     body {
       margin: 0;
       min-height: 100vh;
@@ -20,10 +17,9 @@
       color: white;
       font-family: 'JetBrains Mono', monospace;
       overflow-x: hidden;
-      padding-top: 100px; /* Espacio para el botón del menú */
+      padding-top: 100px;
     }
 
-    /* Efecto de líneas horizontales heredado */
     body::before {
       content: "";
       position: fixed;
@@ -38,7 +34,7 @@
       z-index: 1;
     }
 
-    /* --- SIDEBAR Y MENÚ (Adaptado a Amarillo) --- */
+    /* --- SIDEBAR Y MENÚ --- */
     .menuBtn {
       position: fixed;
       top: 20px;
@@ -115,7 +111,7 @@
       pointer-events: auto;
     }
 
-    /* --- CONTENEDOR DE LA GALERÍA --- */
+    /* --- TITULOS --- */
     .titulo-seccion {
       text-align: center;
       font-family: 'Cinzel', serif;
@@ -130,11 +126,13 @@
       opacity: 0.7;
       margin-bottom: 40px;
       font-size: 0.95rem;
+      padding: 0 20px;
     }
 
+    /* --- GALERÍA --- */
     .galeria-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 40px;
       max-width: 1200px;
       margin: 0 auto;
@@ -144,7 +142,7 @@
       z-index: 2;
     }
 
-    /* --- SISTEMA 3D DE CARTAS INTERACTIVAS --- */
+    /* --- TARJETA --- */
     .card-container {
       width: 300px;
       height: 450px;
@@ -160,7 +158,6 @@
       cursor: pointer;
     }
 
-    /* Clase que añade Javascript al hacer click */
     .card-flip.flipped {
       transform: rotateY(180deg);
     }
@@ -172,51 +169,32 @@
       backface-visibility: hidden;
       border-radius: 25px;
       overflow: hidden;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+      box-sizing: border-box;
     }
 
-    /* --- CARA FRONTAL: EL FANART CON TU MARCO DE CEBOLLAS --- */
+    /* CARA FRONTAL (Plantilla limpia) */
     .front {
-      background: #181818;
-      position: relative;
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: #141414;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
-    /* El dibujo queda al fondo ocupando su espacio */
-    .fanart-img {
-      position: absolute;
-      inset: 15px; /* Margen para que encaje dentro del área transparente del marco */
-      width: calc(100% - 30px);
-      height: calc(100% - 30px);
-      object-fit: cover;
-      border-radius: 15px;
-      z-index: 1;
-    }
-
-    /* Tu marco PNG superpuesto por encima de la imagen */
-    .marco-overlay {
-      position: absolute;
-      inset: 0;
+    .front img {
       width: 100%;
       height: 100%;
-      object-fit: fill;
-      z-index: 2;
-      pointer-events: none;
+      object-fit: cover;
     }
 
-    /* Destello Holográfico */
     .holo-glow {
       position: absolute;
       inset: 0;
       background: linear-gradient(
         135deg,
         rgba(255, 255, 255, 0) 30%,
-        rgba(255, 255, 255, 0.25) 50%,
-        rgba(255, 255, 255, 0) 70-px
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0) 70%
       );
       background-size: 200% 200%;
       mix-blend-mode: overlay;
-      z-index: 3;
       pointer-events: none;
       transition: background-position 0.4s ease;
     }
@@ -225,24 +203,23 @@
       background-position: 100% 100%;
     }
 
-    /* --- CARA TRASERA: DEGRADADO CROMO CELESTE / MORADO SUAVE --- */
+    /* CARA TRASERA (Estilo Cromo Iridiscente) */
     .back {
       background: linear-gradient(135deg, #e0f2fe 0%, #fae8ff 50%, #e0e7ff 100%);
-      color: #1e1b4b; /* Texto oscuro para que contraste hermoso con el cromo claro */
+      color: #1e1b4b;
       transform: rotateY(180deg);
-      padding: 30px 25px;
+      padding: 35px 25px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      border: 3px solid #ffcc00; /* Borde amarillo tipo carta rara */
+      border: 3px solid #ffcc00;
       box-shadow: 0 0 25px rgba(255, 204, 0, 0.3);
-      box-sizing: border-box;
     }
 
     .info-header h3 {
       margin: 0;
       font-family: 'Cinzel', serif;
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       color: #1e1b4b;
       border-bottom: 2px solid rgba(30, 27, 75, 0.15);
       padding-bottom: 8px;
@@ -256,26 +233,20 @@
     }
 
     .meta-datos {
-      margin: 20px 0;
+      margin: 15px 0;
       font-size: 0.85rem;
-      line-height: 1.6;
     }
 
     .meta-datos div {
       margin-bottom: 6px;
     }
 
-    .meta-datos strong {
-      color: #1e1b4b;
-    }
-
     .detalles-texto {
       font-style: italic;
       font-size: 0.85rem;
-      background: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.6);
       padding: 12px;
       border-radius: 15px;
-      border: 1px solid rgba(0, 0, 0, 0.05);
       line-height: 1.4;
       flex-grow: 1;
       display: flex;
@@ -286,12 +257,9 @@
 
 <body>
 
-  <!-- Botón de Menú Estilo Principal -->
   <div class="menuBtn" onclick="toggleMenu()">☰</div>
-
   <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
-  <!-- Sidebar duplicada y adaptada a la paleta de Grises/Amarillos -->
   <div class="sidebar" id="sidebar">
     <h2>🌌 MENÚ</h2>
     <a href="../" onclick="toggleMenu()">🏠 Inicio</a>
@@ -301,107 +269,57 @@
     <a href="../comunidad/" onclick="toggleMenu()">💬 Comunidad</a>
   </div>
 
-  <!-- Títulos de cabecera -->
   <div class="titulo-seccion">FANARTS</div>
   <div class="subtitulo-seccion">Toca las cartas para ver los datos de adquisición</div>
 
-  <!-- Contenedor de las Tarjetas -->
   <main class="galeria-container">
 
-    <!-- TARJETA 1: BLINDER -->
+    <!-- Tarjeta Base (Duplica este bloque para agregar más fanarts) -->
     <div class="card-container">
       <div class="card-flip" onclick="voltearCarta(this)">
+        
         <!-- CARA FRONTAL -->
         <div class="face front">
-          <img src="../img/blinder.png" class="fanart-img" alt="Fanart Blinder">
-          <img src="../img/marcofanarts.png" class="marco-overlay" alt="Marco Oficial">
+          <img src="../img/plantilla.png" alt="Fanart">
           <div class="holo-glow"></div>
         </div>
-        <!-- CARA TRASERA (Estilo Cromo Azul/Morado claro) -->
+        
+        <!-- CARA TRASERA -->
         <div class="face back">
           <div class="info-header">
-            <h3>Blinder Mode</h3>
-            <p class="info-artista">Por: @ArtistaBroski</p>
+            <h3>Nombre del Arte</h3>
+            <p class="info-artista">Por: @Artista</p>
           </div>
           <div class="meta-datos">
             <div><strong>Fecha:</strong> 14/07/2026</div>
-            <div><strong>Vía:</strong> Discord Oficial</div>
+            <div><strong>Vía:</strong> Discord</div>
           </div>
           <div class="detalles-texto">
-            "Un rediseño épico del Blinder con detalles visuales para el servidor."
+            "Aquí van los detalles del fanart, comentarios de la comunidad o cualquier dato relevante."
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- TARJETA 2: BURRO -->
-    <div class="card-container">
-      <div class="card-flip" onclick="voltearCarta(this)">
-        <!-- CARA FRONTAL -->
-        <div class="face front">
-          <img src="../img/burro.png" class="fanart-img" alt="Fanart Burro">
-          <img src="../img/marcofanarts.png" class="marco-overlay" alt="Marco Oficial">
-          <div class="holo-glow"></div>
-        </div>
-        <!-- CARA TRASERA (Estilo Cromo Azul/Morado claro) -->
-        <div class="face back">
-          <div class="info-header">
-            <h3>Burro Legendario</h3>
-            <p class="info-artista">Por: @QuesoFan</p>
-          </div>
-          <div class="meta-datos">
-            <div><strong>Fecha:</strong> 12/07/2026</div>
-            <div><strong>Vía:</strong> Mensaje Directo</div>
-          </div>
-          <div class="detalles-texto">
-            "El burro en su máxima expresión de poder y carisma."
-          </div>
-        </div>
       </div>
     </div>
-
-    <!-- TARJETA 3: PLANTILLA -->
-    <div class="card-container">
-      <div class="card-flip" onclick="voltearCarta(this)">
-        <!-- CARA FRONTAL -->
-        <div class="face front">
-          <img src="../img/plantilla.png" class="fanart-img" alt="Plantilla Base">
-          <img src="../img/marcofanarts.png" class="marco-overlay" alt="Marco Oficial">
-          <div class="holo-glow"></div>
-        </div>
-        <!-- CARA TRASERA (Estilo Cromo Azul/Morado claro) -->
-        <div class="face back">
-          <div class="info-header">
-            <h3>Espacio Reservado</h3>
-            <p class="info-artista">Por: Tu Nombre Aquí</p>
-          </div>
-          <div class="meta-datos">
-            <div><strong>Fecha:</strong> --/--/----</div>
-            <div><strong>Vía:</strong> Comunidad</div>
-          </div>
-          <div class="detalles-texto">
-            "¡Envía tu arte a través de nuestras redes para aparecer en la colección!"
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Fin Tarjeta Base -->
 
   </main>
 
-  <!-- SCRIPTS INTERACTIVOS -->
   <script>
-    // Control del Menú lateral
     function toggleMenu() {
       document.getElementById("sidebar").classList.toggle("abierto");
       document.getElementById("overlay").classList.toggle("activo");
     }
 
-    // Control para girar la carta al dar click
+    function abrirRedes() {
+      const r = document.getElementById("redes");
+      r.style.display = (r.style.display === "flex") ? "none" : "flex";
+    }
+
     function voltearCarta(elemento) {
       elemento.classList.toggle("flipped");
     }
   </script>
 
 </body>
-
 </html>
