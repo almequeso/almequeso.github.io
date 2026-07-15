@@ -116,7 +116,6 @@ gap:60px;
 .repisa{
 
 display:flex;
-
 justify-content:center;
 flex-wrap:wrap;
 
@@ -124,7 +123,8 @@ gap:35px;
 
 position:relative;
 
-padding-bottom:45px;
+padding-bottom:15px;
+margin-top:-10px;
 
 }
 
@@ -164,6 +164,8 @@ position:relative;
 
 width:323px !important;
 height:123px !important;
+
+margin-bottom:-8px;
 
 display:flex;
 
@@ -405,6 +407,137 @@ font-size:1rem;
 
 }
 
+  .menuBtn{
+
+position:fixed;
+
+top:20px;
+left:20px;
+
+font-size:2rem;
+
+padding:10px 16px;
+
+border-radius:15px;
+
+cursor:pointer;
+
+background:rgba(45,25,0,.8);
+
+border:1px solid #ffd700;
+
+box-shadow:
+0 0 20px #ffd700;
+
+z-index:1001;
+
+transition:.3s;
+
+}
+
+.menuBtn:hover{
+
+transform:scale(1.1);
+
+box-shadow:
+0 0 35px #ffe680;
+
+}
+
+.sidebar{
+
+position:fixed;
+
+top:0;
+left:-320px;
+
+width:290px;
+height:100vh;
+
+padding-top:90px;
+
+background:rgba(20,10,0,.96);
+
+backdrop-filter:blur(15px);
+
+border-right:1px solid #ffd700;
+
+transition:.5s;
+
+z-index:1000;
+
+}
+
+.sidebar.abierto{
+
+left:0;
+
+}
+
+.sidebar h2{
+
+text-align:center;
+
+font-family:'Cinzel',serif;
+
+color:#ffe38c;
+
+text-shadow:
+0 0 15px #ffd700;
+
+margin-bottom:25px;
+
+}
+
+.sidebar a{
+
+display:block;
+
+padding:18px 30px;
+
+color:white;
+
+text-decoration:none;
+
+transition:.3s;
+
+}
+
+.sidebar a:hover{
+
+background:
+rgba(255,215,0,.12);
+
+padding-left:40px;
+
+}
+
+.overlay{
+
+position:fixed;
+
+inset:0;
+
+background:rgba(0,0,0,.5);
+
+opacity:0;
+
+pointer-events:none;
+
+transition:.4s;
+
+z-index:999;
+
+}
+
+.overlay.activo{
+
+opacity:1;
+
+pointer-events:auto;
+
+}
+
 }
 
 </style>
@@ -412,6 +545,43 @@ font-size:1rem;
 </head>
 
 <body>
+
+<div class="menuBtn"
+onclick="toggleMenu()">
+☰
+</div>
+
+<div class="overlay"
+id="overlay"
+onclick="toggleMenu()">
+</div>
+
+<div class="sidebar"
+id="sidebar">
+
+<h2>🌌 MENÚ</h2>
+
+<a href="../">🏠 Inicio</a>
+
+<a href="./">🌌 Lore</a>
+
+<a href="./cronologia/">📜 Cronología</a>
+
+<a href="./conceptos/">🧬 Conceptos</a>
+
+<a href="./especies/">👁 Especies</a>
+
+<a href="./facciones/">🏢 Facciones</a>
+
+<a href="./lugares/">🌍 Lugares</a>
+
+<a href="./teorias/">❓ Teorías</a>
+
+<a href="./archivosespeciales/">
+🔒 Archivos Especiales
+</a>
+
+</div>
 
 <h1 class="titulo">
 
@@ -568,5 +738,20 @@ class="blinder archivos">
 
 </div>
 
+<script>
+
+function toggleMenu(){
+
+document
+.getElementById("sidebar")
+.classList.toggle("abierto");
+
+document
+.getElementById("overlay")
+.classList.toggle("activo");
+
+}
+
+</script>
 </body>
 </html>
