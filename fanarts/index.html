@@ -1,61 +1,157 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Colección de Fanarts - Almequeso</title>
-  <!-- Enlazamos al CSS general que tienes en la carpeta raíz -->
-  <link rel="stylesheet" href="../css/style.css">
-  
+
+  <title>Almequeso - Fanarts</title>
+
+  <!-- Mantenemos las fuentes originales de la página principal -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+
   <style>
-    /* --- ESTILOS EXCLUSIVOS DE LA PÁGINA DE FANARTS --- */
-    
+    /* --- ESTILOS ADAPTADOS A GRISES Y AMARILLOS DESDE EL CORAZÓN DE LA PRINCIPAL --- */
+
     body {
-      background-color: #0f0f13;
-      color: #ffffff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      padding: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at center, #3a3520 0%, #141411 45%, #000000 100%);
+      color: white;
+      font-family: 'JetBrains Mono', monospace;
+      overflow-x: hidden;
+      padding-top: 100px; /* Espacio para el botón del menú */
     }
 
-    .header-fanarts {
-      text-align: center;
-      padding: 40px 20px;
-      background: linear-gradient(180deg, #181822 0%, #0f0f13 100%);
+    /* Efecto de líneas horizontales heredado */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 120px,
+        rgba(255, 255, 255, .02) 121px
+      );
+      pointer-events: none;
+      z-index: 1;
     }
 
-    .header-fanarts h1 {
-      margin: 0;
-      font-size: 2.5rem;
+    /* --- SIDEBAR Y MENÚ (Adaptado a Amarillo) --- */
+    .menuBtn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-size: 2rem;
+      padding: 10px 16px;
+      border-radius: 15px;
+      cursor: pointer;
+      background: rgba(30, 30, 20, .8);
+      border: 1px solid #ffcc00;
+      box-shadow: 0 0 20px #b39200;
+      z-index: 1001;
       color: #ffcc00;
-      text-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+      transition: .3s;
     }
 
-    .header-fanarts p {
-      color: #aaa;
-      margin-top: 10px;
+    .menuBtn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 30px #ffcc00;
     }
 
-    /* Contenedor principal de la galería */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -320px;
+      width: 280px;
+      height: 100vh;
+      padding-top: 90px;
+      background: rgba(15, 15, 12, .95);
+      backdrop-filter: blur(15px);
+      border-right: 1px solid #ffcc00;
+      transition: .5s;
+      z-index: 1000;
+    }
+
+    .sidebar.abierto {
+      left: 0;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 35px;
+      color: #ffcc00;
+      font-family: 'Cinzel', serif;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 18px 30px;
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      transition: .3s;
+    }
+
+    .sidebar a:hover {
+      background: rgba(255, 204, 0, .15);
+      padding-left: 40px;
+      color: #ffcc00;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .6);
+      opacity: 0;
+      pointer-events: none;
+      transition: .4s;
+      z-index: 999;
+    }
+
+    .overlay.activo {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* --- CONTENEDOR DE LA GALERÍA --- */
+    .titulo-seccion {
+      text-align: center;
+      font-family: 'Cinzel', serif;
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+      color: #ffcc00;
+      text-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+    }
+
+    .subtitulo-seccion {
+      text-align: center;
+      opacity: 0.7;
+      margin-bottom: 40px;
+      font-size: 0.95rem;
+    }
+
     .galeria-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 40px;
-      padding: 40px max(20px, 5%);
       max-width: 1200px;
       margin: 0 auto;
+      padding: 0 25px 60px 25px;
       justify-items: center;
+      position: relative;
+      z-index: 2;
     }
 
-    /* El espacio 3D para la tarjeta */
+    /* --- SISTEMA 3D DE CARTAS INTERACTIVAS --- */
     .card-container {
-      width: 280px;
-      height: 420px;
-      perspective: 1000px; /* Clave para el efecto 3D de profundidad */
+      width: 300px;
+      height: 450px;
+      perspective: 1200px;
     }
 
-    /* La tarjeta en sí */
-    .card {
+    .card-flip {
       width: 100%;
       height: 100%;
       position: relative;
@@ -64,216 +160,248 @@
       cursor: pointer;
     }
 
-    /* CUANDO TIENE LA CLASE FLIPPED (Activada por JS al dar click) */
-    .card.flipped {
+    /* Clase que añade Javascript al hacer click */
+    .card-flip.flipped {
       transform: rotateY(180deg);
     }
 
-    /* Caras base comunes */
-    .card-front, .card-back {
+    .face {
       position: absolute;
       width: 100%;
       height: 100%;
-      backface-visibility: hidden; /* Oculta la cara de atrás mientras gira */
-      border-radius: 18px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      box-sizing: border-box;
+      backface-visibility: hidden;
+      border-radius: 25px;
       overflow: hidden;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
     }
 
-    /* CARA FRONTAL (La Imagen del Fanart) */
-    .card-front {
-      background: #151518;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    /* --- CARA FRONTAL: EL FANART CON TU MARCO DE CEBOLLAS --- */
+    .front {
+      background: #181818;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    .card-front img {
+    /* El dibujo queda al fondo ocupando su espacio */
+    .fanart-img {
+      position: absolute;
+      inset: 15px; /* Margen para que encaje dentro del área transparente del marco */
+      width: calc(100% - 30px);
+      height: calc(100% - 30px);
+      object-fit: cover;
+      border-radius: 15px;
+      z-index: 1;
+    }
+
+    /* Tu marco PNG superpuesto por encima de la imagen */
+    .marco-overlay {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: fill;
+      z-index: 2;
+      pointer-events: none;
     }
 
-    /* Efecto de Brillo Holográfico */
+    /* Destello Holográfico */
     .holo-glow {
       position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
+      inset: 0;
       background: linear-gradient(
         135deg,
         rgba(255, 255, 255, 0) 30%,
         rgba(255, 255, 255, 0.25) 50%,
-        rgba(255, 255, 255, 0) 70%
+        rgba(255, 255, 255, 0) 70-px
       );
       background-size: 200% 200%;
-      background-position: 0% 0%;
       mix-blend-mode: overlay;
+      z-index: 3;
       pointer-events: none;
       transition: background-position 0.4s ease;
     }
 
-    /* Al pasar el mouse encima (antes del click), da un destello holográfico */
     .card-container:hover .holo-glow {
       background-position: 100% 100%;
     }
 
-    /* CARA TRASERA (Los detalles del Artista) */
-    .card-back {
-      background: linear-gradient(135deg, #1e1e26 0%, #111116 100%);
-      color: #ffffff;
-      transform: rotateY(180deg); /* Empieza volteada hacia atrás */
-      padding: 30px 24px;
+    /* --- CARA TRASERA: DEGRADADO CROMO CELESTE / MORADO SUAVE --- */
+    .back {
+      background: linear-gradient(135deg, #e0f2fe 0%, #fae8ff 50%, #e0e7ff 100%);
+      color: #1e1b4b; /* Texto oscuro para que contraste hermoso con el cromo claro */
+      transform: rotateY(180deg);
+      padding: 30px 25px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      border: 2px solid #ffcc00; /* Borde de carta legendaria */
+      border: 3px solid #ffcc00; /* Borde amarillo tipo carta rara */
+      box-shadow: 0 0 25px rgba(255, 204, 0, 0.3);
+      box-sizing: border-box;
     }
 
-    .card-back h3 {
-      margin: 0 0 5px 0;
-      color: #ffcc00;
+    .info-header h3 {
+      margin: 0;
+      font-family: 'Cinzel', serif;
       font-size: 1.4rem;
+      color: #1e1b4b;
+      border-bottom: 2px solid rgba(30, 27, 75, 0.15);
+      padding-bottom: 8px;
     }
 
-    .artista {
-      color: #00ffcc;
+    .info-artista {
+      margin: 10px 0 0 0;
       font-weight: bold;
-      margin: 0 0 15px 0;
+      color: #4338ca;
       font-size: 0.95rem;
     }
 
-    .card-back hr {
-      border: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      margin: 10px 0;
-    }
-
-    .info-meta {
-      font-size: 0.9rem;
-      color: #ddd;
-      margin: 8px 0;
-    }
-
-    .info-meta strong {
-      color: #ffcc00;
-    }
-
-    .comentario-artista {
-      font-style: italic;
-      color: #bbb;
+    .meta-datos {
+      margin: 20px 0;
       font-size: 0.85rem;
-      background: rgba(0, 0, 0, 0.2);
-      padding: 10px;
-      border-radius: 8px;
-      margin-top: 15px;
+      line-height: 1.6;
+    }
+
+    .meta-datos div {
+      margin-bottom: 6px;
+    }
+
+    .meta-datos strong {
+      color: #1e1b4b;
+    }
+
+    .detalles-texto {
+      font-style: italic;
+      font-size: 0.85rem;
+      background: rgba(255, 255, 255, 0.5);
+      padding: 12px;
+      border-radius: 15px;
+      border: 1px solid rgba(0, 0, 0, 0.05);
       line-height: 1.4;
       flex-grow: 1;
       display: flex;
       align-items: center;
     }
-
-    .btn-regresar {
-      display: inline-block;
-      margin-top: 20px;
-      color: #ffcc00;
-      text-decoration: none;
-      font-weight: bold;
-      transition: color 0.2s;
-    }
-
-    .btn-regresar:hover {
-      color: #ffffff;
-    }
   </style>
 </head>
+
 <body>
 
-  <header class="header-fanarts">
-    <h1>Galería de Fanarts</h1>
-    <p>Haz click en cualquier tarjeta para ver los detalles del coleccionable</p>
-    <a href="../index.html" class="btn-regresar">← Volver al Inicio</a>
-  </header>
+  <!-- Botón de Menú Estilo Principal -->
+  <div class="menuBtn" onclick="toggleMenu()">☰</div>
 
+  <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+  <!-- Sidebar duplicada y adaptada a la paleta de Grises/Amarillos -->
+  <div class="sidebar" id="sidebar">
+    <h2>🌌 MENÚ</h2>
+    <a href="../" onclick="toggleMenu()">🏠 Inicio</a>
+    <a href="../libro/" onclick="toggleMenu()">📖 Libro</a>
+    <a href="../lore/" onclick="toggleMenu()">🌌 Lore</a>
+    <a href="./" onclick="toggleMenu()">🎨 Fanarts</a>
+    <a href="../comunidad/" onclick="toggleMenu()">💬 Comunidad</a>
+  </div>
+
+  <!-- Títulos de cabecera -->
+  <div class="titulo-seccion">FANARTS</div>
+  <div class="subtitulo-seccion">Toca las cartas para ver los datos de adquisición</div>
+
+  <!-- Contenedor de las Tarjetas -->
   <main class="galeria-container">
 
     <!-- TARJETA 1: BLINDER -->
     <div class="card-container">
-      <div class="card">
-        <!-- Cara Frontal -->
-        <div class="card-front">
-          <img src="../img/blinder.png" alt="Fanart Blinder">
+      <div class="card-flip" onclick="voltearCarta(this)">
+        <!-- CARA FRONTAL -->
+        <div class="face front">
+          <img src="../img/blinder.png" class="fanart-img" alt="Fanart Blinder">
+          <img src="../img/marcofanarts.png" class="marco-overlay" alt="Marco Oficial">
           <div class="holo-glow"></div>
         </div>
-        <!-- Cara Trasera -->
-        <div class="card-back">
-          <div>
+        <!-- CARA TRASERA (Estilo Cromo Azul/Morado claro) -->
+        <div class="face back">
+          <div class="info-header">
             <h3>Blinder Mode</h3>
-            <p class="artista">Por: @ArtistaIncreible</p>
-            <hr>
-            <p class="info-meta"><strong>Fecha:</strong> 14/07/2026</p>
-            <p class="info-meta"><strong>Vía:</strong> Discord</p>
+            <p class="info-artista">Por: @ArtistaBroski</p>
           </div>
-          <p class="comentario-artista">"Inspirado en los streams nocturnos y la estética cyberpunk de la comunidad."</p>
+          <div class="meta-datos">
+            <div><strong>Fecha:</strong> 14/07/2026</div>
+            <div><strong>Vía:</strong> Discord Oficial</div>
+          </div>
+          <div class="detalles-texto">
+            "Un rediseño épico del Blinder con detalles visuales para el servidor."
+          </div>
         </div>
       </div>
     </div>
 
     <!-- TARJETA 2: BURRO -->
     <div class="card-container">
-      <div class="card">
-        <!-- Cara Frontal -->
-        <div class="card-front">
-          <img src="../img/burro.png" alt="Fanart Burro">
+      <div class="card-flip" onclick="voltearCarta(this)">
+        <!-- CARA FRONTAL -->
+        <div class="face front">
+          <img src="../img/burro.png" class="fanart-img" alt="Fanart Burro">
+          <img src="../img/marcofanarts.png" class="marco-overlay" alt="Marco Oficial">
           <div class="holo-glow"></div>
         </div>
-        <!-- Cara Trasera -->
-        <div class="card-back">
-          <div>
-            <h3>El Burro Supremo</h3>
-            <p class="artista">Por: @DiseñadorPro</p>
-            <hr>
-            <p class="info-meta"><strong>Fecha:</strong> 10/07/2026</p>
-            <p class="info-meta"><strong>Vía:</strong> Twitter / X</p>
+        <!-- CARA TRASERA (Estilo Cromo Azul/Morado claro) -->
+        <div class="face back">
+          <div class="info-header">
+            <h3>Burro Legendario</h3>
+            <p class="info-artista">Por: @QuesoFan</p>
           </div>
-          <p class="comentario-artista">"Un meme hecho arte. No podía quedarme sin dibujar la versión definitiva de este personajazo."</p>
+          <div class="meta-datos">
+            <div><strong>Fecha:</strong> 12/07/2026</div>
+            <div><strong>Vía:</strong> Mensaje Directo</div>
+          </div>
+          <div class="detalles-texto">
+            "El burro en su máxima expresión de poder y carisma."
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- TARJETA 3: PLANTILLA (Puedes cambiar la imagen si quieres) -->
+    <!-- TARJETA 3: PLANTILLA -->
     <div class="card-container">
-      <div class="card">
-        <!-- Cara Frontal -->
-        <div class="card-front">
-          <img src="../img/plantilla.png" alt="Plantilla Fanart">
+      <div class="card-flip" onclick="voltearCarta(this)">
+        <!-- CARA FRONTAL -->
+        <div class="face front">
+          <img src="../img/plantilla.png" class="fanart-img" alt="Plantilla Base">
+          <img src="../img/marcofanarts.png" class="marco-overlay" alt="Marco Oficial">
           <div class="holo-glow"></div>
         </div>
-        <!-- Cara Trasera -->
-        <div class="card-back">
-          <div>
-            <h3>Edición Especial</h3>
-            <p class="artista">Por: @ComunidadQueso</p>
-            <hr>
-            <p class="info-meta"><strong>Fecha:</strong> 01/07/2026</p>
-            <p class="info-meta"><strong>Vía:</strong> Correo</p>
+        <!-- CARA TRASERA (Estilo Cromo Azul/Morado claro) -->
+        <div class="face back">
+          <div class="info-header">
+            <h3>Espacio Reservado</h3>
+            <p class="info-artista">Por: Tu Nombre Aquí</p>
           </div>
-          <p class="comentario-artista">"¡Espacio reservado para el próximo fanart legendario que mande la banda!"</p>
+          <div class="meta-datos">
+            <div><strong>Fecha:</strong> --/--/----</div>
+            <div><strong>Vía:</strong> Comunidad</div>
+          </div>
+          <div class="detalles-texto">
+            "¡Envía tu arte a través de nuestras redes para aparecer en la colección!"
+          </div>
         </div>
       </div>
     </div>
 
   </main>
 
-  <!-- SCRIPT PARA EL VOLTEO CON UN CLICK -->
+  <!-- SCRIPTS INTERACTIVOS -->
   <script>
-    document.querySelectorAll('.card').forEach(card => {
-      card.addEventListener('click', () => {
-        card.classList.toggle('flipped');
-      });
-    });
+    // Control del Menú lateral
+    function toggleMenu() {
+      document.getElementById("sidebar").classList.toggle("abierto");
+      document.getElementById("overlay").classList.toggle("activo");
+    }
+
+    // Control para girar la carta al dar click
+    function voltearCarta(elemento) {
+      elemento.classList.toggle("flipped");
+    }
   </script>
 
 </body>
+
 </html>
