@@ -1,1 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Colección de Fanarts - Almequeso</title>
+  <!-- Enlazamos al CSS general que tienes en la carpeta raíz -->
+  <link rel="stylesheet" href="../css/style.css">
+  
+  <style>
+    /* --- ESTILOS EXCLUSIVOS DE LA PÁGINA DE FANARTS --- */
+    
+    body {
+      background-color: #0f0f13;
+      color: #ffffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
 
+    .header-fanarts {
+      text-align: center;
+      padding: 40px 20px;
+      background: linear-gradient(180deg, #181822 0%, #0f0f13 100%);
+    }
+
+    .header-fanarts h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      color: #ffcc00;
+      text-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+    }
+
+    .header-fanarts p {
+      color: #aaa;
+      margin-top: 10px;
+    }
+
+    /* Contenedor principal de la galería */
+    .galeria-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 40px;
+      padding: 40px max(20px, 5%);
+      max-width: 1200px;
+      margin: 0 auto;
+      justify-items: center;
+    }
+
+    /* El espacio 3D para la tarjeta */
+    .card-container {
+      width: 280px;
+      height: 420px;
+      perspective: 1000px; /* Clave para el efecto 3D de profundidad */
+    }
+
+    /* La tarjeta en sí */
+    .card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+
+    /* CUANDO TIENE LA CLASE FLIPPED (Activada por JS al dar click) */
+    .card.flipped {
+      transform: rotateY(180deg);
+    }
+
+    /* Caras base comunes */
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden; /* Oculta la cara de atrás mientras gira */
+      border-radius: 18px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    /* CARA FRONTAL (La Imagen del Fanart) */
+    .card-front {
+      background: #151518;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-front img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Efecto de Brillo Holográfico */
+    .holo-glow {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0) 30%,
+        rgba(255, 255, 255, 0.25) 50%,
+        rgba(255, 255, 255, 0) 70%
+      );
+      background-size: 200% 200%;
+      background-position: 0% 0%;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      transition: background-position 0.4s ease;
+    }
+
+    /* Al pasar el mouse encima (antes del click), da un destello holográfico */
+    .card-container:hover .holo-glow {
+      background-position: 100% 100%;
+    }
+
+    /* CARA TRASERA (Los detalles del Artista) */
+    .card-back {
+      background: linear-gradient(135deg, #1e1e26 0%, #111116 100%);
+      color: #ffffff;
+      transform: rotateY(180deg); /* Empieza volteada hacia atrás */
+      padding: 30px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 2px solid #ffcc00; /* Borde de carta legendaria */
+    }
+
+    .card-back h3 {
+      margin: 0 0 5px 0;
+      color: #ffcc00;
+      font-size: 1.4rem;
+    }
+
+    .artista {
+      color: #00ffcc;
+      font-weight: bold;
+      margin: 0 0 15px 0;
+      font-size: 0.95rem;
+    }
+
+    .card-back hr {
+      border: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      margin: 10px 0;
+    }
+
+    .info-meta {
+      font-size: 0.9rem;
+      color: #ddd;
+      margin: 8px 0;
+    }
+
+    .info-meta strong {
+      color: #ffcc00;
+    }
+
+    .comentario-artista {
+      font-style: italic;
+      color: #bbb;
+      font-size: 0.85rem;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 15px;
+      line-height: 1.4;
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    .btn-regresar {
+      display: inline-block;
+      margin-top: 20px;
+      color: #ffcc00;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.2s;
+    }
+
+    .btn-regresar:hover {
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header-fanarts">
+    <h1>Galería de Fanarts</h1>
+    <p>Haz click en cualquier tarjeta para ver los detalles del coleccionable</p>
+    <a href="../index.html" class="btn-regresar">← Volver al Inicio</a>
+  </header>
+
+  <main class="galeria-container">
+
+    <!-- TARJETA 1: BLINDER -->
+    <div class="card-container">
+      <div class="card">
+        <!-- Cara Frontal -->
+        <div class="card-front">
+          <img src="../img/blinder.png" alt="Fanart Blinder">
+          <div class="holo-glow"></div>
+        </div>
+        <!-- Cara Trasera -->
+        <div class="card-back">
+          <div>
+            <h3>Blinder Mode</h3>
+            <p class="artista">Por: @ArtistaIncreible</p>
+            <hr>
+            <p class="info-meta"><strong>Fecha:</strong> 14/07/2026</p>
+            <p class="info-meta"><strong>Vía:</strong> Discord</p>
+          </div>
+          <p class="comentario-artista">"Inspirado en los streams nocturnos y la estética cyberpunk de la comunidad."</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TARJETA 2: BURRO -->
+    <div class="card-container">
+      <div class="card">
+        <!-- Cara Frontal -->
+        <div class="card-front">
+          <img src="../img/burro.png" alt="Fanart Burro">
+          <div class="holo-glow"></div>
+        </div>
+        <!-- Cara Trasera -->
+        <div class="card-back">
+          <div>
+            <h3>El Burro Supremo</h3>
+            <p class="artista">Por: @DiseñadorPro</p>
+            <hr>
+            <p class="info-meta"><strong>Fecha:</strong> 10/07/2026</p>
+            <p class="info-meta"><strong>Vía:</strong> Twitter / X</p>
+          </div>
+          <p class="comentario-artista">"Un meme hecho arte. No podía quedarme sin dibujar la versión definitiva de este personajazo."</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TARJETA 3: PLANTILLA (Puedes cambiar la imagen si quieres) -->
+    <div class="card-container">
+      <div class="card">
+        <!-- Cara Frontal -->
+        <div class="card-front">
+          <img src="../img/plantilla.png" alt="Plantilla Fanart">
+          <div class="holo-glow"></div>
+        </div>
+        <!-- Cara Trasera -->
+        <div class="card-back">
+          <div>
+            <h3>Edición Especial</h3>
+            <p class="artista">Por: @ComunidadQueso</p>
+            <hr>
+            <p class="info-meta"><strong>Fecha:</strong> 01/07/2026</p>
+            <p class="info-meta"><strong>Vía:</strong> Correo</p>
+          </div>
+          <p class="comentario-artista">"¡Espacio reservado para el próximo fanart legendario que mande la banda!"</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- SCRIPT PARA EL VOLTEO CON UN CLICK -->
+  <script>
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('click', () => {
+        card.classList.toggle('flipped');
+      });
+    });
+  </script>
+
+</body>
+</html>
