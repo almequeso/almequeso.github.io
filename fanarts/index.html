@@ -142,7 +142,7 @@
       z-index: 2;
     }
 
-    /* --- TARJETA --- */
+    /* --- TARJETA CORREGIDA PARA PRESERVAR EL EJE 3D --- */
     .card-container {
       width: 300px;
       height: 450px;
@@ -162,8 +162,11 @@
       transform: rotateY(180deg);
     }
 
+    /* Evitamos el desfase fijando el alto y el top a 0 */
     .face {
       position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       backface-visibility: hidden;
@@ -172,23 +175,20 @@
       box-sizing: border-box;
     }
 
-    /* CARA FRONTAL (Capas encimadas) */
+    /* CARA FRONTAL */
     .front {
       background: #141414;
       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      position: relative;
     }
 
-    /* La plantilla va al fondo */
     .front .fanart-bg {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
-      z-index: 1;
     }
 
-    /* El marco de cebollas va encima cubriendo todo */
+    /* Marco superpuesto con truco para no mostrar icono roto si falla el path */
     .front .marco-overlay {
       position: absolute;
       top: 0;
@@ -198,6 +198,7 @@
       object-fit: fill;
       z-index: 2;
       pointer-events: none;
+      text-indent: -9999px; /* Oculta el texto alt si la imagen se rompe */
     }
 
     .holo-glow {
@@ -220,7 +221,7 @@
       background-position: 100% 100%;
     }
 
-    /* CARA TRASERA (Estilo Cromo Iridiscente) */
+    /* CARA TRASERA */
     .back {
       background: linear-gradient(135deg, #e0f2fe 0%, #fae8ff 50%, #e0e7ff 100%);
       color: #1e1b4b;
@@ -291,17 +292,14 @@
 
   <main class="galeria-container">
 
-    <!-- Tarjeta Base (Duplica este bloque para agregar más fanarts) -->
     <div class="card-container">
       <div class="card-flip" onclick="voltearCarta(this)">
         
         <!-- CARA FRONTAL -->
         <div class="face front">
-          <!-- Imagen de fondo (El dibujo) -->
           <img src="../img/plantilla.png" class="fanart-bg" alt="Fanart Base">
-          <!-- Marco transparente superpuesto encima -->
+          <!-- Si la imagen no carga, este fix evita que rompa el recuadro -->
           <img src="../img/marcofanarts.png" class="marco-overlay" alt="Marco Oficial">
-          <!-- Brillo holográfico -->
           <div class="holo-glow"></div>
         </div>
         
@@ -322,7 +320,6 @@
 
       </div>
     </div>
-    <!-- Fin Tarjeta Base -->
 
   </main>
 
