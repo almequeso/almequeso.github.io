@@ -394,6 +394,32 @@ text-shadow:
 
 }
 
+.icono{
+
+position:absolute;
+
+top:50%;
+left:50%;
+
+transform:
+translate(-50%,-50%);
+
+font-size:1rem;
+
+display:flex;
+
+justify-content:center;
+align-items:center;
+
+z-index:10;
+
+text-shadow:
+0 0 8px rgba(0,0,0,.7);
+
+pointer-events:none;
+
+}
+
 /* COLORES */
 
 .cronologia .luz{
@@ -794,16 +820,21 @@ class="blinder cronologia">
 
 <img src="/img/blinder.png">
 
-<div class="luz"></div>
+<div class="luz">
+
+<span class="icono">
+📜
+</span>
+
+</div>
 
 <div class="texto">
 
-📜 CRONOLOGÍA
+CRONOLOGÍA
 
 </div>
 
 </a>
-
 
 <a href="./conceptos/"
 class="blinder conceptos">
