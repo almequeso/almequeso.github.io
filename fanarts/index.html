@@ -142,11 +142,11 @@
       z-index: 2;
     }
 
-    /* --- TARJETA CORREGIDA PARA PRESERVAR EL EJE 3D --- */
+    /* --- CONTENEDOR 3D --- */
     .card-container {
       width: 300px;
       height: 450px;
-      perspective: 1200px;
+      perspective: 1000px;
     }
 
     .card-flip {
@@ -154,15 +154,15 @@
       height: 100%;
       position: relative;
       transform-style: preserve-3d;
-      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-      cursor: pointer;
+      /* La transición suave se aplica solo cuando no se está arrastrando */
+      transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
+    /* Cuando se voltea la carta */
     .card-flip.flipped {
-      transform: rotateY(180deg);
+      transform: rotateY(180deg) !important;
     }
 
-    /* Evitamos el desfase fijando el alto y el top a 0 */
     .face {
       position: absolute;
       top: 0;
@@ -188,7 +188,6 @@
       display: block;
     }
 
-    /* Marco superpuesto con truco para no mostrar icono roto si falla el path */
     .front .marco-overlay {
       position: absolute;
       top: 0;
@@ -198,27 +197,34 @@
       object-fit: fill;
       z-index: 2;
       pointer-events: none;
-      text-indent: -9999px; /* Oculta el texto alt si la imagen se rompe */
+      text-indent: -9999px;
     }
 
+    /* EFECTO HOLOGRÁFICO INTERACTIVO */
     .holo-glow {
       position: absolute;
       inset: 0;
       background: linear-gradient(
         135deg,
-        rgba(255, 255, 255, 0) 30%,
-        rgba(255, 255, 255, 0.2) 50%,
-        rgba(255, 255, 255, 0) 70%
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.3) 45%,
+        rgba(255, 255, 255, 0.6) 50%,
+        rgba(255, 255, 255, 0.3) 55%,
+        rgba(255, 255, 255, 0) 100%
       );
-      background-size: 200% 200%;
-      mix-blend-mode: overlay;
+      background-size: 250% 250%;
+      background-position: var(--holo-x, 50%) var(--holo-y, 50%);
+      mix-blend-mode: color-dodge; /* Cambiado a color-dodge para brillo iridiscente épico */
       z-index: 3;
       pointer-events: none;
-      transition: background-position 0.4s ease;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
-    .card-container:hover .holo-glow {
-      background-position: 100% 100%;
+    /* El brillo aparece al interactuar */
+    .card-container:hover .holo-glow,
+    .card-container.active .holo-glow {
+      opacity: 1;
     }
 
     /* CARA TRASERA */
@@ -288,17 +294,17 @@
   </div>
 
   <div class="titulo-seccion">FANARTS</div>
-  <div class="subtitulo-seccion">Toca las cartas para ver los datos de adquisición</div>
+  <div class="subtitulo-seccion">Mantén presionado y mueve para brillar. Un toque rápido para voltear.</div>
 
   <main class="galeria-container">
 
-    <div class="card-container">
-      <div class="card-flip" onclick="voltearCarta(this)">
+    <!-- Tarjeta Interactiva -->
+    <div class="card-container" data-tilt>
+      <div class="card-flip">
         
         <!-- CARA FRONTAL -->
         <div class="face front">
           <img src="../img/plantilla.png" class="fanart-bg" alt="Fanart Base">
-          <!-- Si la imagen no carga, este fix evita que rompa el recuadro -->
           <img src="../img/marcofanarts.png" class="marco-overlay" alt="Marco Oficial">
           <div class="holo-glow"></div>
         </div>
@@ -329,9 +335,84 @@
       document.getElementById("overlay").classList.toggle("activo");
     }
 
-    function voltearCarta(elemento) {
-      elemento.classList.toggle("flipped");
-    }
+    // --- LÓGICA DEL EFECTO HOLO 3D (TILT) ---
+    const cards = document.querySelectorAll('[data-tilt]');
+
+    cards.forEach(card => {
+      const flipContainer = card.querySelector('.card-flip');
+      const glow = card.querySelector('.holo-glow');
+      let isMoving = false;
+      let startX, startY;
+
+      function handleMove(e) {
+        // Ignorar el efecto si la carta está dada la vuelta
+        if (flipContainer.classList.contains('flipped')) return;
+
+        // Detectar si es touch (móvil) o mouse (PC)
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+        const rect = card.getBoundingClientRect();
+        const x = clientX - rect.left; // Posición X dentro de la carta
+        const y = clientY - rect.top;  // Posición Y dentro de la carta
+
+        // Calcular porcentajes (-50 a 50) para la rotación
+        const midX = rect.width / 2;
+        const midY = rect.height / 2;
+        const rotateX = ((y - midY) / midY) * -15; // Inclinación máx 15 grados
+        const rotateY = ((x - midX) / midX) * 15;
+
+        // Mover el brillo de fondo
+        const glowX = (x / rect.width) * 100;
+        const glowY = (y / rect.height) * 100;
+
+        isMoving = true;
+        card.classList.add('active');
+
+        // Aplicamos el cambio directo sin delay quitando transiciones molestas durante el arrastre
+        flipContainer.style.transition = 'transform 0.1s ease';
+        flipContainer.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.03, 1.03, 1.03)`;
+        
+        glow.style.setProperty('--holo-x', `${glowX}%`);
+        glow.style.setProperty('--holo-y', `${glowY}%`);
+      }
+
+      function handleReset() {
+        isMoving = false;
+        card.classList.remove('active');
+        // Regresa la carta a su estado original suavemente
+        flipContainer.style.transition = 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)';
+        if (!flipContainer.classList.contains('flipped')) {
+          flipContainer.style.transform = 'rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+        }
+      }
+
+      // Eventos para PC
+      card.addEventListener('mousemove', handleMove);
+      card.addEventListener('mouseleave', handleReset);
+
+      // Eventos para Móvil
+      card.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+      });
+      card.addEventListener('touchmove', handleMove);
+      card.addEventListener('touchend', handleReset);
+
+      // Manejar el click/tap para voltear asegurando que no interfiera con el arrastre largo
+      card.addEventListener('click', (e) => {
+        // Si el usuario movió mucho el dedo, asumimos que quería ver el brillo y no voltearla
+        flipContainer.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+        flipContainer.classList.toggle('flipped');
+        
+        // Limpiar estilos 3D para que no se quede trabada al voltear
+        if(flipContainer.classList.contains('flipped')) {
+          flipContainer.style.transform = 'rotateY(180deg)';
+        } else {
+          flipContainer.style.transform = 'rotateX(0deg) rotateY(0deg)';
+        }
+      });
+    });
   </script>
 
 </body>
