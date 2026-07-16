@@ -1,1 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Almequeso - Comunidad</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+
+  <!-- Carga de la librería oficial de Supabase desde CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at center, #3a3520 0%, #141411 45%, #000000 100%);
+      color: white;
+      font-family: 'JetBrains Mono', monospace;
+      overflow-x: hidden;
+      padding-top: 100px;
+    }
+
+    /* --- MENÚ Y SIDEBAR (Igual a Fanarts) --- */
+    .menuBtn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-size: 2rem;
+      padding: 10px 16px;
+      border-radius: 15px;
+      cursor: pointer;
+      background: rgba(30, 30, 20, .8);
+      border: 1px solid #ffcc00;
+      box-shadow: 0 0 20px #b39200;
+      z-index: 1001;
+      color: #ffcc00;
+      transition: .3s;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -320px;
+      width: 280px;
+      height: 100vh;
+      padding-top: 90px;
+      background: rgba(15, 15, 12, .95);
+      backdrop-filter: blur(15px);
+      border-right: 1px solid #ffcc00;
+      transition: .5s;
+      z-index: 1000;
+    }
+
+    .sidebar.abierto { left: 0; }
+    .sidebar h2 { text-align: center; color: #ffcc00; font-family: 'Cinzel', serif; }
+    .sidebar a { display: block; padding: 18px 30px; color: white; text-decoration: none; }
+    .sidebar a:hover { background: rgba(255, 204, 0, .15); color: #ffcc00; }
+
+    /* --- INTERFAZ DE COMUNIDAD --- */
+    .comunidad-container {
+      max-width: 650px;
+      margin: 0 auto;
+      padding: 0 20px 60px 20px;
+    }
+
+    .titulo-seccion {
+      text-align: center;
+      font-family: 'Cinzel', serif;
+      font-size: 2.8rem;
+      margin-bottom: 30px;
+      color: #ffcc00;
+      text-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+    }
+
+    /* Caja para escribir nuevos posts */
+    .caja-publicar {
+      background: rgba(20, 20, 17, 0.85);
+      border: 1px solid rgba(255, 204, 0, 0.3);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .caja-publicar textarea {
+      width: 100%;
+      height: 100px;
+      background: #0a0a08;
+      border: 1px solid #333;
+      border-radius: 12px;
+      color: white;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 12px;
+      box-sizing: border-box;
+      resize: none;
+      outline: none;
+      transition: border 0.3s;
+    }
+
+    .caja-publicar textarea:focus {
+      border-color: #ffcc00;
+    }
+
+    .area-botones {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 12px;
+    }
+
+    .btn-cyber {
+      background: #ffcc00;
+      color: #000;
+      border: none;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: bold;
+      padding: 10px 24px;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+      transition: 0.3s;
+    }
+
+    .btn-cyber:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #ffcc00;
+    }
+
+    /* Contenedor del Feed */
+    .feed-posts {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Estilo de cada Post individual */
+    .post-card {
+      background: rgba(30, 30, 25, 0.5);
+      border-left: 4px solid #ffcc00;
+      border-radius: 0 15px 15px 0;
+      padding: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      position: relative;
+    }
+
+    .post-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+      opacity: 0.7;
+    }
+
+    .post-autor {
+      color: #ffcc00;
+      font-weight: bold;
+    }
+
+    .post-texto {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="menuBtn" onclick="toggleMenu()">☰</div>
+
+  <div class="sidebar" id="sidebar">
+    <h2>🌌 MENÚ</h2>
+    <a href="../">🏠 Inicio</a>
+    <a href="../libro/">📖 Libro</a>
+    <a href="../lore/">🌌 Lore</a>
+    <a href="../fanarts/">🎨 Fanarts</a>
+    <a href="./">💬 Comunidad</a>
+  </div>
+
+  <div class="comunidad-container">
+    <div class="titulo-seccion">NEXUS FEED</div>
+
+    <!-- Formulario para crear una publicación -->
+    <div class="caja-publicar">
+      <textarea id="nuevoPostTxt" placeholder="Comparte tus teorías sobre Theoktónos o saluda a la resistencia..."></textarea>
+      <div class="area-botones">
+        <button class="btn-cyber" onclick="publicarMensaje()">Enviar al Feed</button>
+      </div>
+    </div>
+
+    <!-- Aquí se inyectarán los posts que vengan de Supabase -->
+    <div class="feed-posts" id="feedContenedor">
+      <div style="text-align: center; opacity: 0.5;">Cargando transmisiones...</div>
+    </div>
+  </div>
+
+  <script>
+    // --- 1. CONFIGURACIÓN DE LAS LLAVES DE SUPABASE ---
+    // Reemplaza estos strings con los datos reales que te da Supabase en los ajustes de tu API
+    const SUPABASE_URL = "https://TU_PROYECTO.supabase.co";
+    const SUPABASE_ANON_KEY = "TU_LLAVE_ANONIMA_LARGA_DE_SUPABASE";
+
+    // Inicializamos el cliente de Supabase globalmente
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // --- 2. LOGICA PARA CARGAR LOS POSTS ---
+    async function cargarFeed() {
+      const feedContenedor = document.getElementById('feedContenedor');
+      
+      // Hacemos la consulta a la tabla 'posts' (ordenados del más nuevo al más viejo)
+      const { data: posts, error } = await supabase
+        .from('posts')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error("Error cargando el feed:", error);
+        feedContenedor.innerHTML = `<div style="color:#ff4444;">Error al conectar con la base de datos.</div>`;
+        return;
+      }
+
+      // Si está vacía
+      if(posts.length === 0) {
+        feedContenedor.innerHTML = `<div style="text-align:center; opacity:0.5;">Aún no hay transmisiones en el feed. ¡Sé el primero!</div>`;
+        return;
+      }
+
+      // Renderizar los posts en el HTML
+      feedContenedor.innerHTML = "";
+      posts.forEach(post => {
+        const fecha = new Date(post.created_at).toLocaleDateString('es-ES', {hour: '2-digit', minute:'2-digit'});
+        
+        feedContenedor.innerHTML += `
+          <div class="post-card">
+            <div class="post-header">
+              <span class="post-autor">Anónimo #${post.id}</span>
+              <span>${fecha}</span>
+            </div>
+            <div class="post-texto">${post.content}</div>
+          </div>
+        `;
+      });
+    }
+
+    // --- 3. LÓGICA PARA PUBLICAR NUEVOS MENSAJES ---
+    async function publicarMensaje() {
+      const txtArea = document.getElementById('nuevoPostTxt');
+      const contenido = txtArea.value.trim();
+
+      if (!contenido) return; // Evitar posts vacíos
+
+      // Insertar una nueva fila en la tabla 'posts'
+      const { error } = await supabase
+        .from('posts')
+        .insert([{ content: contenido }]);
+
+      if (error) {
+        alert("No se pudo enviar el post. Revisa los permisos.");
+        console.error(error);
+      } else {
+        txtArea.value = ""; // Limpiar la caja de texto
+        cargarFeed(); // Recargar el feed para ver el nuevo post
+      }
+    }
+
+    // Cargar los posts inmediatamente al abrir la página
+    document.addEventListener("DOMContentLoaded", cargarFeed);
+
+    function toggleMenu() {
+      document.getElementById("sidebar").classList.toggle("abierto");
+    }
+  </script>
+</body>
+</html>
