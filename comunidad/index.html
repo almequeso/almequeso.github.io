@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Almequeso - Comunidad</title>
+  <title>Almequeso - Comunidad Nexus</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=JetBrains+Mono&display=swap" rel="stylesheet">
 
@@ -71,6 +71,81 @@
       text-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
     }
 
+    /* --- SECCIÓN DE AUTENTICACIÓN (LOGIN) --- */
+    .caja-auth {
+      background: rgba(20, 20, 17, 0.85);
+      border: 1px dashed rgba(255, 204, 0, 0.5);
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      margin-bottom: 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .btn-discord {
+      background: #5865F2;
+      color: white;
+      border: none;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: bold;
+      font-size: 1rem;
+      padding: 14px 28px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 0 15px rgba(88, 101, 242, 0.4);
+      transition: 0.3s;
+    }
+
+    .btn-discord:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px rgba(88, 101, 242, 0.8);
+    }
+
+    /* Perfil del usuario conectado */
+    .user-profile-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(30, 30, 25, 0.6);
+      border: 1px solid rgba(255, 204, 0, 0.2);
+      padding: 12px 20px;
+      border-radius: 15px;
+      margin-bottom: 15px;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid #ffcc00;
+      background: #222;
+    }
+
+    .btn-logout {
+      background: transparent;
+      color: #ff4444;
+      border: 1px solid #ff4444;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: 0.3s;
+    }
+
+    .btn-logout:hover {
+      background: rgba(255, 68, 68, 0.1);
+    }
+
     /* Caja para escribir nuevos posts */
     .caja-publicar {
       background: rgba(20, 20, 17, 0.85);
@@ -131,27 +206,39 @@
       gap: 20px;
     }
 
-    /* Estilo de cada Post individual */
+    /* Estilo del Post Card */
     .post-card {
       background: rgba(30, 30, 25, 0.5);
       border-left: 4px solid #ffcc00;
       border-radius: 0 15px 15px 0;
       padding: 20px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      position: relative;
     }
 
     .post-header {
       display: flex;
-      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
       font-size: 0.85rem;
-      margin-bottom: 10px;
-      opacity: 0.7;
+      margin-bottom: 12px;
+    }
+
+    .post-avatar-mini {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1px solid #ffcc00;
+      background: #222;
     }
 
     .post-autor {
       color: #ffcc00;
       font-weight: bold;
+    }
+
+    .post-fecha {
+      opacity: 0.5;
+      margin-left: auto;
     }
 
     .post-texto {
@@ -164,7 +251,6 @@
 
 <body>
 
-  <!-- El botón ahora ejecuta la función directo sin importar caídas de red -->
   <div class="menuBtn" id="btnMenuToggle">☰</div>
 
   <div class="sidebar" id="sidebar">
@@ -179,19 +265,23 @@
   <div class="comunidad-container">
     <div class="titulo-seccion">NEXUS FEED</div>
 
-    <div class="caja-publicar">
-      <textarea id="nuevoPostTxt" placeholder="Comparte tus teorías sobre Theoktónos o saluda a la resistencia..."></textarea>
-      <div class="area-botones">
-        <button class="btn-cyber" id="btnPublicar">Enviar al Feed</button>
+    <!-- ZONA DINÁMICA DE USUARIO (Intercambia Login por Caja de Posteo) -->
+    <div id="zonaAutenticacion">
+      <div class="caja-auth">
+        <p style="margin-top:0; opacity:0.8;">Para sincronizar tus transmisiones con el Omniverso, debes identificarte.</p>
+        <button class="btn-discord" id="btnLoginDiscord">
+          <svg width="20" height="20" viewBox="0 0 127.14 96.36" fill="currentColor"><path d="M107.7,8.07A105.15,105.15,0,0,0,77.26,0a77.19,77.19,0,0,0-3.3,6.83A96.67,96.67,0,0,0,53.22,6.83,77.19,77.19,0,0,0,49.88,0,105.15,105.15,0,0,0,19.44,8.07C3.66,31.58-1.86,54.65,1,77.53A105.73,105.73,0,0,0,32,96.36a77.7,77.7,0,0,0,6.63-10.85,68.43,68.43,0,0,1-10.5-5c.9-.65,1.76-1.34,2.58-2a75.58,75.58,0,0,0,73.1,0c.82.68,1.68,1.37,2.58,2a68.43,68.43,0,0,1-10.5,5,77.7,77.7,0,0,0,6.63,10.85,105.73,105.73,0,0,0,31.06-18.83C129.87,50.24,123.76,27.39,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53S36.18,40.36,42.45,40.36,53.88,46,53.88,53,48.72,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.24,60,73.24,53S78.41,40.36,84.69,40.36,96.12,46,96.12,53,91,65.69,84.69,65.69Z"/></svg>
+          Sincronizar con Discord
+        </button>
       </div>
     </div>
 
     <div class="feed-posts" id="feedContenedor">
-      <div style="text-align: center; opacity: 0.5;">Cargando transmisiones...</div>
+      <div style="text-align: center; opacity: 0.5;">Cargando frecuencias del Nexo...</div>
     </div>
   </div>
 
-  <!-- LEVANTAMIENTO CON MÓDULOS JS (Aislado de fallas de entorno globales) -->
+  <!-- LÓGICA CORE (Módulos JS) -->
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
 
@@ -199,6 +289,80 @@
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wYmFzZ3BwbG9rZnRnaWJ6b21iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyMzIyODIsImV4cCI6MjA5OTgwODI4Mn0.luXHQV3TbJ9kzQbzXzE92L2HBiCOvSewWn6dLAJOWts";
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let usuarioActual = null;
+
+    // --- MONITOREAR ESTADO DE SESIÓN ---
+    async function checarSesion() {
+      // Revisa si hay una sesión activa al cargar la página
+      const { data: { session } } = await supabase.auth.getSession();
+      actualizarInterfazUsuario(session?.user || null);
+
+      // Escucha en tiempo real si el usuario se loguea o desloguea
+      supabase.auth.onAuthStateChange((_event, session) => {
+        actualizarInterfazUsuario(session?.user || null);
+      });
+    }
+
+    // --- CAMBIAR INTERFAZ SEGÚN SESIÓN ---
+    function actualizarInterfazUsuario(user) {
+      usuarioActual = user;
+      const zonaAuth = document.getElementById('zonaAutenticacion');
+      if (!zonaAuth) return;
+
+      if (user) {
+        // Obtenemos los metadatos de Discord
+        const nombre = user.user_metadata.full_name || user.user_metadata.name || "Guerrero";
+        const avatarUrl = user.user_metadata.avatar_url || "";
+
+        zonaAuth.innerHTML = `
+          <div class="user-profile-bar">
+            <div class="user-info">
+              <img src="${avatarUrl}" class="user-avatar" alt="Avatar" onerror="this.src='https://placehold.co/40x40/222/ffcc00?text=?'">
+              <span>Conectado como: <strong style="color:#ffcc00;">${nombre}</strong></span>
+            </div>
+            <button class="btn-logout" id="btnCerrarSesion">Desconectar</button>
+          </div>
+          
+          <div class="caja-publicar">
+            <textarea id="nuevoPostTxt" placeholder="Escribe tu mensaje al Nexo, ${nombre}..."></textarea>
+            <div class="area-botones">
+              <button class="btn-cyber" id="btnPublicar">Enviar al Feed</button>
+            </div>
+          </div>
+        `;
+
+        // Asignar eventos a los nuevos elementos del DOM
+        document.getElementById('btnPublicar')?.addEventListener('click', publicarMensaje);
+        document.getElementById('btnCerrarSesion')?.addEventListener('click', cerrarSesion);
+      } else {
+        // Si no hay usuario, muestra el botón de Discord original
+        zonaAuth.innerHTML = `
+          <div class="caja-auth">
+            <p style="margin-top:0; opacity:0.8;">Para sincronizar tus transmisiones con el Omniverso, debes identificarte.</p>
+            <button class="btn-discord" id="btnLoginDiscord">
+              <svg width="20" height="20" viewBox="0 0 127.14 96.36" fill="currentColor"><path d="M107.7,8.07A105.15,105.15,0,0,0,77.26,0a77.19,77.19,0,0,0-3.3,6.83A96.67,96.67,0,0,0,53.22,6.83,77.19,77.19,0,0,0,49.88,0,105.15,105.15,0,0,0,19.44,8.07C3.66,31.58-1.86,54.65,1,77.53A105.73,105.73,0,0,0,32,96.36a77.7,77.7,0,0,0,6.63-10.85,68.43,68.43,0,0,1-10.5-5c.9-.65,1.76-1.34,2.58-2a75.58,75.58,0,0,0,73.1,0c.82.68,1.68,1.37,2.58,2a68.43,68.43,0,0,1-10.5,5,77.7,77.7,0,0,0,6.63,10.85,105.73,105.73,0,0,0,31.06-18.83C129.87,50.24,123.76,27.39,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53S36.18,40.36,42.45,40.36,53.88,46,53.88,53,48.72,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.24,60,73.24,53S78.41,40.36,84.69,40.36,96.12,46,96.12,53,91,65.69,84.69,65.69Z"/></svg>
+              Sincronizar con Discord
+            </button>
+          </div>
+        `;
+        document.getElementById('btnLoginDiscord')?.addEventListener('click', loginConDiscord);
+      }
+    }
+
+    // --- ACCIONES DE AUTENTICACIÓN ---
+    async function loginConDiscord() {
+      await supabase.auth.signInWithOAuth({
+        provider: 'discord',
+        options: {
+          redirectTo: window.location.origin + window.location.pathname
+        }
+      });
+    }
+
+    async function cerrarSesion() {
+      await supabase.auth.signOut();
+    }
 
     // --- CARGAR FEED ---
     async function cargarFeed() {
@@ -217,18 +381,24 @@
         }
 
         if (posts.length === 0) {
-          feedContenedor.innerHTML = `<div style="text-align:center; opacity:0.5;">Aún no hay transmisiones en el feed. ¡Sé el primero!</div>`;
+          feedContenedor.innerHTML = `<div style="text-align:center; opacity:0.5;">Aún no hay frecuencias activas. ¡Sé el primero!</div>`;
           return;
         }
 
         feedContenedor.innerHTML = "";
         posts.forEach(post => {
           const fecha = new Date(post.created_at).toLocaleDateString('es-ES', {hour: '2-digit', minute:'2-digit'});
+          
+          // Extraemos los datos guardados en el post o ponemos fallback si son posts viejos
+          const autorNombre = post.user_name || "Hacker Anónimo";
+          const autorAvatar = post.user_avatar || "https://placehold.co/24x24/222/ffcc00?text=X";
+
           feedContenedor.innerHTML += `
             <div class="post-card">
               <div class="post-header">
-                <span class="post-autor">Anónimo #${post.id}</span>
-                <span>${fecha}</span>
+                <img src="${autorAvatar}" class="post-avatar-mini" alt="avatar-mini">
+                <span class="post-autor">${autorNombre}</span>
+                <span class="post-fecha">${fecha}</span>
               </div>
               <div class="post-texto">${post.content}</div>
             </div>
@@ -244,15 +414,23 @@
       const txtArea = document.getElementById('nuevoPostTxt');
       const contenido = txtArea?.value.trim();
 
-      if (!contenido) return;
+      if (!contenido || !usuarioActual) return;
+
+      // Extraemos el nombre e imagen actuales del usuario de Discord
+      const nombreDiscord = usuarioActual.user_metadata.full_name || usuarioActual.user_metadata.name || "Usuario de Discord";
+      const avatarDiscord = usuarioActual.user_metadata.avatar_url || "";
 
       try {
         const { error } = await supabase
           .from('posts')
-          .insert([{ content: contenido }]);
+          .insert([{ 
+            content: contenido,
+            user_name: nombreDiscord,
+            user_avatar: avatarDiscord
+          }]);
 
         if (error) {
-          alert("Error de Permisos RLS: " + error.message);
+          alert("Error de Permisos RLS o Columnas: " + error.message);
         } else {
           txtArea.value = "";
           cargarFeed();
@@ -262,16 +440,14 @@
       }
     }
 
-    // --- LISTENERS SEGUROS ---
+    // --- INICIALIZACIÓN ---
     document.addEventListener("DOMContentLoaded", () => {
+      checarSesion();
       cargarFeed();
-      
-      // Vinculamos el botón de publicar de forma segura
-      document.getElementById('btnPublicar')?.addEventListener('click', publicarMensaje);
     });
   </script>
 
-  <!-- SCRIPT BASE INDEPENDIENTE (Asegura que el menú funcione aunque falle internet) -->
+  <!-- MENÚ TOGGLE -->
   <script>
     document.getElementById('btnMenuToggle').addEventListener('click', () => {
       document.getElementById("sidebar").classList.toggle("abierto");
