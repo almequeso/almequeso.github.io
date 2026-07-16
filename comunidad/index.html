@@ -164,7 +164,8 @@
 
 <body>
 
-  <div class="menuBtn" onclick="toggleMenu()">☰</div>
+  <!-- El botón ahora ejecuta la función directo sin importar caídas de red -->
+  <div class="menuBtn" id="btnMenuToggle">☰</div>
 
   <div class="sidebar" id="sidebar">
     <h2>🌌 MENÚ</h2>
@@ -178,52 +179,32 @@
   <div class="comunidad-container">
     <div class="titulo-seccion">NEXUS FEED</div>
 
-    <!-- Formulario para crear una publicación -->
     <div class="caja-publicar">
       <textarea id="nuevoPostTxt" placeholder="Comparte tus teorías sobre Theoktónos o saluda a la resistencia..."></textarea>
       <div class="area-botones">
-        <button class="btn-cyber" onclick="publicarMensaje()">Enviar al Feed</button>
+        <button class="btn-cyber" id="btnPublicar">Enviar al Feed</button>
       </div>
     </div>
 
-    <!-- Contenedor del Feed -->
     <div class="feed-posts" id="feedContenedor">
       <div style="text-align: center; opacity: 0.5;">Cargando transmisiones...</div>
     </div>
   </div>
 
-  <!-- Carga de la librería oficial de Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- LEVANTAMIENTO CON MÓDULOS JS (Aislado de fallas de entorno globales) -->
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
 
-  <script>
-    // --- CONFIGURACIÓN DE LAS LLAVES DE SUPABASE ---
     const SUPABASE_URL = "https://npbasgpplokftgibzomb.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wYmFzZ3BwbG9rZnRnaWJ6b21iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyMzIyODIsImV4cCI6MjA5OTgwODI4Mn0.luXHQV3TbJ9kzQbzXzE92L2HBiCOvSewWn6dLAJOWts";
 
-    let supabase;
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // Inicialización ultra-compatible
-    function inicializarSupabase() {
-      try {
-        if (window.supabase && window.supabase.createClient) {
-          supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        } else if (window.supabase && window.supabase.supabasejs) {
-          supabase = window.supabase.supabasejs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        } else {
-          throw new Error("Objeto global no encontrado");
-        }
-      } catch (e) {
-        document.getElementById('feedContenedor').innerHTML = `<div style="color:#ffcc00; text-align:center; padding: 20px;">[SISTEMA]: Conectando con Nexus Feed...</div>`;
-      }
-    }
-
-    // --- LÓGICA PARA CARGAR LOS POSTS ---
+    // --- CARGAR FEED ---
     async function cargarFeed() {
-      if (!supabase) inicializarSupabase();
-      if (!supabase) return;
-      
       const feedContenedor = document.getElementById('feedContenedor');
-      
+      if (!feedContenedor) return;
+
       try {
         const { data: posts, error } = await supabase
           .from('posts')
@@ -231,11 +212,11 @@
           .order('created_at', { ascending: false });
 
         if (error) {
-          feedContenedor.innerHTML = `<div style="color:#ff4444; text-align:center;">Error: ${error.message}</div>`;
+          feedContenedor.innerHTML = `<div style="color:#ff4444; text-align:center;">Error Base: ${error.message}</div>`;
           return;
         }
 
-        if(posts.length === 0) {
+        if (posts.length === 0) {
           feedContenedor.innerHTML = `<div style="text-align:center; opacity:0.5;">Aún no hay transmisiones en el feed. ¡Sé el primero!</div>`;
           return;
         }
@@ -243,7 +224,6 @@
         feedContenedor.innerHTML = "";
         posts.forEach(post => {
           const fecha = new Date(post.created_at).toLocaleDateString('es-ES', {hour: '2-digit', minute:'2-digit'});
-          
           feedContenedor.innerHTML += `
             <div class="post-card">
               <div class="post-header">
@@ -255,17 +235,14 @@
           `;
         });
       } catch (err) {
-        feedContenedor.innerHTML = `<div style="color:#ff4444; text-align:center;">Fallo de red al conectar al Feed.</div>`;
+        feedContenedor.innerHTML = `<div style="color:#ff4444; text-align:center;">Error de red en Nexus.</div>`;
       }
     }
 
-    // --- LÓGICA PARA PUBLICAR ---
+    // --- ENVIAR MENSAJE ---
     async function publicarMensaje() {
-      if (!supabase) inicializarSupabase();
-      if (!supabase) return;
-
       const txtArea = document.getElementById('nuevoPostTxt');
-      const contenido = txtArea.value.trim();
+      const contenido = txtArea?.value.trim();
 
       if (!contenido) return;
 
@@ -275,25 +252,30 @@
           .insert([{ content: contenido }]);
 
         if (error) {
-          alert("Error de Permisos: " + error.message);
+          alert("Error de Permisos RLS: " + error.message);
         } else {
           txtArea.value = "";
           cargarFeed();
         }
       } catch (err) {
-        alert("Error de conexión al enviar el post.");
+        alert("Fallo de conexión al enviar.");
       }
     }
 
-    // Cargar todo al arrancar la página
+    // --- LISTENERS SEGUROS ---
     document.addEventListener("DOMContentLoaded", () => {
-      inicializarSupabase();
       cargarFeed();
+      
+      // Vinculamos el botón de publicar de forma segura
+      document.getElementById('btnPublicar')?.addEventListener('click', publicarMensaje);
     });
+  </script>
 
-    function toggleMenu() {
+  <!-- SCRIPT BASE INDEPENDIENTE (Asegura que el menú funcione aunque falle internet) -->
+  <script>
+    document.getElementById('btnMenuToggle').addEventListener('click', () => {
       document.getElementById("sidebar").classList.toggle("abierto");
-    }
+    });
   </script>
 </body>
 
