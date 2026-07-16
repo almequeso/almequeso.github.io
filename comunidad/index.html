@@ -195,20 +195,18 @@
     </div>
   </div>
 
-  <script>
+    <script>
     // --- 1. CONFIGURACIÓN DE LAS LLAVES DE SUPABASE ---
-    // Reemplaza estos strings con los datos reales que te da Supabase en los ajustes de tu API
     const SUPABASE_URL = "https://npbasgpplokftgibzomb.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wYmFzZ3BwbG9rZnRnaWJ6b21iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyMzIyODIsImV4cCI6MjA5OTgwODI4Mn0.luXHQV3TbJ9kzQbzXzE92L2HBiCOvSewWn6dLAJOWts";
 
-    // Inicializamos el cliente de Supabase globalmente
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // CORRECCIÓN AQUÍ: Usar el espacio de nombres correcto de la CDN v2
+    const supabase = supabase.supabasejs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     // --- 2. LOGICA PARA CARGAR LOS POSTS ---
     async function cargarFeed() {
       const feedContenedor = document.getElementById('feedContenedor');
       
-      // Hacemos la consulta a la tabla 'posts' (ordenados del más nuevo al más viejo)
       const { data: posts, error } = await supabase
         .from('posts')
         .select('*')
@@ -220,13 +218,11 @@
         return;
       }
 
-      // Si está vacía
       if(posts.length === 0) {
         feedContenedor.innerHTML = `<div style="text-align:center; opacity:0.5;">Aún no hay transmisiones en el feed. ¡Sé el primero!</div>`;
         return;
       }
 
-      // Renderizar los posts en el HTML
       feedContenedor.innerHTML = "";
       posts.forEach(post => {
         const fecha = new Date(post.created_at).toLocaleDateString('es-ES', {hour: '2-digit', minute:'2-digit'});
@@ -248,28 +244,27 @@
       const txtArea = document.getElementById('nuevoPostTxt');
       const contenido = txtArea.value.trim();
 
-      if (!contenido) return; // Evitar posts vacíos
+      if (!contenido) return;
 
-      // Insertar una nueva fila en la tabla 'posts'
       const { error } = await supabase
         .from('posts')
         .insert([{ content: contenido }]);
 
       if (error) {
-        alert("No se pudo enviar el post. Revisa los permisos.");
+        alert("No se pudo enviar el post. Revisa si configuraste bien las políticas RLS.");
         console.error(error);
       } else {
-        txtArea.value = ""; // Limpiar la caja de texto
-        cargarFeed(); // Recargar el feed para ver el nuevo post
+        txtArea.value = "";
+        cargarFeed();
       }
     }
 
-    // Cargar los posts inmediatamente al abrir la página
     document.addEventListener("DOMContentLoaded", cargarFeed);
 
     function toggleMenu() {
       document.getElementById("sidebar").classList.toggle("abierto");
     }
-  </script>
+    </script>
+  
 </body>
 </html>
