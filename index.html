@@ -351,32 +351,65 @@ secretButton.onclick = () => {
 
     // Si el usuario sí está logueado, inicia el hackeo épico:
     secretClicks++;
+if(secretClicks===5)
 
-    if(secretClicks === 5){
-        secretButton.innerText = "⚡ Accediendo a los archivos de la novela...";
-    }
-    else if(secretClicks === 10){
-        secretButton.innerText = "⚠ Alerta: Filtración de Spoilers detectada";
-    }
-    else if(secretClicks === 18){
-        secretButton.innerText = "🌌 Se viene el Void...";
-    }
-    else if(secretClicks === 22){
-        secretButton.innerText = "💥 CONVERGENCIA DE REALIDAD INMINENTE";
-        secretButton.style.animation = "temblar .5s infinite";
-        secretButton.style.color = "#ff4dff";
-        secretButton.style.textShadow = "0 0 20px #ff4dff";
-    }
-    else if(secretClicks >= 23){
-        secretButton.innerText = "🔓 ACCESO AUTORIZADO";
-        document.body.style.transition = "1s";
-        document.body.style.animation = "acceso 1s";
-        
-        setTimeout(() => {
-            window.location.href = "./23quesoultra/";
-        }, 1200);
-    }
+secretButton.innerText=
+"🔒 Acceso denegado";
+
+
+else if(secretClicks===10)
+
+secretButton.innerText=
+"🔒 Intento registrado";
+
+
+else if(secretClicks===18)
+
+secretButton.innerText=
+"🔒 ¿Por qué insistes...?";
+
+
+else if(secretClicks===22){
+
+secretButton.innerText=
+"⚠ Nivel de autorización detectado";
+
+secretButton.style.animation=
+"temblar .5s infinite";
+
+secretButton.style.color=
+"#ff4dff";
+
+secretButton.style.textShadow=
+"0 0 20px #ff4dff";
+
+}
+
+
+else if(secretClicks>=23){
+
+secretButton.innerText=
+"🔓 ACCESO AUTORIZADO";
+
+document.body.style.transition=
+"1s";
+
+document.body.style.animation=
+"acceso 1s";
+
+setTimeout(()=>{
+
+window.location.href=
+"../../23quesoultra/";
+
+},1200);
+
+}
+
+
 };
+
+
 </script>
 
 </body>
