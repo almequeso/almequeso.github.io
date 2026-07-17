@@ -291,22 +291,27 @@
     <div class="frase">"Advertencia: esta página puede contener niveles peligrosos de queso."</div>
 </div>
 
-<script>
+    <script>
 // --- CONFIGURACIÓN DE SUPABASE ---
-// Recuerda cambiar estos valores por los tuyos reales de Supabase
 const SUPABASE_URL = "https://npbasgpplokftgibzomb.supabase.co"; 
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wYmFzZ3BwbG9rZnRnaWJ6b21iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyMzIyODIsImV4cCI6MjA5OTgwODI4Mn0.luXHQV3TbJ9kzQbzXzE92L2HBiCOvSewWn6dLAJOWts"; 
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// CORRECCIÓN: Usamos supabaseJS.createClient para evitar que choque el nombre de la variable
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 let usuarioLogueado = false;
 
 // Comprobar si hay sesión activa al cargar la página
 async function checarSesion() {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (session) {
-        usuarioLogueado = true;
-        // Cambiamos el texto sutilmente para dar una pista de que ya puede ser hackeado
-        document.getElementById("secretButton").innerText = "🔒 Archivo Encriptado";
+    try {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        if (session) {
+            usuarioLogueado = true;
+            // Cambiamos el texto sutilmente para dar una pista de que ya puede ser hackeado
+            document.getElementById("secretButton").innerText = "🔒 Archivo Encriptado";
+        }
+    } catch (error) {
+        console.log("Error de conexión con el Nexo:", error);
     }
 }
 checarSesion();
@@ -346,71 +351,39 @@ secretButton.onclick = () => {
             secretButton.innerText = "🔒 Archivo desconocido";
             secretButton.style.color = "white";
         }, 2000);
-        return; // Detiene la ejecución para que no sume clics
+        return; 
     }
 
-    // Si el usuario sí está logueado, inicia el hackeo épico:
+    // Si el usuario sí está logueado, inicia el hackeo épico con tus diálogos:
     secretClicks++;
-if(secretClicks===5)
 
-secretButton.innerText=
-"🔒 Acceso denegado";
-
-
-else if(secretClicks===10)
-
-secretButton.innerText=
-"🔒 Intento registrado";
-
-
-else if(secretClicks===18)
-
-secretButton.innerText=
-"🔒 ¿Por qué insistes...?";
-
-
-else if(secretClicks===22){
-
-secretButton.innerText=
-"⚠ Nivel de autorización detectado";
-
-secretButton.style.animation=
-"temblar .5s infinite";
-
-secretButton.style.color=
-"#ff4dff";
-
-secretButton.style.textShadow=
-"0 0 20px #ff4dff";
-
-}
-
-
-else if(secretClicks>=23){
-
-secretButton.innerText=
-"🔓 ACCESO AUTORIZADO";
-
-document.body.style.transition=
-"1s";
-
-document.body.style.animation=
-"acceso 1s";
-
-setTimeout(()=>{
-
-window.location.href=
-"../../23quesoultra/";
-
-},1200);
-
-}
-
-
+    if(secretClicks === 5) {
+        secretButton.innerText = "🔒 Acceso denegado";
+    }
+    else if(secretClicks === 10) {
+        secretButton.innerText = "🔒 Intento registrado";
+    }
+    else if(secretClicks === 18) {
+        secretButton.innerText = "🔒 ¿Por qué insistes...?";
+    }
+    else if(secretClicks === 22) {
+        secretButton.innerText = "⚠ Nivel de autorización detectado";
+        secretButton.style.animation = "temblar .5s infinite";
+        secretButton.style.color = "#ff4dff";
+        secretButton.style.textShadow = "0 0 20px #ff4dff";
+    }
+    else if(secretClicks >= 23) {
+        secretButton.innerText = "🔓 ACCESO AUTORIZADO";
+        document.body.style.transition = "1s";
+        document.body.style.animation = "acceso 1s";
+        
+        setTimeout(() => {
+            window.location.href = "../../23quesoultra/";
+        }, 1200);
+    }
 };
-
-
-</script>
+    </script>
+    
 
 </body>
 </html>
