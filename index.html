@@ -2,641 +2,381 @@
 <html lang="es">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Almequeso</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=JetBrains+Mono&display=swap" rel="stylesheet">
-
-<style>
-
-.menuBtn:hover{
-
-transform:scale(1.1);
-
-box-shadow:
-0 0 30px #b44cff;
-
-}
-
-.menuBtn{
-
-position:fixed;
-
-top:20px;
-left:20px;
-
-font-size:2rem;
-
-padding:10px 16px;
-
-border-radius:15px;
-
-cursor:pointer;
-
-background:rgba(20,0,35,.7);
-
-border:1px solid #b44cff;
-
-box-shadow:0 0 20px #7d00ff;
-
-z-index:1001;
-}
-
-.sidebar{
-
-position:fixed;
-
-top:0;
-left:-320px;
-
-width:280px;
-height:100vh;
-
-padding-top:90px;
-
-background:rgba(5,0,15,.95);
-
-backdrop-filter:blur(15px);
-
-border-right:1px solid #b44cff;
-
-transition:.5s;
-
-z-index:1000;
-}
-
-.sidebar.abierto{
-
-left:0;
-}
-
-.sidebar h2{
-
-text-align:center;
-
-margin-bottom:35px;
-}
-
-.sidebar a,
-.sidebar div{
-
-display:block;
-
-padding:18px 30px;
-
-color:white;
-
-text-decoration:none;
-
-cursor:pointer;
-
-transition:.3s;
-}
-
-.sidebar a:hover,
-.sidebar div:hover{
-
-background:rgba(180,0,255,.15);
-
-padding-left:40px;
-}
-
-.overlay{
-
-position:fixed;
-
-inset:0;
-
-background:rgba(0,0,0,.5);
-
-opacity:0;
-
-pointer-events:none;
-
-transition:.4s;
-
-z-index:999;
-}
-
-.overlay.activo{
-
-opacity:1;
-
-pointer-events:auto;
-}
-
-body{
-    margin:0;
-    min-height:100vh;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    background:
-    radial-gradient(circle at center,#34004f 0%,#0c0215 45%,#000 100%);
-
-    color:white;
-    font-family:'JetBrains Mono', monospace;
-    overflow-x:hidden;
-}
-
-body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-
-    background:
-    repeating-linear-gradient(
-    90deg,
-    transparent,
-    transparent 120px,
-    rgba(255,255,255,.03) 121px
-    );
-
-    pointer-events:none;
-}
-
-.card{
-
-    width:min(92%,550px);
-
-    padding:40px 25px;
-
-    text-align:center;
-
-    border-radius:35px;
-
-    background:rgba(10,0,20,.6);
-
-    backdrop-filter:blur(12px);
-
-    border:1px solid #b44cff;
-
-    box-shadow:
-    0 0 20px #8b00ff,
-    0 0 70px rgba(150,0,255,.4);
-}
-
-.pfp{
-
-    width:190px;
-    height:190px;
-
-    border-radius:50%;
-
-    object-fit:cover;
-
-    border:4px solid #c95cff;
-
-    box-shadow:
-    0 0 25px #c95cff,
-    0 0 70px #7000ff;
-
-    transition:.5s;
-}
-
-.pfp:hover{
-    transform:scale(1.05);
-}
-
-.nombre{
-
-    margin-top:25px;
-
-    font-size:3rem;
-
-    cursor:pointer;
-
-    font-family:'Cinzel',serif;
-
-    text-shadow:
-    0 0 10px #d67dff,
-    0 0 30px #b300ff;
-}
-
-.sub{
-
-    margin-top:12px;
-
-    opacity:.8;
-
-    line-height:1.6;
-}
-
-.boton{
-
-    margin-top:30px;
-
-    padding:15px;
-
-    border-radius:20px;
-
-    background:#250034;
-
-    border:1px solid #ce7cff;
-
-    cursor:pointer;
-
-    transition:.3s;
-}
-
-.boton:hover{
-
-    box-shadow:
-    0 0 20px #c95cff;
-}
-
-.redes{
-
-    display:none;
-
-    flex-direction:column;
-
-    gap:12px;
-
-    margin-top:20px;
-}
-
-.redes a{
-
-    text-decoration:none;
-
-    color:white;
-
-    padding:14px;
-
-    border-radius:15px;
-
-    background:rgba(255,255,255,.03);
-
-    border:1px solid #7a00b8;
-
-    transition:.3s;
-}
-
-.redes a:hover{
-
-    transform:scale(1.03);
-
-    box-shadow:
-    0 0 15px #b300ff;
-}
-
-.libroCard{
-
-    display:flex;
-
-    gap:18px;
-
-    align-items:center;
-
-    margin-top:35px;
-
-    padding:18px;
-
-    text-decoration:none;
-
-    color:white;
-
-    border-radius:25px;
-
-    background:rgba(255,255,255,.04);
-
-    border:1px solid #b44cff;
-
-    transition:.4s;
-
-    animation:brillo 3s infinite;
-}
-
-.libroCard:hover{
-
-    transform:scale(1.03);
-}
-
-.portadaLibro{
-
-    width:95px;
-    height:140px;
-
-    object-fit:cover;
-
-    border-radius:15px;
-
-    border:2px solid #d67dff;
-}
-
-.tituloLibro{
-
-    font-family:'Cinzel',serif;
-
-    font-size:1.1rem;
-
-    margin-bottom:10px;
-
-    text-shadow:
-    0 0 10px #d67dff;
-}
-
-.descLibro{
-
-    opacity:.8;
-
-    font-size:.9rem;
-}
-
-.frase{
-
-    margin-top:35px;
-
-    opacity:.7;
-
-    font-style:italic;
-}
-
-@keyframes brillo{
-
-0%,100%{
-
-box-shadow:
-0 0 15px rgba(180,0,255,.25);
-
-}
-
-50%{
-
-box-shadow:
-0 0 35px rgba(180,0,255,.7);
-
-}
-
-}
-
-@keyframes acceso{
-
-0%{
-
-filter:brightness(1);
-
-}
-
-50%{
-
-filter:brightness(2.5);
-
-}
-
-100%{
-
-filter:brightness(1);
-
-}
-
-}
-
-@keyframes temblar{
-
-0%{transform:translateX(0);}
-25%{transform:translateX(-5px);}
-50%{transform:translateX(5px);}
-75%{transform:translateX(-5px);}
-100%{transform:translateX(0);}
-
-}
-
-#secretButton{
-
-transition:.4s;
-
-    }
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Almequeso</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    
+    <!-- CONEXIÓN CON SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        .menuBtn:hover{
+            transform:scale(1.1);
+            box-shadow: 0 0 30px #b44cff;
+        }
+
+        .menuBtn{
+            position:fixed;
+            top:20px;
+            left:20px;
+            font-size:2rem;
+            padding:10px 16px;
+            border-radius:15px;
+            cursor:pointer;
+            background:rgba(20,0,35,.7);
+            border:1px solid #b44cff;
+            box-shadow:0 0 20px #7d00ff;
+            z-index:1001;
+        }
+
+        .sidebar{
+            position:fixed;
+            top:0;
+            left:-320px;
+            width:280px;
+            height:100vh;
+            padding-top:90px;
+            background:rgba(5,0,15,.95);
+            backdrop-filter:blur(15px);
+            border-right:1px solid #b44cff;
+            transition:.5s;
+            z-index:1000;
+        }
+
+        .sidebar.abierto{
+            left:0;
+        }
+
+        .sidebar h2{
+            text-align:center;
+            margin-bottom:35px;
+        }
+
+        .sidebar a,
+        .sidebar div{
+            display:block;
+            padding:18px 30px;
+            color:white;
+            text-decoration:none;
+            cursor:pointer;
+            transition:.3s;
+        }
+
+        .sidebar a:hover,
+        .sidebar div:hover{
+            background:rgba(180,0,255,.15);
+            padding-left:40px;
+        }
+
+        .overlay{
+            position:fixed;
+            inset:0;
+            background:rgba(0,0,0,.5);
+            opacity:0;
+            pointer-events:none;
+            transition:.4s;
+            z-index:999;
+        }
+
+        .overlay.activo{
+            opacity:1;
+            pointer-events:auto;
+        }
+
+        body{
+            margin:0;
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background: radial-gradient(circle at center,#34004f 0%,#0c0215 45%,#000 100%);
+            color:white;
+            font-family:'JetBrains Mono', monospace;
+            overflow-x:hidden;
+        }
+
+        body::before{
+            content:"";
+            position:fixed;
+            inset:0;
+            background: repeating-linear-gradient(90deg, transparent, transparent 120px, rgba(255,255,255,.03) 121px);
+            pointer-events:none;
+        }
+
+        .card{
+            width:min(92%,550px);
+            padding:40px 25px;
+            text-align:center;
+            border-radius:35px;
+            background:rgba(10,0,20,.6);
+            backdrop-filter:blur(12px);
+            border:1px solid #b44cff;
+            box-shadow: 0 0 20px #8b00ff, 0 0 70px rgba(150,0,255,.4);
+        }
+
+        .pfp{
+            width:190px;
+            height:190px;
+            border-radius:50%;
+            object-fit:cover;
+            border:4px solid #c95cff;
+            box-shadow: 0 0 25px #c95cff, 0 0 70px #7000ff;
+            transition:.5s;
+        }
+
+        .pfp:hover{
+            transform:scale(1.05);
+        }
+
+        .nombre{
+            margin-top:25px;
+            font-size:3rem;
+            cursor:pointer;
+            font-family:'Cinzel',serif;
+            text-shadow: 0 0 10px #d67dff, 0 0 30px #b300ff;
+        }
+
+        .sub{
+            margin-top:12px;
+            opacity:.8;
+            line-height:1.6;
+        }
+
+        .boton{
+            margin-top:30px;
+            padding:15px;
+            border-radius:20px;
+            background:#250034;
+            border:1px solid #ce7cff;
+            cursor:pointer;
+            transition:.3s;
+        }
+
+        .boton:hover{
+            box-shadow: 0 0 20px #c95cff;
+        }
+
+        .redes{
+            display:none;
+            flex-direction:column;
+            gap:12px;
+            margin-top:20px;
+        }
+
+        .redes a{
+            text-decoration:none;
+            color:white;
+            padding:14px;
+            border-radius:15px;
+            background:rgba(255,255,255,.03);
+            border:1px solid #7a00b8;
+            transition:.3s;
+        }
+
+        .redes a:hover{
+            transform:scale(1.03);
+            box-shadow: 0 0 15px #b300ff;
+        }
+
+        .libroCard{
+            display:flex;
+            gap:18px;
+            align-items:center;
+            margin-top:35px;
+            padding:18px;
+            text-decoration:none;
+            color:white;
+            border-radius:25px;
+            background:rgba(255,255,255,.04);
+            border:1px solid #b44cff;
+            transition:.4s;
+            animation:brillo 3s infinite;
+        }
+
+        .libroCard:hover{
+            transform:scale(1.03);
+        }
+
+        .portadaLibro{
+            width:95px;
+            height:140px;
+            object-fit:cover;
+            border-radius:15px;
+            border:2px solid #d67dff;
+        }
+
+        .tituloLibro{
+            font-family:'Cinzel',serif;
+            font-size:1.1rem;
+            margin-bottom:10px;
+            text-shadow: 0 0 10px #d67dff;
+        }
+
+        .descLibro{
+            opacity:.8;
+            font-size:.9rem;
+        }
+
+        .frase{
+            margin-top:35px;
+            opacity:.7;
+            font-style:italic;
+        }
+
+        @keyframes brillo{
+            0%,100%{ box-shadow: 0 0 15px rgba(180,0,255,.25); }
+            50%{ box-shadow: 0 0 35px rgba(180,0,255,.7); }
+        }
+
+        @keyframes acceso{
+            0%{ filter:brightness(1); }
+            50%{ filter:brightness(2.5); }
+            100%{ filter:brightness(1); }
+        }
+
+        @keyframes temblar{
+            0%{transform:translateX(0);}
+            25%{transform:translateX(-5px);}
+            50%{transform:translateX(5px);}
+            75%{transform:translateX(-5px);}
+            100%{transform:translateX(0);}
+        }
+
+        #secretButton{
+            transition:.4s;
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="menuBtn" onclick="toggleMenu()">☰
-</div>
-
-<div class="overlay" id="overlay"
-onclick="toggleMenu()"></div>
+<div class="menuBtn" onclick="toggleMenu()">☰</div>
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
 <div class="sidebar" id="sidebar">
-
-<h2>🌌 MENÚ</h2>
-
-<a href="./" onclick="toggleMenu()">🏠 Inicio</a>
-
-<a href="./libro/" onclick="toggleMenu()">📖 Libro</a>
-
-<a href="./lore/" onclick="toggleMenu()">🌌 Lore</a>
-
-<a href="./fanarts/" onclick="toggleMenu()">🎨 Fanarts</a>
-
-<a href="./comunidad/" onclick="toggleMenu()">💬 Comunidad</a>
-
-<div id="secretButton">
-
-🔒 Archivo desconocido
-
+    <h2>🌌 MENÚ</h2>
+    <a href="./" onclick="toggleMenu()">🏠 Inicio</a>
+    <a href="./libro/" onclick="toggleMenu()">📖 Libro</a>
+    <a href="./lore/" onclick="toggleMenu()">🌌 Lore</a>
+    <a href="./fanarts/" onclick="toggleMenu()">🎨 Fanarts</a>
+    <a href="./comunidad/" onclick="toggleMenu()">💬 Comunidad</a>
+    <div id="secretButton">🔒 Archivo desconocido</div>
 </div>
 
-</div>
 <div class="card">
+    <img src="burro.png" class="pfp">
+    <div class="nombre" id="nombre">Queso</div>
+    <div class="sub">Aquí encontrarás mis redes, proyectos, historias y demás cosas random provenientes del reino del queso.</div>
+    <div class="boton" onclick="abrirRedes()">✦ REDES SOCIALES ✦</div>
 
-<img src="burro.png" class="pfp">
+    <div class="redes" id="redes">
+        <a href="https://instagram.com/">📷 Instagram</a>
+        <a href="https://discord.com/">💬 Discord</a>
+        <a href="https://youtube.com/">▶ YouTube</a>
+        <a href="https://github.com/">💻 GitHub</a>
+        <a href="https://spotify.com/">🎵 Spotify</a>
+    </div>
 
-<div class="nombre" id="nombre">
+    <a href="https://getinkspired.com/story/610880/theoktónos—convergence-reality-/?ref=mobile" target="_blank" class="libroCard">
+        <img src="portada.jpg" class="portadaLibro">
+        <div>
+            <div class="tituloLibro">📖 Theoktónos — Convergence Reality</div>
+            <div class="descLibro">Una historia sobre entidades, convergencias de realidades y seres capaces de alterar el destino mismo. Pulsa aquí para leerla.</div>
+        </div>
+    </a>
 
-Queso
-
-</div>
-
-<div class="sub">
-
-Aquí encontrarás mis redes, proyectos, historias y demás cosas random provenientes del reino del queso.
-
-</div>
-
-<div class="boton" onclick="abrirRedes()">
-
-✦ REDES SOCIALES ✦
-
-</div>
-
-<div class="redes" id="redes">
-
-<a href="https://instagram.com/">📷 Instagram</a>
-
-<a href="https://discord.com/">💬 Discord</a>
-
-<a href="https://youtube.com/">▶ YouTube</a>
-
-<a href="https://github.com/">💻 GitHub</a>
-
-<a href="https://spotify.com/">🎵 Spotify</a>
-
-</div>
-
-
-<a
-href="https://getinkspired.com/story/610880/theoktónos—convergence-reality-/?ref=mobile"
-target="_blank"
-class="libroCard">
-
-<img src="portada.jpg" class="portadaLibro">
-
-<div>
-
-<div class="tituloLibro">
-
-📖 Theoktónos — Convergence Reality
-
-</div>
-
-<div class="descLibro">
-
-Una historia sobre entidades, convergencias de realidades y seres capaces de alterar el destino mismo.
-
-Pulsa aquí para leerla.
-
-</div>
-
-</div>
-
-</a>
-
-
-<div class="frase">
-
-"Advertencia: esta página puede contener niveles peligrosos de queso."
-
-</div>
-
+    <div class="frase">"Advertencia: esta página puede contener niveles peligrosos de queso."</div>
 </div>
 
 <script>
+// --- CONFIGURACIÓN DE SUPABASE ---
+// Recuerda cambiar estos valores por los tuyos reales de Supabase
+const SUPABASE_URL = "https://npbasgpplokftgibzomb.supabase.co"; 
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wYmFzZ3BwbG9rZnRnaWJ6b21iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyMzIyODIsImV4cCI6MjA5OTgwODI4Mn0.luXHQV3TbJ9kzQbzXzE92L2HBiCOvSewWn6dLAJOWts"; 
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const nombres = [
-"Queso",
-"Almequeso",
-"Queso de chaqueta cool",
-"Queso de yupi",
-"Negas",
-"Broly",
-"Kasumi",
-"Heisei"
-];
+let usuarioLogueado = false;
 
+// Comprobar si hay sesión activa al cargar la página
+async function checarSesion() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+        usuarioLogueado = true;
+        // Cambiamos el texto sutilmente para dar una pista de que ya puede ser hackeado
+        document.getElementById("secretButton").innerText = "🔒 Archivo Encriptado";
+    }
+}
+checarSesion();
+
+// --- LÓGICA DEL MENÚ Y REDES ---
+const nombres = ["Queso", "Almequeso", "Queso de chaqueta cool", "Queso de yupi", "Negas", "Broly", "Kasumi", "Heisei"];
 let i = 0;
 
 document.getElementById("nombre").onclick = () => {
-
     i++;
-
-    if(i >= nombres.length)
-        i = 0;
-
-    document.getElementById("nombre").innerText =
-    nombres[i];
-
+    if(i >= nombres.length) i = 0;
+    document.getElementById("nombre").innerText = nombres[i];
 };
 
 function abrirRedes(){
-
-    const r =
-    document.getElementById("redes");
-
-    if(r.style.display === "flex")
-        r.style.display = "none";
-    else
-        r.style.display = "flex";
-
+    const r = document.getElementById("redes");
+    r.style.display = (r.style.display === "flex") ? "none" : "flex";
 }
 
 function toggleMenu(){
-
-    document
-    .getElementById("sidebar")
-    .classList.toggle("abierto");
-
-    document
-    .getElementById("overlay")
-    .classList.toggle("activo");
-
+    document.getElementById("sidebar").classList.toggle("abierto");
+    document.getElementById("overlay").classList.toggle("activo");
 }
 
+// --- LÓGICA DEL EASTER EGG PROTEGIDO ---
 let secretClicks = 0;
-
-const secretButton =
-document.getElementById("secretButton");
+const secretButton = document.getElementById("secretButton");
 
 secretButton.onclick = () => {
+    // ¡BARRERA DE INICIO DE SESIÓN!
+    if (!usuarioLogueado) {
+        secretButton.innerText = "❌ Bloqueo: Requiere cuenta del Nexo";
+        secretButton.style.color = "#ff4d4d";
+        
+        // Regresa al texto original después de 2 segundos
+        setTimeout(() => {
+            secretButton.innerText = "🔒 Archivo desconocido";
+            secretButton.style.color = "white";
+        }, 2000);
+        return; // Detiene la ejecución para que no sume clics
+    }
 
+    // Si el usuario sí está logueado, inicia el hackeo épico:
     secretClicks++;
 
     if(secretClicks === 5){
-
-        secretButton.innerText =
-        "🔒 Acceso denegado";
-
+        secretButton.innerText = "⚡ Accediendo a los archivos de la novela...";
     }
-
     else if(secretClicks === 10){
-
-        secretButton.innerText =
-        "🔒 Intento registrado";
-
+        secretButton.innerText = "⚠ Alerta: Filtración de Spoilers detectada";
     }
-
     else if(secretClicks === 18){
-
-        secretButton.innerText =
-        "🔒 ¿Por qué insistes...?";
-
+        secretButton.innerText = "🌌 Se viene el Void...";
     }
-
     else if(secretClicks === 22){
-
-        secretButton.innerText =
-        "⚠ Nivel de autorización detectado";
-        
-        secretButton.style.animation =
-        "temblar .5s infinite";
-
-        secretButton.style.color =
-        "#ff4dff";
-
-        secretButton.style.textShadow =
-        "0 0 20px #ff4dff";
-   
+        secretButton.innerText = "💥 CONVERGENCIA DE REALIDAD INMINENTE";
+        secretButton.style.animation = "temblar .5s infinite";
+        secretButton.style.color = "#ff4dff";
+        secretButton.style.textShadow = "0 0 20px #ff4dff";
     }
-
     else if(secretClicks >= 23){
-
-        secretButton.innerText =
-        "🔓 ACCESO AUTORIZADO";
-
-        document.body.style.transition =
-        "1s";
-
-        document.body.style.animation = 
-        "acceso 1s";
+        secretButton.innerText = "🔓 ACCESO AUTORIZADO";
+        document.body.style.transition = "1s";
+        document.body.style.animation = "acceso 1s";
         
         setTimeout(() => {
-
-            window.location.href =
-            "./23quesoultra/";
-
-        },1200);
-
+            window.location.href = "./23quesoultra/";
+        }, 1200);
     }
-
 };
-
 </script>
 
 </body>
