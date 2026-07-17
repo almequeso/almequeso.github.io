@@ -64,17 +64,31 @@
     </div>
 
     <script>
-        const supabaseClient = supabase.createClient("https://npbasgpplokftgibzomb.supabase.co", "TU_ANON_KEY_DE_SUPABASE_AQUI");
+    const SUPABASE_URL = "https://npbasgpplokftgibzomb.supabase.co"; 
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wYmFzZ3BwbG9rZnRnaWJ6b21iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyMzIyODIsImV4cCI6MjA5OTgwODI4Mn0.luXHQV3TbJ9kzQbzXzE92L2HBiCOvSewWn6dLAJOWts"; 
+    
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    
+    async function init() {
+        // CORRECCIÓN: Primero intentamos obtener la sesión activa del almacenamiento local
+        const { data: { session } } = await supabaseClient.auth.getSession();
         
-        async function init() {
-            const { data: { user } } = await supabaseClient.auth.getUser();
-            if (!user) {
-                document.body.innerHTML = "<h1>ACCESO DENEGADO // INTRUSO DETECTADO</h1>";
-            } else {
-                document.getElementById('user-info').innerText = "AUTORIZADO: " + user.user_metadata.full_name;
-            }
+        if (session && session.user) {
+            // Si hay sesión activa en el navegador, das luz verde de inmediato
+            document.getElementById('user-info').innerText = "AUTORIZADO: " + (session.user.user_metadata.full_name || session.user.user_metadata.name);
+        } else {
+            // Si no la encuentra a la primera, esperamos 1.5 segundos por si está cargando los tokens
+            setTimeout(async () => {
+                const { data: { user } } = await supabaseClient.auth.getUser();
+                if (!user) {
+                    document.body.innerHTML = "<h1 style='color:#ff4d4d; text-align:center; margin-top:100px;'>❌ ACCESO DENEGADO // INTRUSO DETECTADO</h1><p style='text-align:center; color:#666;'>Debes sincronizar tu cuenta en el Nexo Feed primero.</p>";
+                } else {
+                    document.getElementById('user-info').innerText = "AUTORIZADO: " + (user.user_metadata.full_name || user.user_metadata.name);
+                }
+            }, 1500);
         }
-        init();
+    }
+    init();
     </script>
-</body>
+    
 </html>
