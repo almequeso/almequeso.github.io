@@ -11,10 +11,26 @@
         h1 { color: #ff00c1; text-shadow: 0 0 10px #ff00c1; border-bottom: 2px solid #ff00c1; display: inline-block; }
         
         .seccion { margin-top: 40px; border: 1px solid #333; padding: 20px; border-radius: 10px; background: rgba(10,0,20,0.5); }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
         
-        img { width: 100%; border-radius: 8px; border: 1px solid #444; }
+        /* Estilos optimizados para la cuadrícula del Void */
+        .subtitulo-seccion { color: #666; font-size: 0.8rem; margin-top: -10px; margin-bottom: 20px; }
+        .grid-void { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
         
+        .tarjeta-arte { 
+            background: rgba(15, 0, 25, 0.6); border: 1px solid #ff00c1; 
+            border-radius: 6px; padding: 10px; transition: all 0.4s ease; 
+            box-shadow: 0 0 10px rgba(255, 0, 193, 0.1); 
+        }
+        .tarjeta-arte:hover { 
+            border-color: #00ff41; box-shadow: 0 0 20px rgba(0, 255, 65, 0.3); 
+            transform: translateY(-3px); 
+        }
+        
+        .img-leak { width: 100%; height: auto; border-radius: 4px; display: block; filter: brightness(0.9); transition: filter 0.3s ease; }
+        .tarjeta-arte:hover .img-leak { filter: brightness(1); }
+        
+        .info-leak { margin-top: 10px; font-size: 0.75rem; color: #00ff41; text-align: center; border-top: 1px dashed #333; padding-top: 8px; letter-spacing: 1px; }
+
         /* Efecto de Censura/Redactado */
         .redactado { background: #000; color: #000; padding: 0 5px; cursor: help; user-select: none; }
         .redactado:hover { color: #00ff41; background: #222; }
@@ -28,12 +44,35 @@
     <div id="user-info" style="color: #666; font-size: 0.8rem;">Verificando credenciales...</div>
     <h1>// ACCESO AL VOID: CONVERGENCIA</h1>
 
-    <!-- ARTE CONCEPTUAL -->
+    <!-- ARTE CONCEPTUAL FILTRADO -->
     <div class="seccion">
-        <h3>[A] ARTE CONCEPTUAL // NO PUBLICADO (ignora las imagenes rancias, aun no tengo que poner aqui xddd)</h3>
-        <div class="grid">
-            <img src="../portada.jpg" alt="Leak 1">
-            <img src="../burro.png" alt="Leak 2">
+        <h3>[A] ARTE CONCEPTUAL // ARCHIVOS RECUPERADOS C.S.G.I.</h3>
+        <p class="subtitulo-seccion">Registros visuales extraídos del nexo de datos confidenciales.</p>
+        
+        <div class="grid-void">
+            <!-- Archivo 1: Sala de Control -->
+            <div class="tarjeta-arte">
+                <img src="../img/salacsgi.png" alt="Registro 01: Centro de Misión C.S.G.I." class="img-leak">
+                <div class="info-leak">ID_ARCHIVO: SALA_CSGI.DAT</div>
+            </div>
+
+            <!-- Archivo 2: Anatomía Interna -->
+            <div class="tarjeta-arte">
+                <img src="../img/anatomiamaurin.png" alt="Registro 02: Estudio Anatómico Maurin" class="img-leak">
+                <div class="info-leak">ID_ARCHIVO: ANATOMIA_MAURIN.DAT</div>
+            </div>
+
+            <!-- Archivo 3: Variantes de Especie -->
+            <div class="tarjeta-arte">
+                <img src="../img/distintosmaurin.png" alt="Registro 03: Variaciones Genéticas" class="img-leak">
+                <div class="info-leak">ID_ARCHIVO: DISTINTOS_MAURIN.DAT</div>
+            </div>
+
+            <!-- Archivo 4: Núcleo de Conversión -->
+            <div class="tarjeta-arte">
+                <img src="../img/nucleoconversion.png" alt="Registro 04: Núcleo de Conversión" class="img-leak">
+                <div class="info-leak">ID_ARCHIVO: NUCLEO_CONVERSION.DAT</div>
+            </div>
         </div>
     </div>
 
@@ -70,14 +109,11 @@
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     
     async function init() {
-        // CORRECCIÓN: Primero intentamos obtener la sesión activa del almacenamiento local
         const { data: { session } } = await supabaseClient.auth.getSession();
         
         if (session && session.user) {
-            // Si hay sesión activa en el navegador, das luz verde de inmediato
             document.getElementById('user-info').innerText = "AUTORIZADO: " + (session.user.user_metadata.full_name || session.user.user_metadata.name);
         } else {
-            // Si no la encuentra a la primera, esperamos 1.5 segundos por si está cargando los tokens
             setTimeout(async () => {
                 const { data: { user } } = await supabaseClient.auth.getUser();
                 if (!user) {
@@ -90,5 +126,5 @@
     }
     init();
     </script>
-    
+</body>
 </html>
