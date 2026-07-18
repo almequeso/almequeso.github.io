@@ -6,7 +6,7 @@
     <title>Theoktónos — Libro</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
-        /* (Mismos estilos que ya tenías, los he mantenido intactos para que no rompa nada) */
+        /* === ESTILOS === */
         .menuBtn{ position:fixed; top:20px; left:20px; font-size:2rem; padding:10px 16px; border-radius:15px; cursor:pointer; background:rgba(20,0,35,.7); border:1px solid #b44cff; box-shadow:0 0 20px #7d00ff; z-index:1001; }
         .sidebar{ position:fixed; top:0; left:-320px; width:280px; height:100vh; padding-top:90px; background:rgba(5,0,15,.95); backdrop-filter:blur(15px); border-right:1px solid #b44cff; transition:.5s; z-index:1000; }
         .sidebar.abierto{ left:0; }
@@ -15,7 +15,7 @@
         .sidebar h2{ text-align:center; font-family:'Cinzel',serif; }
         .overlay{ position:fixed; inset:0; background:rgba(0,0,0,.5); opacity:0; pointer-events:none; transition:.4s; z-index:999; }
         .overlay.activo{ opacity:1; pointer-events:auto; }
-        body{ margin:0; min-height:100vh; padding:40px 20px; background: radial-gradient(circle at center, #34004f 0%, #0c0215 45%, #000 100%); color:white; font-family:'JetBrains Mono',monospace; }
+        body{ margin:0; min-height:100vh; padding:40px 20px; background:radial-gradient(circle at center, #34004f 0%, #0c0215 45%, #000 100%); color:white; font-family:'JetBrains Mono',monospace; }
         .contenedor{ max-width:900px; margin:auto; text-align:center; }
         .titulo{ font-family:'Cinzel',serif; font-size:3rem; text-shadow: 0 0 15px #d67dff, 0 0 40px #b300ff; }
         .subtitulo{ opacity:.8; font-size:1.2rem; }
@@ -59,28 +59,34 @@
         <p>Cuando las realidades convergen, seres capaces de alterar las leyes del universo deberán enfrentarse a amenazas que superan los límites de la existencia conocida.</p>
     </div>
 
-    <!-- AQUÍ CAMBIAMOS: Saga Inicios -->
+    <!-- Saga: Inicios -->
     <div class="seccion">
         <h2>🌌 Saga: Inicios</h2>
-        <p>Personajes principales involucrados en el despliegue del Escuadrón Redwood Sprout:</p>
         <div class="personajes">
-            <a href="personajes/theoktonos.html">🌌 Theoktónos (Líder)</a>
+            <a href="personajes/theoktonos.html">🌌 Theoktónos</a>
             <a href="personajes/aquanox.html">🔥 Aquanox Ardentius</a>
             <a href="personajes/transfigurator.html">🧬 Homo Transfigurator</a>
             <a href="personajes/fulgurifer.html">⚡ Fulgurifer Caeruleus</a>
-            <a href="personajes/mesedj.html">🌹 Mesedj</a>
-            <a href="personajes/anupalabdha.html">👤 Anupalabdha</a>
-            <!-- Puedes añadir el resto aquí -->
         </div>
     </div>
 
-    <!-- AQUÍ AÑADIMOS: Documentación Técnica -->
+    <!-- Archivos C.S.G.I. -->
     <div class="seccion">
-        <h2>📁 Documentación Técnica (C.S.G.I.)</h2>
+        <h2>📁 Archivos C.S.G.I.</h2>
         <div class="personajes">
-            <a href="clasificacion.html">💀 Informe: Clasificación de Megas y Omegas</a>
-            <a href="escuadron.html">🌱 Informe: Escuadrón Redwood Sprout</a>
+            <a href="csgi/clasificacion.html">💀 Informe: Clasificación de Megas y Omegas</a>
+            <a href="csgi/escuadron.html">🌱 Informe: Escuadrón Redwood Sprout</a>
         </div>
+    </div>
+
+    <div class="seccion">
+        <h2>📚 Sagas</h2>
+        <p>• Inicios<br><br>• Saga Kanzu<br><br>• Saga Revolución</p>
+    </div>
+
+    <div class="seccion">
+        <h2>✍️ Proceso de creación</h2>
+        <p>Aquí se contará cómo nació Theoktónos, sus ideas iniciales y la construcción del universo.</p>
     </div>
 
     <div class="frase">"Cada realidad tiene una historia. Pero no todas recuerdan quién la escribió."</div>
@@ -88,7 +94,8 @@
 
 <script>
     function toggleMenu(){ document.getElementById("sidebar").classList.toggle("abierto"); document.getElementById("overlay").classList.toggle("activo"); }
-    // (Tu lógica de secretButton intacta)
+    let secretClicks=0; const secretButton=document.getElementById("secretButton");
+    secretButton.onclick=()=>{ secretClicks++; if(secretClicks===5) secretButton.innerText="🔒 Acceso denegado"; else if(secretClicks===10) secretButton.innerText="🔒 Intento registrado"; else if(secretClicks===18) secretButton.innerText="🔒 ¿Por qué insistes...?"; else if(secretClicks===22){ secretButton.innerText="⚠ Nivel de autorización detectado"; secretButton.style.animation="temblar .5s infinite"; secretButton.style.color="#ff4dff"; secretButton.style.textShadow="0 0 20px #ff4dff"; } else if(secretClicks>=23){ secretButton.innerText="🔓 ACCESO AUTORIZADO"; document.body.style.transition="1s"; document.body.style.animation="acceso 1s"; setTimeout(()=>{ window.location.href="../../23quesoultra/"; },1200); } };
 </script>
 </body>
 </html>
