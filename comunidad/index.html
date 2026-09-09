@@ -108,59 +108,91 @@
       box-shadow: 0 0 25px rgba(88, 101, 242, 0.8);
     }
 
-    /* Perfil del usuario conectado */
-    .user-profile-bar {
+    /* Contenedor del perfil de usuario conectado */
+    .user-profile-card {
+      background: rgba(30, 30, 25, 0.6);
+      border: 1px solid rgba(255, 204, 0, 0.3);
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 25px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .user-profile-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(30, 30, 25, 0.6);
-      border: 1px solid rgba(255, 204, 0, 0.2);
-      padding: 12px 20px;
-      border-radius: 15px;
-      margin-bottom: 15px;
-      width: 100%;
+      gap: 12px;
     }
 
     .user-info {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .user-avatar {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       border: 2px solid #ffcc00;
       background: #222;
       object-fit: cover;
+      flex-shrink: 0;
     }
 
     .badge-admin {
       background: #ffcc00;
       color: #000;
-      font-size: 0.65rem;
+      font-size: 0.7rem;
       font-weight: bold;
-      padding: 2px 6px;
+      padding: 2px 8px;
       border-radius: 4px;
       text-transform: uppercase;
-      flex-shrink: 0;
+      display: inline-block;
+      line-height: 1.2;
+    }
+
+    .user-edit-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .input-cyber {
+      flex: 1;
+      min-width: 140px;
+      background: #0a0a08;
+      border: 1px solid #333;
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.85rem;
+    }
+
+    .input-cyber:focus {
+      border-color: #ffcc00;
+      outline: none;
     }
 
     .btn-logout {
-      background: transparent;
+      background: rgba(255, 68, 68, 0.1);
       color: #ff4444;
       border: 1px solid #ff4444;
       font-family: 'JetBrains Mono', monospace;
-      padding: 6px 14px;
+      padding: 8px 14px;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       transition: 0.3s;
     }
 
     .btn-logout:hover {
-      background: rgba(255, 68, 68, 0.1);
+      background: #ff4444;
+      color: #000;
     }
 
     /* Caja para escribir nuevos posts */
@@ -203,7 +235,7 @@
       border: none;
       font-family: 'JetBrains Mono', monospace;
       font-weight: bold;
-      padding: 10px 24px;
+      padding: 10px 20px;
       border-radius: 10px;
       cursor: pointer;
       box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
@@ -211,7 +243,7 @@
     }
 
     .btn-cyber:hover {
-      transform: scale(1.05);
+      transform: scale(1.03);
       box-shadow: 0 0 20px #ffcc00;
     }
 
@@ -230,34 +262,35 @@
       padding: 20px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.3);
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
     .post-header {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 8px;
       font-size: 0.85rem;
-      margin-bottom: 12px;
       width: 100%;
-      flex-wrap: nowrap;
+    }
+
+    .post-autor-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
     }
 
     .post-avatar-mini {
-      width: 24px;
-      height: 24px;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
       border: 1px solid #ffcc00;
       background: #222;
       flex-shrink: 0;
       object-fit: cover;
-    }
-
-    .autor-info {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      min-width: 0;
-      flex-shrink: 1;
     }
 
     .post-autor {
@@ -270,18 +303,30 @@
 
     .post-fecha {
       opacity: 0.5;
+      font-size: 0.75rem;
       white-space: nowrap;
       flex-shrink: 0;
     }
 
+    .post-texto {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    /* Footer del post para el botón de borrado */
+    .post-footer {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 4px;
+    }
+
     .btn-borrar-post {
-      margin-left: auto;
-      flex-shrink: 0;
       background: transparent;
       color: #ff4444;
       border: 1px solid rgba(255, 68, 68, 0.4);
       font-family: inherit;
-      padding: 4px 8px;
+      padding: 5px 12px;
       border-radius: 6px;
       cursor: pointer;
       font-size: 0.75rem;
@@ -291,12 +336,6 @@
     .btn-borrar-post:hover {
       background: rgba(255, 68, 68, 0.15);
       border-color: #ff4444;
-    }
-
-    .post-texto {
-      font-size: 0.95rem;
-      line-height: 1.5;
-      word-break: break-word;
     }
   </style>
 </head>
@@ -380,7 +419,7 @@
         .from('profiles')
         .select('*')
         .eq('id', user.id)
-        .single();
+        .maybeSingle();
 
       if (!profile) {
         const { data: nuevoPerfil } = await supabase
@@ -407,21 +446,29 @@
       if (user && perfilUsuario) {
         const nombre = perfilUsuario.username || "Guerrero";
         const avatarUrl = perfilUsuario.avatar_url || "";
-        const esAdmin = perfilUsuario.is_admin === true;
+        const esAdmin = perfilUsuario.is_admin === true || perfilUsuario.is_admin === "true";
 
         zonaAuth.innerHTML = `
-          <div class="user-profile-bar">
-            <div class="user-info">
-              <img src="${avatarUrl}" class="user-avatar" alt="Avatar" onerror="this.src='https://placehold.co/40x40/222/ffcc00?text=?'">
-              <span>Conectado como: <strong style="color:#ffcc00;">${nombre}</strong> ${esAdmin ? '<span class="badge-admin">Admin</span>' : ''}</span>
+          <div class="user-profile-card">
+            <div class="user-profile-header">
+              <div class="user-info">
+                <img src="${avatarUrl}" class="user-avatar" alt="Avatar" onerror="this.src='https://placehold.co/40x40/222/ffcc00?text=?'">
+                <div>
+                  <div style="display:flex; align-items:center; gap:6px;">
+                    <strong style="color:#ffcc00;">${nombre}</strong>
+                    ${esAdmin ? '<span class="badge-admin">Admin</span>' : ''}
+                  </div>
+                  <span style="font-size:0.75rem; opacity:0.6;">Sincronizado</span>
+                </div>
+              </div>
+              <button class="btn-logout" id="btnCerrarSesion">Desconectar</button>
             </div>
-            <button class="btn-logout" id="btnCerrarSesion">Desconectar</button>
-          </div>
-          
-          <div style="background: rgba(30, 30, 25, 0.4); border: 1px solid rgba(255, 204, 0, 0.2); padding: 12px; border-radius: 12px; margin-bottom: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
-            <input type="text" id="editUsername" value="${nombre}" placeholder="Nuevo Nickname" style="flex:1; background:#0a0a08; border:1px solid #333; color:white; padding:8px; border-radius:8px; font-family:inherit;">
-            <input type="text" id="editAvatar" value="${avatarUrl}" placeholder="URL Avatar" style="flex:1; background:#0a0a08; border:1px solid #333; color:white; padding:8px; border-radius:8px; font-family:inherit;">
-            <button id="btnGuardarPerfil" class="btn-cyber" style="padding: 8px 16px; font-size: 0.85rem;">Editar Perfil</button>
+
+            <div class="user-edit-row">
+              <input type="text" id="editUsername" class="input-cyber" value="${nombre}" placeholder="Nuevo Nickname">
+              <input type="text" id="editAvatar" class="input-cyber" value="${avatarUrl}" placeholder="URL Avatar">
+              <button id="btnGuardarPerfil" class="btn-cyber" style="padding: 8px 14px; font-size: 0.85rem;">Guardar</button>
+            </div>
           </div>
 
           <div class="caja-publicar">
@@ -483,7 +530,7 @@
         alert("Error al actualizar perfil: " + error.message);
       } else {
         perfilUsuario = data;
-        alert("Perfil actualizado correctamente.");
+        alert("Perfil actualizado.");
         actualizarInterfazUsuario(usuarioActual);
         cargarFeed();
       }
@@ -503,7 +550,7 @@
             user_id,
             user_name,
             user_avatar,
-            profiles (
+            profiles!left (
               username,
               avatar_url,
               is_admin
@@ -523,15 +570,16 @@
 
         feedContenedor.innerHTML = "";
         
-        const soyAdmin = perfilUsuario?.is_admin === true;
+        const soyAdmin = perfilUsuario?.is_admin === true || perfilUsuario?.is_admin === "true";
 
         posts.forEach(post => {
           const fecha = new Date(post.created_at).toLocaleDateString('es-ES', {hour: '2-digit', minute:'2-digit'});
           
           const autorNombre = post.profiles?.username || post.user_name || "Hacker Anónimo";
-          const autorAvatar = post.profiles?.avatar_url || post.user_avatar || "https://placehold.co/24x24/222/ffcc00?text=X";
-          const autorEsAdmin = post.profiles?.is_admin === true;
+          const autorAvatar = post.profiles?.avatar_url || post.user_avatar || "https://placehold.co/26x26/222/ffcc00?text=X";
           
+          const autorEsAdmin = post.profiles?.is_admin === true || post.profiles?.is_admin === "true";
+
           const esMiPost = usuarioActual && (usuarioActual.id === post.user_id);
           const puedoBorrar = esMiPost || soyAdmin;
 
@@ -539,15 +587,19 @@
           postElement.className = 'post-card';
           postElement.innerHTML = `
             <div class="post-header">
-              <img src="${autorAvatar}" class="post-avatar-mini" alt="avatar-mini" onerror="this.src='https://placehold.co/24x24/222/ffcc00?text=?'">
-              <div class="autor-info">
+              <div class="post-autor-box">
+                <img src="${autorAvatar}" class="post-avatar-mini" alt="avatar" onerror="this.src='https://placehold.co/26x26/222/ffcc00?text=?'">
                 <span class="post-autor">${autorNombre}</span>
                 ${autorEsAdmin ? '<span class="badge-admin">Admin</span>' : ''}
               </div>
               <span class="post-fecha">${fecha}</span>
-              ${puedoBorrar ? `<button class="btn-borrar-post">🗑️ Borrar</button>` : ''}
             </div>
             <div class="post-texto">${post.content}</div>
+            ${puedoBorrar ? `
+              <div class="post-footer">
+                <button class="btn-borrar-post">🗑️ Borrar mensaje</button>
+              </div>
+            ` : ''}
           `;
 
           if (puedoBorrar) {
@@ -592,23 +644,4 @@
     }
 
     async function borrarPost(postId) {
-      if (!confirm("¿Seguro que quieres eliminar esta transmisión?")) return;
-
-      const { error } = await supabase
-        .from('posts')
-        .delete()
-        .eq('id', postId);
-
-      if (error) {
-        alert("Error al borrar: " + error.message);
-      } else {
-        cargarFeed();
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      checarSesion();
-    });
-  </script>
-</body>
-</html>
+      if (!confirm("¿Segur
