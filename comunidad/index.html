@@ -627,4 +627,24 @@
       }
     }
 
-    async function bor
+    async function borrarPost(postId) {
+      if (!confirm("¿Seguro que quieres eliminar esta transmisión?")) return;
+
+      const { error } = await supabase
+        .from('posts')
+        .delete()
+        .eq('id', postId);
+
+      if (error) {
+        alert("Error al borrar: " + error.message);
+      } else {
+        cargarFeed();
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      checarSesion();
+    });
+  </script>
+</body>
+</html>
