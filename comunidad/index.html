@@ -132,6 +132,17 @@
       background: #222;
     }
 
+    .badge-admin {
+      background: #ffcc00;
+      color: #000;
+      font-size: 0.65rem;
+      font-weight: bold;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 6px;
+      text-transform: uppercase;
+    }
+
     .btn-logout {
       background: transparent;
       color: #ff4444;
@@ -245,7 +256,7 @@
 
     /* Botón de borrar post dentro del contenedor del header */
     .btn-borrar-post {
-      margin-left: auto; /* Lo empuja a la extrema derecha */
+      margin-left: auto;
       background: transparent;
       color: #ff4444;
       border: 1px solid rgba(255, 68, 68, 0.4);
@@ -286,7 +297,6 @@
   <div class="comunidad-container">
     <div class="titulo-seccion">NEXUS FEED</div>
 
-    <!-- ZONA DINÁMICA DE USUARIO (Intercambia Login por Caja de Posteo) -->
     <div id="zonaAutenticacion">
       <div class="caja-auth">
         <p style="margin-top:0; opacity:0.8;">Para sincronizar tus transmisiones con el Omniverso, debes identificarte.</p>
@@ -302,7 +312,6 @@
     </div>
   </div>
 
-  <!-- LÓGICA CORE (Módulos JS) -->
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
 
@@ -314,7 +323,6 @@
     let usuarioActual = null;
     let perfilUsuario = null;
 
-    // --- MONITOREAR ESTADO DE SESIÓN ---
     async function checarSesion() {
       const { data: { session } } = await supabase.auth.getSession();
       await manejarCambioSesion(session?.user || null);
@@ -335,12 +343,10 @@
       cargarFeed();
     }
 
-    // --- SINCRONIZAR O CREAR PERFIL EN LA TABLA PROFILES ---
     async function sincronizarPerfil(user) {
       const nombreDiscord = user.user_metadata.full_name || user.user_metadata.name || "Guerrero";
       const avatarDiscord = user.user_metadata.avatar_url || "";
 
-      // Consultar si ya existe el perfil
       const { data: profile } = await supabase
         .from('profiles')
         .select('*')
@@ -348,13 +354,13 @@
         .single();
 
       if (!profile) {
-        // Si no existe, lo insertamos
         const { data: nuevoPerfil } = await supabase
           .from('profiles')
           .insert([{
             id: user.id,
             username: nombreDiscord,
-            avatar_url: avatarDiscord
+            avatar_url: avatarDiscord,
+            is_admin: false
           }])
           .select()
           .single();
@@ -365,7 +371,6 @@
       }
     }
 
-    // --- CAMBIAR INTERFAZ SEGÚN SESIÓN ---
     function actualizarInterfazUsuario(user) {
       const zonaAuth = document.getElementById('zonaAutenticacion');
       if (!zonaAuth) return;
@@ -373,17 +378,17 @@
       if (user && perfilUsuario) {
         const nombre = perfilUsuario.username || "Guerrero";
         const avatarUrl = perfilUsuario.avatar_url || "";
+        const esAdmin = perfilUsuario.is_admin === true;
 
         zonaAuth.innerHTML = `
           <div class="user-profile-bar">
             <div class="user-info">
               <img src="${avatarUrl}" class="user-avatar" alt="Avatar" onerror="this.src='https://placehold.co/40x40/222/ffcc00?text=?'">
-              <span>Conectado como: <strong style="color:#ffcc00;">${nombre}</strong></span>
+              <span>Conectado como: <strong style="color:#ffcc00;">${nombre}</strong>${esAdmin ? '<span class="badge-admin">Admin</span>' : ''}</span>
             </div>
             <button class="btn-logout" id="btnCerrarSesion">Desconectar</button>
           </div>
           
-          <!-- PANEL PARA CAMBIAR USERNAME / AVATAR -->
           <div style="background: rgba(30, 30, 25, 0.4); border: 1px solid rgba(255, 204, 0, 0.2); padding: 12px; border-radius: 12px; margin-bottom: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
             <input type="text" id="editUsername" value="${nombre}" placeholder="Nuevo Nickname" style="flex:1; background:#0a0a08; border:1px solid #333; color:white; padding:8px; border-radius:8px; font-family:inherit;">
             <input type="text" id="editAvatar" value="${avatarUrl}" placeholder="URL Avatar" style="flex:1; background:#0a0a08; border:1px solid #333; color:white; padding:8px; border-radius:8px; font-family:inherit;">
@@ -415,7 +420,6 @@
       }
     }
 
-    // --- ACCIONES DE AUTENTICACIÓN Y PERFIL ---
     async function loginConDiscord() {
       await supabase.auth.signInWithOAuth({
         provider: 'discord',
@@ -456,7 +460,6 @@
       }
     }
 
-    // --- CARGAR FEED (CON UNIÓN RELACIONAL A PROFILES) ---
     async function cargarFeed() {
       const feedContenedor = document.getElementById('feedContenedor');
       if (!feedContenedor) return;
@@ -473,7 +476,8 @@
             user_avatar,
             profiles (
               username,
-              avatar_url
+              avatar_url,
+              is_admin
             )
           `)
           .order('created_at', { ascending: false });
@@ -489,29 +493,34 @@
         }
 
         feedContenedor.innerHTML = "";
+        
+        // Verifica si el usuario actual es admin
+        const soyAdmin = perfilUsuario?.is_admin === true;
+
         posts.forEach(post => {
           const fecha = new Date(post.created_at).toLocaleDateString('es-ES', {hour: '2-digit', minute:'2-digit'});
           
-          // Toma primero los datos de la tabla profiles, y si no existen recurre a las columnas legacy
           const autorNombre = post.profiles?.username || post.user_name || "Hacker Anónimo";
           const autorAvatar = post.profiles?.avatar_url || post.user_avatar || "https://placehold.co/24x24/222/ffcc00?text=X";
+          const autorEsAdmin = post.profiles?.is_admin === true;
           
-          // Evalúa si el usuario activo es dueño de esta publicación
           const esMiPost = usuarioActual && (usuarioActual.id === post.user_id);
+          // Si el usuario es dueño O si es admin, puede borrar
+          const puedoBorrar = esMiPost || soyAdmin;
 
           const postElement = document.createElement('div');
           postElement.className = 'post-card';
           postElement.innerHTML = `
             <div class="post-header">
               <img src="${autorAvatar}" class="post-avatar-mini" alt="avatar-mini" onerror="this.src='https://placehold.co/24x24/222/ffcc00?text=?'">
-              <span class="post-autor">${autorNombre}</span>
+              <span class="post-autor">${autorNombre} ${autorEsAdmin ? '<span class="badge-admin">Admin</span>' : ''}</span>
               <span class="post-fecha">${fecha}</span>
-              ${esMiPost ? `<button class="btn-borrar-post">🗑️ Borrar</button>` : ''}
+              ${puedoBorrar ? `<button class="btn-borrar-post">🗑️ Borrar</button>` : ''}
             </div>
             <div class="post-texto">${post.content}</div>
           `;
 
-          if (esMiPost) {
+          if (puedoBorrar) {
             postElement.querySelector('.btn-borrar-post')?.addEventListener('click', () => borrarPost(post.id));
           }
 
@@ -522,7 +531,6 @@
       }
     }
 
-    // --- ENVIAR MENSAJE ---
     async function publicarMensaje() {
       const txtArea = document.getElementById('nuevoPostTxt');
       const contenido = txtArea?.value.trim();
@@ -553,7 +561,6 @@
       }
     }
 
-    // --- BORRAR MI POST ---
     async function borrarPost(postId) {
       if (!confirm("¿Seguro que quieres eliminar esta transmisión?")) return;
 
@@ -569,7 +576,6 @@
       }
     }
 
-    // --- INICIALIZACIÓN ---
     document.addEventListener("DOMContentLoaded", () => {
       checarSesion();
     });
