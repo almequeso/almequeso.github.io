@@ -114,6 +114,8 @@
       padding: 12px 20px;
       border-radius: 15px;
       margin-bottom: 15px;
+      box-sizing: border-box;
+      width: 100%;
     }
 
     .user-info {
@@ -221,6 +223,7 @@
       gap: 10px;
       font-size: 0.85rem;
       margin-bottom: 12px;
+      width: 100%;
     }
 
     .post-avatar-mini {
@@ -238,7 +241,25 @@
 
     .post-fecha {
       opacity: 0.5;
-      margin-left: auto;
+    }
+
+    /* Botón de borrar post dentro del contenedor del header */
+    .btn-borrar-post {
+      margin-left: auto; /* Lo empuja a la extrema derecha */
+      background: transparent;
+      color: #ff4444;
+      border: 1px solid rgba(255, 68, 68, 0.4);
+      font-family: inherit;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: 0.2s;
+    }
+
+    .btn-borrar-post:hover {
+      background: rgba(255, 68, 68, 0.15);
+      border-color: #ff4444;
     }
 
     .post-texto {
@@ -485,7 +506,7 @@
               <img src="${autorAvatar}" class="post-avatar-mini" alt="avatar-mini" onerror="this.src='https://placehold.co/24x24/222/ffcc00?text=?'">
               <span class="post-autor">${autorNombre}</span>
               <span class="post-fecha">${fecha}</span>
-              ${esMiPost ? `<button class="btn-borrar-post" style="background:none; border:none; color:#ff4444; cursor:pointer; font-size:0.8rem; margin-left:10px;">🗑️ Borrar</button>` : ''}
+              ${esMiPost ? `<button class="btn-borrar-post">🗑️ Borrar</button>` : ''}
             </div>
             <div class="post-texto">${post.content}</div>
           `;
@@ -553,4 +574,5 @@
       checarSesion();
     });
   </script>
-  
+</body>
+</html>
