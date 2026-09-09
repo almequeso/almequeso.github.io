@@ -9,6 +9,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=JetBrains+Mono&display=swap" rel="stylesheet">
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
@@ -114,7 +118,6 @@
       padding: 12px 20px;
       border-radius: 15px;
       margin-bottom: 15px;
-      box-sizing: border-box;
       width: 100%;
     }
 
@@ -130,6 +133,7 @@
       border-radius: 50%;
       border: 2px solid #ffcc00;
       background: #222;
+      object-fit: cover;
     }
 
     .badge-admin {
@@ -139,8 +143,8 @@
       font-weight: bold;
       padding: 2px 6px;
       border-radius: 4px;
-      margin-left: 6px;
       text-transform: uppercase;
+      flex-shrink: 0;
     }
 
     .btn-logout {
@@ -178,7 +182,6 @@
       color: white;
       font-family: 'JetBrains Mono', monospace;
       padding: 12px;
-      box-sizing: border-box;
       resize: none;
       outline: none;
       transition: border 0.3s;
@@ -226,15 +229,17 @@
       border-radius: 0 15px 15px 0;
       padding: 20px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      overflow: hidden;
     }
 
     .post-header {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       font-size: 0.85rem;
       margin-bottom: 12px;
       width: 100%;
+      flex-wrap: nowrap;
     }
 
     .post-avatar-mini {
@@ -243,25 +248,40 @@
       border-radius: 50%;
       border: 1px solid #ffcc00;
       background: #222;
+      flex-shrink: 0;
+      object-fit: cover;
+    }
+
+    .autor-info {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+      flex-shrink: 1;
     }
 
     .post-autor {
       color: #ffcc00;
       font-weight: bold;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .post-fecha {
       opacity: 0.5;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
-    /* Botón de borrar post dentro del contenedor del header */
     .btn-borrar-post {
       margin-left: auto;
+      flex-shrink: 0;
       background: transparent;
       color: #ff4444;
       border: 1px solid rgba(255, 68, 68, 0.4);
       font-family: inherit;
-      padding: 4px 10px;
+      padding: 4px 8px;
       border-radius: 6px;
       cursor: pointer;
       font-size: 0.75rem;
@@ -322,6 +342,15 @@
 
     let usuarioActual = null;
     let perfilUsuario = null;
+
+    // Control Menú Lateral
+    const btnMenu = document.getElementById('btnMenuToggle');
+    const sidebar = document.getElementById('sidebar');
+    if (btnMenu && sidebar) {
+      btnMenu.addEventListener('click', () => {
+        sidebar.classList.toggle('abierto');
+      });
+    }
 
     async function checarSesion() {
       const { data: { session } } = await supabase.auth.getSession();
@@ -384,7 +413,7 @@
           <div class="user-profile-bar">
             <div class="user-info">
               <img src="${avatarUrl}" class="user-avatar" alt="Avatar" onerror="this.src='https://placehold.co/40x40/222/ffcc00?text=?'">
-              <span>Conectado como: <strong style="color:#ffcc00;">${nombre}</strong>${esAdmin ? '<span class="badge-admin">Admin</span>' : ''}</span>
+              <span>Conectado como: <strong style="color:#ffcc00;">${nombre}</strong> ${esAdmin ? '<span class="badge-admin">Admin</span>' : ''}</span>
             </div>
             <button class="btn-logout" id="btnCerrarSesion">Desconectar</button>
           </div>
@@ -494,7 +523,6 @@
 
         feedContenedor.innerHTML = "";
         
-        // Verifica si el usuario actual es admin
         const soyAdmin = perfilUsuario?.is_admin === true;
 
         posts.forEach(post => {
@@ -505,7 +533,6 @@
           const autorEsAdmin = post.profiles?.is_admin === true;
           
           const esMiPost = usuarioActual && (usuarioActual.id === post.user_id);
-          // Si el usuario es dueño O si es admin, puede borrar
           const puedoBorrar = esMiPost || soyAdmin;
 
           const postElement = document.createElement('div');
@@ -513,7 +540,10 @@
           postElement.innerHTML = `
             <div class="post-header">
               <img src="${autorAvatar}" class="post-avatar-mini" alt="avatar-mini" onerror="this.src='https://placehold.co/24x24/222/ffcc00?text=?'">
-              <span class="post-autor">${autorNombre} ${autorEsAdmin ? '<span class="badge-admin">Admin</span>' : ''}</span>
+              <div class="autor-info">
+                <span class="post-autor">${autorNombre}</span>
+                ${autorEsAdmin ? '<span class="badge-admin">Admin</span>' : ''}
+              </div>
               <span class="post-fecha">${fecha}</span>
               ${puedoBorrar ? `<button class="btn-borrar-post">🗑️ Borrar</button>` : ''}
             </div>
