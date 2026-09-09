@@ -291,29 +291,67 @@
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     let usuarioActual = null;
+    let perfilUsuario = null;
 
     // --- MONITOREAR ESTADO DE SESIÓN ---
     async function checarSesion() {
-      // Revisa si hay una sesión activa al cargar la página
       const { data: { session } } = await supabase.auth.getSession();
-      actualizarInterfazUsuario(session?.user || null);
+      await manejarCambioSesion(session?.user || null);
 
-      // Escucha en tiempo real si el usuario se loguea o desloguea
-      supabase.auth.onAuthStateChange((_event, session) => {
-        actualizarInterfazUsuario(session?.user || null);
+      supabase.auth.onAuthStateChange(async (_event, session) => {
+        await manejarCambioSesion(session?.user || null);
       });
+    }
+
+    async function manejarCambioSesion(user) {
+      usuarioActual = user;
+      if (user) {
+        await sincronizarPerfil(user);
+      } else {
+        perfilUsuario = null;
+      }
+      actualizarInterfazUsuario(user);
+      cargarFeed();
+    }
+
+    // --- SINCRONIZAR O CREAR PERFIL EN LA TABLA PROFILES ---
+    async function sincronizarPerfil(user) {
+      const nombreDiscord = user.user_metadata.full_name || user.user_metadata.name || "Guerrero";
+      const avatarDiscord = user.user_metadata.avatar_url || "";
+
+      // Consultar si ya existe el perfil
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+
+      if (!profile) {
+        // Si no existe, lo insertamos
+        const { data: nuevoPerfil } = await supabase
+          .from('profiles')
+          .insert([{
+            id: user.id,
+            username: nombreDiscord,
+            avatar_url: avatarDiscord
+          }])
+          .select()
+          .single();
+
+        perfilUsuario = nuevoPerfil;
+      } else {
+        perfilUsuario = profile;
+      }
     }
 
     // --- CAMBIAR INTERFAZ SEGÚN SESIÓN ---
     function actualizarInterfazUsuario(user) {
-      usuarioActual = user;
       const zonaAuth = document.getElementById('zonaAutenticacion');
       if (!zonaAuth) return;
 
-      if (user) {
-        // Obtenemos los metadatos de Discord
-        const nombre = user.user_metadata.full_name || user.user_metadata.name || "Guerrero";
-        const avatarUrl = user.user_metadata.avatar_url || "";
+      if (user && perfilUsuario) {
+        const nombre = perfilUsuario.username || "Guerrero";
+        const avatarUrl = perfilUsuario.avatar_url || "";
 
         zonaAuth.innerHTML = `
           <div class="user-profile-bar">
@@ -324,6 +362,13 @@
             <button class="btn-logout" id="btnCerrarSesion">Desconectar</button>
           </div>
           
+          <!-- PANEL PARA CAMBIAR USERNAME / AVATAR -->
+          <div style="background: rgba(30, 30, 25, 0.4); border: 1px solid rgba(255, 204, 0, 0.2); padding: 12px; border-radius: 12px; margin-bottom: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+            <input type="text" id="editUsername" value="${nombre}" placeholder="Nuevo Nickname" style="flex:1; background:#0a0a08; border:1px solid #333; color:white; padding:8px; border-radius:8px; font-family:inherit;">
+            <input type="text" id="editAvatar" value="${avatarUrl}" placeholder="URL Avatar" style="flex:1; background:#0a0a08; border:1px solid #333; color:white; padding:8px; border-radius:8px; font-family:inherit;">
+            <button id="btnGuardarPerfil" class="btn-cyber" style="padding: 8px 16px; font-size: 0.85rem;">Editar Perfil</button>
+          </div>
+
           <div class="caja-publicar">
             <textarea id="nuevoPostTxt" placeholder="Escribe tu mensaje al Nexo, ${nombre}..."></textarea>
             <div class="area-botones">
@@ -332,11 +377,10 @@
           </div>
         `;
 
-        // Asignar eventos a los nuevos elementos del DOM
         document.getElementById('btnPublicar')?.addEventListener('click', publicarMensaje);
         document.getElementById('btnCerrarSesion')?.addEventListener('click', cerrarSesion);
+        document.getElementById('btnGuardarPerfil')?.addEventListener('click', actualizarPerfil);
       } else {
-        // Si no hay usuario, muestra el botón de Discord original
         zonaAuth.innerHTML = `
           <div class="caja-auth">
             <p style="margin-top:0; opacity:0.8;">Para sincronizar tus transmisiones con el Omniverso, debes identificarte.</p>
@@ -350,7 +394,7 @@
       }
     }
 
-    // --- ACCIONES DE AUTENTICACIÓN ---
+    // --- ACCIONES DE AUTENTICACIÓN Y PERFIL ---
     async function loginConDiscord() {
       await supabase.auth.signInWithOAuth({
         provider: 'discord',
@@ -364,7 +408,34 @@
       await supabase.auth.signOut();
     }
 
-    // --- CARGAR FEED ---
+    async function actualizarPerfil() {
+      const nuevoNick = document.getElementById('editUsername').value.trim();
+      const nuevoAvatar = document.getElementById('editAvatar').value.trim();
+
+      if (!nuevoNick || !usuarioActual) return;
+
+      const { data, error } = await supabase
+        .from('profiles')
+        .update({
+          username: nuevoNick,
+          avatar_url: nuevoAvatar,
+          updated_at: new Date()
+        })
+        .eq('id', usuarioActual.id)
+        .select()
+        .single();
+
+      if (error) {
+        alert("Error al actualizar perfil: " + error.message);
+      } else {
+        perfilUsuario = data;
+        alert("Perfil actualizado correctamente.");
+        actualizarInterfazUsuario(usuarioActual);
+        cargarFeed();
+      }
+    }
+
+    // --- CARGAR FEED (CON UNIÓN RELACIONAL A PROFILES) ---
     async function cargarFeed() {
       const feedContenedor = document.getElementById('feedContenedor');
       if (!feedContenedor) return;
@@ -372,7 +443,18 @@
       try {
         const { data: posts, error } = await supabase
           .from('posts')
-          .select('*')
+          .select(`
+            id,
+            content,
+            created_at,
+            user_id,
+            user_name,
+            user_avatar,
+            profiles (
+              username,
+              avatar_url
+            )
+          `)
           .order('created_at', { ascending: false });
 
         if (error) {
@@ -389,20 +471,30 @@
         posts.forEach(post => {
           const fecha = new Date(post.created_at).toLocaleDateString('es-ES', {hour: '2-digit', minute:'2-digit'});
           
-          // Extraemos los datos guardados en el post o ponemos fallback si son posts viejos
-          const autorNombre = post.user_name || "Hacker Anónimo";
-          const autorAvatar = post.user_avatar || "https://placehold.co/24x24/222/ffcc00?text=X";
+          // Toma primero los datos de la tabla profiles, y si no existen recurre a las columnas legacy
+          const autorNombre = post.profiles?.username || post.user_name || "Hacker Anónimo";
+          const autorAvatar = post.profiles?.avatar_url || post.user_avatar || "https://placehold.co/24x24/222/ffcc00?text=X";
+          
+          // Evalúa si el usuario activo es dueño de esta publicación
+          const esMiPost = usuarioActual && (usuarioActual.id === post.user_id);
 
-          feedContenedor.innerHTML += `
-            <div class="post-card">
-              <div class="post-header">
-                <img src="${autorAvatar}" class="post-avatar-mini" alt="avatar-mini">
-                <span class="post-autor">${autorNombre}</span>
-                <span class="post-fecha">${fecha}</span>
-              </div>
-              <div class="post-texto">${post.content}</div>
+          const postElement = document.createElement('div');
+          postElement.className = 'post-card';
+          postElement.innerHTML = `
+            <div class="post-header">
+              <img src="${autorAvatar}" class="post-avatar-mini" alt="avatar-mini" onerror="this.src='https://placehold.co/24x24/222/ffcc00?text=?'">
+              <span class="post-autor">${autorNombre}</span>
+              <span class="post-fecha">${fecha}</span>
+              ${esMiPost ? `<button class="btn-borrar-post" style="background:none; border:none; color:#ff4444; cursor:pointer; font-size:0.8rem; margin-left:10px;">🗑️ Borrar</button>` : ''}
             </div>
+            <div class="post-texto">${post.content}</div>
           `;
+
+          if (esMiPost) {
+            postElement.querySelector('.btn-borrar-post')?.addEventListener('click', () => borrarPost(post.id));
+          }
+
+          feedContenedor.appendChild(postElement);
         });
       } catch (err) {
         feedContenedor.innerHTML = `<div style="color:#ff4444; text-align:center;">Error de red en Nexus.</div>`;
@@ -416,17 +508,17 @@
 
       if (!contenido || !usuarioActual) return;
 
-      // Extraemos el nombre e imagen actuales del usuario de Discord
-      const nombreDiscord = usuarioActual.user_metadata.full_name || usuarioActual.user_metadata.name || "Usuario de Discord";
-      const avatarDiscord = usuarioActual.user_metadata.avatar_url || "";
+      const autorNombre = perfilUsuario?.username || usuarioActual.user_metadata.full_name || "Usuario de Discord";
+      const autorAvatar = perfilUsuario?.avatar_url || usuarioActual.user_metadata.avatar_url || "";
 
       try {
         const { error } = await supabase
           .from('posts')
           .insert([{ 
             content: contenido,
-            user_name: nombreDiscord,
-            user_avatar: avatarDiscord
+            user_id: usuarioActual.id,
+            user_name: autorNombre,
+            user_avatar: autorAvatar
           }]);
 
         if (error) {
@@ -440,19 +532,25 @@
       }
     }
 
+    // --- BORRAR MI POST ---
+    async function borrarPost(postId) {
+      if (!confirm("¿Seguro que quieres eliminar esta transmisión?")) return;
+
+      const { error } = await supabase
+        .from('posts')
+        .delete()
+        .eq('id', postId);
+
+      if (error) {
+        alert("Error al borrar: " + error.message);
+      } else {
+        cargarFeed();
+      }
+    }
+
     // --- INICIALIZACIÓN ---
     document.addEventListener("DOMContentLoaded", () => {
       checarSesion();
-      cargarFeed();
     });
   </script>
-
-  <!-- MENÚ TOGGLE -->
-  <script>
-    document.getElementById('btnMenuToggle').addEventListener('click', () => {
-      document.getElementById("sidebar").classList.toggle("abierto");
-    });
-  </script>
-</body>
-
-</html>
+  
